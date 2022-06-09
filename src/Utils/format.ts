@@ -1,3 +1,5 @@
+import { regexFloat, regexNumber } from './regex';
+
 export const removeSpaces = (value: string | number) => value.toString().replace(/\s/g, '');
 
 interface PrettyNumberSettings {
@@ -24,3 +26,6 @@ export const prettyNumber = (value: number | undefined, settings?: PrettyNumberS
     ' '
   )}${settings?.postfix ? ` ${settings.postfix}` : ''}`;
 };
+
+export const onlyNumbers = (value: string) => value.replace(regexNumber, '');
+export const onlyFloat = (value: string) => value.replace(regexFloat, '');

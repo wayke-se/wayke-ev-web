@@ -60,6 +60,7 @@ class Preview extends HtmlNode {
     const currentTarget = e.currentTarget as HTMLSelectElement;
     this.mileage = currentTarget.value;
     this.contexts.range?.update(this.mileage);
+    this.contexts.select?.update(this.mileage);
     this.contexts.result?.update(this.costPerKilometer, parseInt(this.mileage, 10));
     this.contexts.modal?.update(this.costPerKilometer || 0, parseInt(this.mileage, 10));
   }
@@ -67,6 +68,7 @@ class Preview extends HtmlNode {
   private onChangeRange(e: Event) {
     const currentTarget = e.currentTarget as HTMLSelectElement;
     this.mileage = currentTarget.value;
+    this.contexts.range?.update(this.mileage);
     this.contexts.select?.update(this.mileage);
     this.contexts.result?.update(this.costPerKilometer, parseInt(this.mileage, 10));
     this.contexts.modal?.update(this.costPerKilometer || 0, parseInt(this.mileage, 10));

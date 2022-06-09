@@ -69,7 +69,7 @@ class Modal extends HtmlNode {
     this.node.innerHTML = `
       <div style="padding: 8px; border: 1px solid black">
         <h2>Beräkna laddkostnad</h2>
-        <p>Har du funderat över vad det kostar att ladda en elbil? Här hittar du verktyget som visar dig den uppskattade laddningskostnaden för just den här bilen./p>
+        <p>Har du funderat över vad det kostar att ladda en elbil? Här hittar du verktyget som visar dig den uppskattade laddningskostnaden för just den här bilen.</p>
         <div id="${MILEAGE_SELECT_NODE}"></div>
         <div id="${MILEAGE_RANGE_NODE}"></div>
         <div id="${RESULT_NODE}"></div>
