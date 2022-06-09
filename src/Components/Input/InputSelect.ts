@@ -1,0 +1,74 @@
+import HtmlNode from '../Extension/HtmlNode';
+
+export interface SelectItem {
+  value: string;
+  title?: string;
+}
+
+interface InputSelectProps {
+  readonly title: string;
+  readonly name: string;
+  readonly id?: string;
+  readonly value?: string;
+  readonly options: SelectItem[];
+  readonly placeholder?: string;
+  readonly onChange: (e: Event) => void;
+}
+
+interface Contexts {
+  select?: HTMLSelectElement;
+}
+
+class InputSelect extends HtmlNode {
+  private readonly props: InputSelectProps;
+  private contexts: Contexts = {};
+  private value?: string;
+
+  constructor(element: HTMLElement | null, props: InputSelectProps) {
+    super(element);
+
+    this.props = props;
+    this.value = props.value;
+    this.render();
+  }
+
+  update(value: string) {
+    this.value = value;
+    if (this.contexts.select) {
+      this.contexts.select.value = this.value;
+    }
+  }
+
+  render() {
+    const { id, options, name, title, placeholder, onChange } = this.props;
+    this.node.innerHTML = `
+      <div class="waykevaluation-input-label">
+        <label for="wayke-estimated-mileage" class="waykevaluation-input-label__label">${title}</label>
+      </div>
+      <select
+        class="waykevaluation-select"
+        ${name ? `name="${name}"` : ''}
+        ${id ? `id="${id}"` : ''}
+      >
+        ${
+          placeholder ? `<option value="placeholder" disabled selected>${placeholder}</option>` : ''
+        }
+        ${options
+          .map(
+            (option) =>
+              `<option value="${option.value}" ${
+                option.value === this.value ? `selected="selected"` : ''
+              }>${option.title || option.value}</option>`
+          )
+          .join('')}
+      </select>
+    `;
+
+    this.contexts.select = this.node.querySelector<HTMLSelectElement>('select') || undefined;
+    if (this.contexts.select) {
+      this.contexts.select.addEventListener('change', (e) => onChange(e));
+    }
+  }
+}
+
+export default InputSelect;
