@@ -1,4 +1,5 @@
 import { AppProps } from '../../@types/AppProps';
+import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputRangeSlider from '../../Components/Input/InputRangeSlider';
 import InputSelect, { SelectItem } from '../../Components/Input/InputSelect';
@@ -14,8 +15,7 @@ const RESULT_NODE = 'wayke-ev-result-extended-node';
 interface ModalProps {
   settings: AppProps;
   open?: boolean;
-  costPerKilometer: number;
-  costPerKwh: number;
+  charginCostPerKilometer?: EvCalculationChargingPerKilometer;
   mileage: number;
   distanceOptions: number[];
   distanceOptionsMapped: SelectItem[];
@@ -32,15 +32,13 @@ interface ModalContext {
 class Modal extends HtmlNode {
   private readonly props: ModalProps;
   private contexts: ModalContext = {};
-  private costPerKilometer: number;
-  private costPerKwh: number;
+  private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
   private mileage: number;
 
   constructor(element: HTMLElement | null, props: ModalProps) {
     super(element);
     this.props = props;
-    this.costPerKilometer = props.costPerKilometer;
-    this.costPerKwh = props.costPerKwh;
+    this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.mileage = props.mileage;
 
     if (props.open) {
@@ -56,13 +54,13 @@ class Modal extends HtmlNode {
     this.node.innerHTML = '';
   }
 
-  update(costPerKilomter: number, mileage: number) {
-    this.costPerKilometer = costPerKilomter;
+  update(charginCostPerKilometer: EvCalculationChargingPerKilometer | undefined, mileage: number) {
+    this.charginCostPerKilometer = charginCostPerKilometer;
     this.mileage = mileage;
 
     this.contexts.select?.update(this.mileage.toString());
     this.contexts.range?.update(this.mileage.toString());
-    this.contexts.result?.update(this.costPerKilometer, this.mileage);
+    this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
   }
 
   render() {
@@ -104,9 +102,8 @@ class Modal extends HtmlNode {
     this.contexts.result = new ModalResult(
       this.node.querySelector<HTMLDivElement>(`#${RESULT_NODE}`),
       {
-        costPerKilometer: this.costPerKilometer,
+        charginCostPerKilometer: this.charginCostPerKilometer,
         mileage: this.mileage || 0,
-        costPerKwh: this.costPerKwh,
         settings: this.props.settings,
       }
     );

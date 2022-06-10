@@ -1,4 +1,5 @@
 import { AppProps } from '../../@types/AppProps';
+import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import Button from '../../Components/Button/Button';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputRangeSlider from '../../Components/Input/InputRangeSlider';
@@ -24,8 +25,7 @@ const DistanceOptionsMapped = DistanceOptions.map((d) => ({
 
 interface PreviewProps {
   settings: AppProps;
-  costPerKilomter?: number;
-  standardElectricityPrice?: number;
+  charginCostPerKilometer?: EvCalculationChargingPerKilometer;
 }
 
 interface PreviewContext {
@@ -40,19 +40,17 @@ class Preview extends HtmlNode {
   private readonly props: PreviewProps;
   private contexts: PreviewContext = {};
   private mileage = DistanceOptionsMapped[4].value;
-  private costPerKilometer?: number;
-  private costPerKwh?: number;
+  private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
 
   constructor(element: HTMLElement | null, props: PreviewProps) {
     super(element);
     this.props = props;
-    this.costPerKilometer = props.costPerKilomter;
+    this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.render();
   }
 
-  update(costPerKilomter?: number, costPerKwh?: number) {
-    this.costPerKilometer = costPerKilomter;
-    this.costPerKwh = costPerKwh || 0;
+  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer) {
+    this.charginCostPerKilometer = charginCostPerKilometer;
     this.render();
   }
 
@@ -61,8 +59,8 @@ class Preview extends HtmlNode {
     this.mileage = currentTarget.value;
     this.contexts.range?.update(this.mileage);
     this.contexts.select?.update(this.mileage);
-    this.contexts.result?.update(this.costPerKilometer, parseInt(this.mileage, 10));
-    this.contexts.modal?.update(this.costPerKilometer || 0, parseInt(this.mileage, 10));
+    this.contexts.result?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
+    this.contexts.modal?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
   }
 
   private onChangeRange(e: Event) {
@@ -70,11 +68,13 @@ class Preview extends HtmlNode {
     this.mileage = currentTarget.value;
     this.contexts.range?.update(this.mileage);
     this.contexts.select?.update(this.mileage);
-    this.contexts.result?.update(this.costPerKilometer, parseInt(this.mileage, 10));
-    this.contexts.modal?.update(this.costPerKilometer || 0, parseInt(this.mileage, 10));
+    this.contexts.result?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
+    this.contexts.modal?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
   }
 
   render() {
+    if (this.charginCostPerKilometer === undefined) return;
+
     this.node.innerHTML = `
       <h2>Beräkna laddkostnad</h2>
       <p>Se vad det kostar att ladda denna elbil per månad. Du behöver bara ange din årliga körsträcka för att se fordonets uppskattade laddningskostnad.</p>
@@ -122,14 +122,13 @@ class Preview extends HtmlNode {
     );
 
     this.contexts.result = new Result(this.node.querySelector<HTMLDivElement>(`#${RESULT_NODE}`), {
-      costPerKilometer: this.costPerKilometer,
+      charginCostPerKilometer: this.charginCostPerKilometer,
       mileage: parseInt(this.mileage, 10),
     });
 
     this.contexts.modal = new Modal(this.node.querySelector<HTMLDivElement>(`#${MODAL_NODE}`), {
       settings: this.props.settings,
-      costPerKilometer: this.costPerKilometer || 0,
-      costPerKwh: this.costPerKwh || 0,
+      charginCostPerKilometer: this.charginCostPerKilometer,
       mileage: parseInt(this.mileage, 10),
       distanceOptions: DistanceOptions,
       distanceOptionsMapped: DistanceOptionsMapped,

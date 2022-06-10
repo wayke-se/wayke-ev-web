@@ -45,10 +45,7 @@ class App {
     try {
       const response = await getCostPerKilometer(this.props.url, id);
       this.state.charginCostPerKilometer = response;
-      this.contexts.preview?.update(
-        response.description.costPerKilometer.value,
-        response.description.costPerKwh.value
-      );
+      this.contexts.preview?.update(response);
     } catch (e) {
       console.log('err');
     }

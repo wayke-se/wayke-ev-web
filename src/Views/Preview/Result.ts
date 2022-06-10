@@ -1,3 +1,4 @@
+import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
 
@@ -7,31 +8,34 @@ const calculateCostPerMonth = (costPerKilometer: number | undefined, distance?: 
 };
 
 interface ResultProps {
-  costPerKilometer?: number;
+  charginCostPerKilometer?: EvCalculationChargingPerKilometer;
   mileage: number;
 }
 
 class Result extends HtmlNode {
   private readonly props: ResultProps;
-  private costPerKilometer?: number;
+  private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
   private mileage?: number;
 
   constructor(element: HTMLElement | null, props: ResultProps) {
     super(element);
     this.props = props;
-    this.costPerKilometer = props.costPerKilometer;
+    this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.mileage = props.mileage;
     this.render();
   }
 
-  update(costPerKilomter?: number, mileage?: number) {
-    this.costPerKilometer = costPerKilomter;
+  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, mileage?: number) {
+    this.charginCostPerKilometer = charginCostPerKilometer;
     this.mileage = mileage;
     this.render();
   }
 
   render() {
-    const costPerMonth = calculateCostPerMonth(this.costPerKilometer, this.mileage);
+    const costPerMonth = calculateCostPerMonth(
+      this.charginCostPerKilometer?.description.costPerKilometer.value,
+      this.mileage
+    );
 
     this.node.innerHTML = `
       <div>

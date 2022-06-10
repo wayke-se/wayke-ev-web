@@ -4,7 +4,8 @@ import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputField from '../../Components/Input/InputField';
 import InputRadioGroup, { RadioItem } from '../../Components/Input/InputRadioGroup';
 import getCostPerKilometer from '../../Http/getCostPerKilometer';
-import { onlyFloat, prettyNumber } from '../../Utils/format';
+import { onlyFloat } from '../../Utils/format';
+import ModalResultStats from './ModalResultStats';
 
 const PRICE_OPTION = 'wayke-ev-extended-price-option';
 const PRICE_NODE = `${PRICE_OPTION}-node`;
@@ -39,14 +40,14 @@ const calculateCostPerMonth = (costPerKilometer: number | undefined, distance?: 
 
 interface ModalResultProps {
   settings: AppProps;
-  costPerKilometer?: number;
+  charginCostPerKilometer?: EvCalculationChargingPerKilometer;
   mileage: number;
-  costPerKwh: number;
 }
 
 interface ModalResultContext {
   input?: InputField;
   priceOption?: InputRadioGroup;
+  stats?: ModalResultStats;
 }
 
 let timeoutRef: number = -1;
@@ -54,30 +55,44 @@ class ModalResult extends HtmlNode {
   private readonly props: ModalResultProps;
   private contexts: ModalResultContext = {};
   private priceOption: PriceOptionTypes = STANDARD_PRICE;
-  private costPerKwh: number;
-  private costPerKilometer?: number;
+  private costPerKwh?: number;
+  private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
   private mileage?: number;
-  private charginCostPerKilometerCustom?: EvCalculationChargingPerKilometer;
+  private costPerKilometerCustom?: EvCalculationChargingPerKilometer;
 
   constructor(element: HTMLElement | null, props: ModalResultProps) {
     super(element);
     this.props = props;
-    this.costPerKilometer = props.costPerKilometer;
+    this.charginCostPerKilometer = props.charginCostPerKilometer;
+    this.costPerKwh = props.charginCostPerKilometer?.description.costPerKwh.value;
     this.mileage = props.mileage;
-    this.costPerKwh = props.costPerKwh;
+    this.costPerKilometerCustom = props.charginCostPerKilometer;
 
     this.render();
   }
 
+  private getCostPerMonth() {
+    const costPerMonth = calculateCostPerMonth(
+      this.priceOption === 'standardPrice'
+        ? this.charginCostPerKilometer?.description.costPerKilometer.value
+        : this.costPerKilometerCustom?.description.costPerKilometer.value,
+      this.mileage
+    );
+    return costPerMonth;
+  }
+
   private async fetchData() {
-    console.log('fetching');
     if (!this.props.settings.id) return;
     try {
-      const response = await getCostPerKilometer(this.props.settings.url, this.props.settings.id);
-      this.charginCostPerKilometerCustom = response;
-      this.render();
+      const response = await getCostPerKilometer(
+        this.props.settings.url,
+        this.props.settings.id,
+        this.costPerKwh
+      );
+      this.costPerKilometerCustom = response;
+      this.contexts.stats?.update(this.costPerKilometerCustom, this.props.mileage);
     } catch (e) {
-      console.log('err');
+      //console.log('err');
     }
   }
 
@@ -86,13 +101,18 @@ class ModalResult extends HtmlNode {
     const value = currentTarget.value as PriceOptionTypes;
     this.priceOption = value;
     this.render();
-    if (this.priceOption === 'customPrice' && this.costPerKwh !== this.props.costPerKwh) {
+    if (
+      this.priceOption === 'customPrice' &&
+      this.costPerKwh !== this.props.charginCostPerKilometer?.description.costPerKwh.value
+    ) {
       this.fetchData();
+    } else if (this.props.charginCostPerKilometer) {
+      this.contexts.stats?.update(this.props.charginCostPerKilometer, this.props.mileage);
     }
   }
 
-  update(costPerKilomter?: number, mileage?: number) {
-    this.costPerKilometer = costPerKilomter;
+  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, mileage?: number) {
+    this.charginCostPerKilometer = charginCostPerKilometer;
     this.mileage = mileage;
     this.render();
   }
@@ -101,7 +121,8 @@ class ModalResult extends HtmlNode {
     const currentTarget = e.currentTarget as HTMLInputElement;
     const value = onlyFloat(currentTarget.value);
     currentTarget.value = value;
-    this.costPerKwh = parseFloat(value) || this.props.costPerKwh;
+    this.costPerKwh =
+      parseFloat(value) || this.props.charginCostPerKilometer?.description.costPerKwh.value;
     clearTimeout(timeoutRef);
     timeoutRef = setTimeout(() => {
       if (this.costPerKwh) {
@@ -111,16 +132,11 @@ class ModalResult extends HtmlNode {
   }
 
   render() {
-    const costPerMonth = calculateCostPerMonth(this.costPerKilometer, this.mileage);
-
     this.node.innerHTML = `
       <div>
         <div id="${PRICE_NODE}"></div>
         <div id="${CUSTOM_PRICE_INPUT_NODE}"></div>
         <div id="${STATS_NODE}"></div>
-        <h2>Laddkostnad</h2>
-        <p>${prettyNumber(costPerMonth, { postfix: 'kr/mån*', decimals: 0 })}</p>
-        <p>*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</p>
       </div>
     `;
 
@@ -131,7 +147,7 @@ class ModalResult extends HtmlNode {
           id: CUSTOM_PRICE_INPUT,
           title: 'Din årliga körsträcka',
           name: 'mileage',
-          value: this.costPerKwh.toString(),
+          value: this.costPerKwh?.toString() || '',
           onChange: (e) => this.onChange(e),
         }
       );
@@ -143,6 +159,15 @@ class ModalResult extends HtmlNode {
       name: 'price',
       options: RadioElements,
       onClick: (e) => this.onChangeRadio(e),
+    });
+
+    this.contexts.stats = new ModalResultStats(this.node.querySelector(`#${STATS_NODE}`), {
+      priceOption: this.priceOption,
+      charginCostPerKilometer:
+        this.priceOption === 'standardPrice'
+          ? this.charginCostPerKilometer
+          : this.costPerKilometerCustom,
+      mileage: this.props.mileage,
     });
   }
 }
