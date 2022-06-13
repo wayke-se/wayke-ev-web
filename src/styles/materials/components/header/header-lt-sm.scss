@@ -1,9 +1,0 @@
-@use "../../../helpers" as *;
-
-.#{$namespace}header {
-  &__logo {
-    &--wordmark {
-      display: none;
-    }
-  }
-}

@@ -1,7 +1,0 @@
-@use '../../../helpers' as *;
-
-.#{$namespace}page-section {
-  & + & {
-    margin-top: size(4);
-  }
-}

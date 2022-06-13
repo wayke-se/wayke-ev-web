@@ -40,10 +40,13 @@ class Result extends HtmlNode {
     this.node.innerHTML = `
       <div class="waykeev-balloon">
         <div class="waykeev-stack waykeev-stack--1">
-          <div class="waykeev-heading waykeev-heading--3">${prettyNumber(costPerMonth, {
-            postfix: 'kr/mån*',
-            decimals: 0,
-          })}</div>
+          <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
+            costPerMonth,
+            {
+              postfix: 'kr/mån*',
+              decimals: 0,
+            }
+          )}</div>
         </div>
         <div class="waykeev-stack waykeev-stack--1">
           <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</div>

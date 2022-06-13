@@ -1,5 +1,0 @@
-@use "../../../helpers" as *;
-
-.#{$namespace}accordion {
-  --#{$namespace}header-title-font-size: #{scss-var(font, size, regular)};
-}

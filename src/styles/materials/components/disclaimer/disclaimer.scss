@@ -2,6 +2,7 @@
 
 .#{$namespace}disclaimer {
   font-size: scss-var(font, size, xsmall);
+  color: color(text, alt);
 
   &__icon {
     display: inline-block;
@@ -9,7 +10,6 @@
     padding-right: 0.25em;
     margin: size(-0.25) 0;
     font-size: scss-var(font, size, regular);
-    color: color(text, alt);
   }
 
   &__text {

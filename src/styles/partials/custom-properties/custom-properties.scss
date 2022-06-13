@@ -3,10 +3,6 @@
 @use '../../helpers' as *;
 
 #{$root-element} {
-  // Set display useing CSS variable to display after CSS is loaded.
-  // This variable is used as inline styling on the root element
-  --#{$namespace}root-display: #{scss-var(root, display)};
-
   // Generate CSS variables for modal gutter
   $modal-gutter-x: size(3);
   $modal-gutter-y: size(4);
