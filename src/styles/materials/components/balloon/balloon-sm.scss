@@ -3,8 +3,4 @@
 .#{$namespace}balloon {
   padding: size(3);
   font-size: scss-var(font, size, regular);
-
-  &--speak {
-    padding: size(5) size(3);
-  }
 }

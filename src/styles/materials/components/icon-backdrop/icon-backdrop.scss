@@ -28,13 +28,7 @@
     background-color: color(semantic, info, alt);
     color: color(semantic, info, text);
   }
-
-  // Darker variant of info used on info alt background
-  &--info-alt {
-    background-color: color(semantic, info, main);
-    color: color(semantic, info, text);
-  }
-
+  
   &--large {
     width: $backdrop-size-large;
     height: $backdrop-size-large;

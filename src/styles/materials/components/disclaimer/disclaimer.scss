@@ -3,21 +3,4 @@
 .#{$namespace}disclaimer {
   font-size: scss-var(font, size, xsmall);
   color: color(text, alt);
-
-  &__icon {
-    display: inline-block;
-    vertical-align: middle;
-    padding-right: 0.25em;
-    margin: size(-0.25) 0;
-    font-size: scss-var(font, size, regular);
-  }
-
-  &__text {
-    display: inline;
-    vertical-align: middle;
-  }
-
-  p {
-    margin: 0;
-  }
 }
