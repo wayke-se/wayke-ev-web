@@ -47,7 +47,7 @@ class App {
       this.state.charginCostPerKilometer = response;
       this.contexts.preview?.update(response);
     } catch (e) {
-      console.log('err');
+      //console.log('err');
     }
   }
 

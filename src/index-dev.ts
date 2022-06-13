@@ -1,4 +1,3 @@
-
 import WaykeEvWeb from './App';
 
 window.addEventListener('DOMContentLoaded', (_) => {
