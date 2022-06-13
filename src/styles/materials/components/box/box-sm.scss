@@ -1,0 +1,6 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}box {
+  padding: size(2);
+  //font-size: scss-var(font, size, small);
+}

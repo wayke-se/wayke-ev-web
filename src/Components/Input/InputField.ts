@@ -36,12 +36,12 @@ class InputField extends HtmlNode {
   }
 
   private updateBorder() {
-    const border = this.node.querySelector('.waykevaluation-input-text');
+    const border = this.node.querySelector('.waykeev-input-text');
     if (border) {
       if (this.props.error) {
-        border?.classList.add('waykevaluation-input-text--has-error');
+        border?.classList.add('waykeev-input-text--has-error');
       } else {
-        border?.classList.remove('waykevaluation-input-text--has-error');
+        border?.classList.remove('waykeev-input-text--has-error');
       }
     }
   }
@@ -77,10 +77,10 @@ class InputField extends HtmlNode {
     } = this.props;
 
     this.node.innerHTML = `
-      <div class="waykevaluation-input-label">
-        <label for="${id}" class="waykevaluation-input-label__label">${title}</label>
+      <div class="waykeev-input-label">
+        <label for="${id}" class="waykeev-input-label__label">${title}</label>
       </div>
-      <div class="waykevaluation-input-text">
+      <div class="waykeev-input-text">
         <input
           ${type ? `type="${type}"` : 'type="text"'}
           ${type === 'number' ? `pattern="[0-9]*" inputmode="numeric"` : ''}
@@ -91,10 +91,10 @@ class InputField extends HtmlNode {
           name="${name}"
           ${autocomplete ? `autocomplete="${autocomplete}"` : ''}
           ${placeholder ? `placeholder="${placeholder}"` : ''}
-          class="waykevaluation-input-text__input"
+          class="waykeev-input-text__input"
           ${disabled ? `disabled=""` : ''}
         />
-        ${unit ? `<div class="waykevaluation-input-text__unit">${unit}</div>` : ''}
+        ${unit ? `<div class="waykeev-input-text__unit">${unit}</div>` : ''}
       </div>
     `;
 
@@ -107,7 +107,7 @@ class InputField extends HtmlNode {
     }
 
     if (information) {
-      new InputInformation(this.node.querySelector<HTMLElement>('.waykevaluation-input-label'), {
+      new InputInformation(this.node.querySelector<HTMLElement>('.waykeev-input-label'), {
         information,
       });
     }

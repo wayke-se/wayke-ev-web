@@ -1,0 +1,20 @@
+/// Styling used in the print media query
+
+@use '../../helpers' as *;
+
+@page {
+  size: 330mm 427mm;
+  margin: 14mm;
+}
+
+#{$root-element} {
+  font-size: 10pt;
+  color: #000;
+}
+
+// Print URL to links
+:where(#{$root-element} a[href]) {
+  &::after {
+    content: " (" attr(href) ")";
+  }
+}

@@ -1,0 +1,10 @@
+/// Import files using @use for styling in the breakpoint 'lt-sm'
+
+// Components
+@use '../materials/components/checklist/checklist-lt-sm';
+@use '../materials/components/header/header-lt-sm';
+@use '../materials/components/init/init-lt-sm';
+@use '../materials/components/modal/modal-lt-sm';
+
+// Layout
+@use '../materials/layout/page-section/page-section-lt-sm';

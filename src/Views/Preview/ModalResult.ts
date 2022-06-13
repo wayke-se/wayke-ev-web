@@ -133,10 +133,12 @@ class ModalResult extends HtmlNode {
 
   render() {
     this.node.innerHTML = `
-      <div>
-        <div id="${PRICE_NODE}"></div>
-        <div id="${CUSTOM_PRICE_INPUT_NODE}"></div>
-        <div id="${STATS_NODE}"></div>
+      <div class="waykeev-stack waykeev-stack--3">
+        <div class="waykeev-stack waykeev-stack--2" id="${PRICE_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}"></div>
+      </div>
+      <div class="waykeev-stack waykeev-stack--3">
+        <div class="waykeev-balloon" id="${STATS_NODE}"></div>
       </div>
     `;
 
@@ -145,9 +147,11 @@ class ModalResult extends HtmlNode {
         this.node.querySelector<HTMLDivElement>(`#${CUSTOM_PRICE_INPUT_NODE}`),
         {
           id: CUSTOM_PRICE_INPUT,
-          title: 'Din årliga körsträcka',
-          name: 'mileage',
+          title: 'Ditt elpris',
+          name: 'custom-price',
           value: this.costPerKwh?.toString() || '',
+          unit: 'öre/kWh',
+          information: 'Ange ditt totala pris per kWh så som det står på din faktura.',
           onChange: (e) => this.onChange(e),
         }
       );

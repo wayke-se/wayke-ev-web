@@ -1,0 +1,5 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}input-label {
+  --#{$namespace}label-font-size: #{scss-var(font, size, small)};
+}

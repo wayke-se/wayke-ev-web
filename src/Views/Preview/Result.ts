@@ -38,10 +38,16 @@ class Result extends HtmlNode {
     );
 
     this.node.innerHTML = `
-      <div>
-        <h2>Laddkostnad</h2>
-        <p>${prettyNumber(costPerMonth, { postfix: 'kr/mån*', decimals: 0 })}</p>
-        <p>*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</p>
+      <div class="waykeev-balloon">
+        <div class="waykeev-stack waykeev-stack--1">
+          <div class="waykeev-heading waykeev-heading--3">${prettyNumber(costPerMonth, {
+            postfix: 'kr/mån*',
+            decimals: 0,
+          })}</div>
+        </div>
+        <div class="waykeev-stack waykeev-stack--1">
+          <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</div>
+        </div>
       </div>
     `;
   }

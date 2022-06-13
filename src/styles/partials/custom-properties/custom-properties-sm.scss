@@ -1,0 +1,11 @@
+/// Root level custom properties (CSS variables)
+
+@use '../../helpers' as *;
+
+#{$root-element} {
+  // Generate CSS variables for modal gutter
+  $modal-gutter-x: size(5);
+  $modal-gutter-y: size(5);
+
+  @include create-modal-gutter($modal-gutter-x, $modal-gutter-y);
+}

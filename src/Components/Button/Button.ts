@@ -45,13 +45,13 @@ class Button extends HtmlNode {
         ${id ? `id="${id}"` : ''}
         title="${title}"
         ${disabled && `disabled=""`}
-        class="waykevaluation-button waykevaluation-button--full-width waykevaluation-button--action"
+        class="waykeev-button waykeev-button--full-width waykeev-button--action"
       >
-        <span class="waykevaluation-button__content">${title}</span>
+        <span class="waykeev-button__content">${title}</span>
         ${
           loading
             ? `
-              <span class="waykevaluation-button__content">
+              <span class="waykeev-button__content">
                 ${Loader({ type: 'inline' })}
               </span>`
             : ''

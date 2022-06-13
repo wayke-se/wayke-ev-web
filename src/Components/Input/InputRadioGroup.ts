@@ -43,23 +43,20 @@ class InputRadioGroup extends HtmlNode {
   render() {
     const { title, options, name, checked, error, errorMessage, information, onClick } = this.props;
 
-    const fieldsetClassNames = ['waykevaluation-input-group'];
+    const fieldsetClassNames = ['waykeev-input-group'];
     if (error) {
-      fieldsetClassNames.push('waykevaluation-input-group--has-error');
+      fieldsetClassNames.push('waykeev-input-group--has-error');
     }
 
     this.node.innerHTML = `
      <fieldset class="${fieldsetClassNames.join(' ')}" role="radiogroup" aria-required="true">
        ${
          title
-           ? `<legend class="waykevaluation-input-label"><div class="waykevaluation-input-label__label">${title}</div></legend>`
+           ? `<legend class="waykeev-input-label"><div class="waykeev-input-label__label">${title}</div></legend>`
            : ''
        }
         ${options
-          .map(
-            (option) =>
-              `<div class="waykevaluation-input-group__item" id="${option.id}-node"></div>`
-          )
+          .map((option) => `<div class="waykeev-input-group__item" id="${option.id}-node"></div>`)
           .join('')}
       </fieldset>
     `;
@@ -86,7 +83,7 @@ class InputRadioGroup extends HtmlNode {
     );
 
     if (information) {
-      new InputInformation(this.node.querySelector<HTMLElement>('.waykevaluation-input-label'), {
+      new InputInformation(this.node.querySelector<HTMLElement>('.waykeev-input-label'), {
         information,
       });
     }

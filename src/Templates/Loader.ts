@@ -7,14 +7,14 @@ interface LoaderProps {
 const getType = (type?: LoaderType) => {
   switch (type) {
     case 'inline':
-      return 'waykevaluation-loader--inline-block';
+      return 'waykeev-loader--inline-block';
     default:
       return '';
   }
 };
 
 const Loader = (props?: LoaderProps) => {
-  const classList = ['waykevaluation-loader'];
+  const classList = ['waykeev-loader'];
   const classType = getType(props?.type);
   if (classType) {
     classList.push(classType);
@@ -22,8 +22,8 @@ const Loader = (props?: LoaderProps) => {
 
   return `
   <div class="${classList.join(' ')}" role="status">
-    <div class="waykevaluation-loader__spinner" aria-hidden="true"></div>
-    <div class="waykevaluation-sr-only">Laddar...</div>
+    <div class="waykeev-loader__spinner" aria-hidden="true"></div>
+    <div class="waykeev-sr-only">Laddar...</div>
   </div>
 `;
 };

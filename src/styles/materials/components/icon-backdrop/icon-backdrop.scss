@@ -1,0 +1,42 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}icon-backdrop {
+  $backdrop-size: size(3);
+  $backdrop-size-large: size(5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $backdrop-size;
+  height: $backdrop-size;
+  border-radius: 50%;
+  background-color: color(bg, alt);
+  color: color(text, main);
+  font-size: scss-var(font, size, regular);
+
+  &--success {
+    background-color: color(semantic, success, alt);
+    color: color(semantic, success, text);
+  }
+
+  &--error {
+    background-color: color(semantic, error, alt);
+    color: color(semantic, error, text);
+  }
+
+  &--info {
+    background-color: color(semantic, info, alt);
+    color: color(semantic, info, text);
+  }
+
+  // Darker variant of info used on info alt background
+  &--info-alt {
+    background-color: color(semantic, info, main);
+    color: color(semantic, info, text);
+  }
+
+  &--large {
+    width: $backdrop-size-large;
+    height: $backdrop-size-large;
+  }
+}

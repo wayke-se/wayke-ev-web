@@ -21,9 +21,9 @@
   "author": "Wayke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wayke-se/wayke-valuation-web/issues"
+    "url": "https://github.com/wayke-se/wayke-ev-web/issues"
   },
-  "homepage": "https://github.com/wayke-se/wayke-valuation-web#readme",
+  "homepage": "https://github.com/wayke-se/wayke-ev-web#readme",
   "devDependencies": {
     "@ourstudio/clip-ui": "^0.0.8",
     "@types/node": "^17.0.18",

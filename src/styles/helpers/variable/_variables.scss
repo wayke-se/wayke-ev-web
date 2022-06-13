@@ -1,0 +1,85 @@
+ /// Variables to use across the project.
+/// Declare variables in the $variables map and fetch
+/// a variable using the scss-var() function.
+
+@use 'sass:map';
+@use "sass:list";
+@use '../function' as *;
+
+// This map is used to declare variables
+$variables: (
+  root: (
+    display: contents,
+  ),
+  size: (
+    input-height: (
+      desktop: size(6.5),
+      mobile: size(6),
+    ),
+    modal: (
+      max-width: 850px,
+      outer-spacing: size(3),
+    ),
+    header: (
+      height: size(5),
+      spacing-top: size(3),
+    ),
+  ),
+  font: (
+    line-height: (
+      main: 1.5,
+      alt: 1.2,
+    ),
+    size: (
+      xxsmall: 10px,
+      xsmall: 12px,
+      small: 14px,
+      regular: 16px,
+      large: 18px,
+      xlarge: 20px,
+      xxlarge: 24px,
+      xxxlarge: 32px,
+    ),
+  ),
+  border: (
+    width: (
+      main: 1px,
+      alt: 2px,
+    ),
+    radius: (
+      main: 3px,
+      alt: size(2),
+    ),
+  ),
+  animation: (
+    timing-function: (
+      cubic-bezier: cubic-bezier(0.47, 1.64, 0.41, 0.8),
+    ),
+  ),
+  box-shadow: (
+    main: (0 8px 10px rgba(0, 0, 0, 0.03), 0 2px 14px rgba(0, 0, 0, 0.03), 0 2px 5px rgba(0, 0, 0, 0.09)),
+    alt: 0 1px 2px rgba(0, 0, 0, 0.17),
+  ),
+  aspect-ratio: (
+    square: list.slash(1, 1),
+    landscape: list.slash(3, 2),
+    portrait: list.slash(2, 3),
+    widescreen: list.slash(16, 9),
+    ultrawide: list.slash(18, 5),
+    golden-ratio: list.slash(1.618, 1),
+  ),
+  z-index: (
+    important: 2147483647, // Maximum value of 32-bit integer
+  ),
+);
+
+// This function is used to use variables in the project
+@function scss-var($keys...) {
+  $value: map.get($variables, $keys...);
+
+  @if not $value {
+    @error('Variable "#{$keys}" does not exist in $variables.');
+  }
+
+  @return $value;
+}

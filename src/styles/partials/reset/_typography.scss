@@ -1,0 +1,11 @@
+/// Reset styling on typography elements
+
+@use '../../helpers' as *;
+
+:is(
+  #{$root-element} b,
+  #{$root-element} strong,
+  ##{$namespace}important
+) {
+  @include font-medium;
+}

@@ -1,0 +1,12 @@
+/// Base styling
+
+@use '../../helpers' as *;
+
+#{$root-element} {
+  @include font-light;
+
+  color-scheme: light; // Force light mode if host site has color-scheme set as meta tag
+  display: scss-var(root, display); // Fallback if display is not set inline
+  font-size: scss-var(font, size, regular);
+  line-height: scss-var(font, line-height, main);
+}

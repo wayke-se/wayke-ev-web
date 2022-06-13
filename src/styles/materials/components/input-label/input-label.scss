@@ -1,0 +1,82 @@
+@use 'sass:color';
+@use '../../../helpers' as *;
+
+// Note: This component is also used as legend in input-group
+// Make sure to check that component as well after making changes in this component
+
+.#{$namespace}input-label {
+  $root: &;
+
+  --#{$namespace}label-font-size: #{scss-var(font, size, xsmall)};
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &:not(.#{$namespace}no-margin) {
+    margin-bottom: size(0.5);
+  }
+
+  &__label {
+    @include font-medium;
+
+    display: block;
+    color: color(text, main);
+    font-size: var(--#{$namespace}label-font-size);
+
+    &--is-required {
+      &::after {
+        content: '*';
+        margin-left: 0.25ch;
+        color: color(semantic, error, text);
+      }
+    }
+
+    &--current-color {
+      color: currentColor;
+    }
+
+    #{$root}--has-error & {
+      color: color(semantic, error, text);
+    }
+  }
+
+  &__help {
+    flex-shrink: 0;
+    position: relative; // Used to place help-btn focus above foldout
+    margin-left: auto;
+  }
+
+  &__help-btn {
+    position: relative;
+    font-size: scss-var(font, size, regular);
+    color: color(primary, main);
+    border-radius: 50%; // Used to display a round focus outline
+    transition: color 200ms ease;
+
+    &:hover {
+      color: color.adjust(color(primary, main), $lightness: -5%);
+    }
+
+    // Increase hitbox of button to increase accessibility
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: size(5);
+      height: size(5);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+  }
+
+  &__foldout {
+    width: 100%;
+    background-color: color(bg, alt);
+    padding: size(1.5);
+    margin-top: size(0.5);
+    border-radius: scss-var(border, radius, main);
+    font-size: scss-var(font, size, xsmall);
+  }
+}

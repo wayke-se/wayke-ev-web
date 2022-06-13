@@ -1,0 +1,155 @@
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:map';
+@use '../../../helpers' as *;
+
+.#{$namespace}modal {
+  $root: &;
+  $modal-z-index-dialog: 1; // Required to guarantee position above modal root ::before
+  $modal-z-index-close: 2; // Required to guarantee position above modal dialog
+  $modal-close-btn-size: size(2);
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-height: 100%;
+  text-align: left;
+  white-space: normal;
+  overflow: auto;
+  overscroll-behavior: contain;
+  z-index: scss-var(z-index, important);
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(color(overlay, main), 0.4);
+    z-index: -1;
+    animation: #{$namespace}no-transform 400ms ease;
+  }
+
+  &__container {
+    display: table;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__center {
+    display: table-cell;
+    max-width: 100vw;
+  }
+
+  &__dialog {
+    position: relative;
+    width: 100%;
+    max-width: scss-var(size, modal, max-width);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: color(bg, main);
+    color: color(text, main);
+    overflow: hidden;
+    z-index: $modal-z-index-dialog;
+  }
+
+  &__header {
+    padding-top: scss-var(size, header, spacing-top);
+  }
+
+  &__body {
+    padding: var(--#{$namespace}modal-gutter);
+  }
+
+  &__footer {
+    @include font-regular;
+    
+    display: flex;
+    justify-content: center;
+    padding: var(--#{$namespace}modal-gutter);
+    padding-top: 0;
+    font-size: scss-var(font, size, small);
+  }
+
+  &__footer-logo {
+    display: block;
+    width: size(5);
+    fill: currentColor;
+  }
+
+  &__close {
+    position: fixed;
+    right: var(--#{$namespace}modal-gutter-x);
+    margin-top: math.div(scss-var(size, header, height), 2) + scss-var(size, header, spacing-top) - math.div($modal-close-btn-size, 2);
+    z-index: $modal-z-index-close;
+
+    // Custom breakpoints for close button to work together with modal max-width
+
+    // Calculate modal max-width breakpoint
+    $breakpoint-modal-max-width: scss-var(size, modal, max-width) + scss-var(size, modal, outer-spacing);
+
+    // Breakpoint between sm and modal max-width
+    @media #{meta.inspect(map.get($breakpoints, sm))} and (max-width: ($breakpoint-modal-max-width - 1px)) {
+      right: calc(var(--#{$namespace}modal-gutter-x) + #{scss-var(size, modal, outer-spacing)});
+    }
+
+    // Breakpoint above modal max-width
+    // CSS variable --#{$namespace}vw is set using JavaScript
+    @media (min-width: $breakpoint-modal-max-width) {
+      right: calc((var(--#{$namespace}vw, 1vw) * 50) - #{scss-var(size, modal, max-width)} / 2 + var(--#{$namespace}modal-gutter-x));
+    }
+  }
+
+  &__close-btn {
+    position: relative;
+    z-index: 1;
+    transform-origin: 50% 50%;
+    transition: transform 200ms ease;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: size(-2);
+      bottom: size(-2);
+      left: size(-2);
+      right: size(-2);
+      border-radius: 50%;
+    }
+
+    &::before {
+      background-color: color(bg, main);
+      z-index: -2;
+      opacity: 0.7;
+    }
+
+    &::after {
+      background-color: color(bg, alt);
+      border: 2px solid color(bg, main);
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 200ms ease;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    @include hover {
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    // Change design on touch-only devices
+    @include touch-only {
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}

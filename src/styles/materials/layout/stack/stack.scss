@@ -1,0 +1,17 @@
+@use '../../../helpers' as *;
+
+$stack-size: (
+  '05': 0.5,
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+);
+
+@each $stack-name, $stack-value in $stack-size {
+  .#{$namespace}stack--#{$stack-name} {
+    & + [class*='#{$namespace}stack--'] {
+      margin-top: size($stack-value);
+    }
+  }
+}

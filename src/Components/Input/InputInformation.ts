@@ -1,7 +1,7 @@
 import HtmlNode from '../Extension/HtmlNode';
 
-const helpClassName = 'waykevaluation-input-label__help';
-const foldoutClassName = 'waykevaluation-input-label__foldout';
+const helpClassName = 'waykeev-input-label__help';
+const foldoutClassName = 'waykeev-input-label__foldout';
 
 interface InputInformationProps {
   readonly information?: string;
@@ -36,12 +36,12 @@ class InputInformation extends HtmlNode {
 
       if (this.open) {
         label.innerHTML = `
-          <button class="waykevaluation-input-label__help-btn" title="Vad betyder detta?">
-            <span class="waykevaluation-sr-only">Stäng hjälp</span>
+          <button class="waykeev-input-label__help-btn" title="Vad betyder detta?">
+            <span class="waykeev-sr-only">Stäng hjälp</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
-              class="waykevaluation-icon"
+              class="waykeev-icon"
               aria-hidden="true"
               data-icon="Close circle"
             >
@@ -56,12 +56,12 @@ class InputInformation extends HtmlNode {
       } else {
         existFoldout?.remove();
         label.innerHTML = `
-          <button class="waykevaluation-input-label__help-btn" title="Vad betyder detta?">
-            <span class="waykevaluation-sr-only">Visa hjälp</span>
+          <button class="waykeev-input-label__help-btn" title="Vad betyder detta?">
+            <span class="waykeev-sr-only">Visa hjälp</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
-              class="waykevaluation-icon"
+              class="waykeev-icon"
               aria-hidden="true"
               data-icon="Questionmark circle"
             >

@@ -61,9 +61,9 @@ The CSS in this repository is built using _SCSS_ and are based on a slighlty mod
 
 ### CSS specificity
 
-All CSS class names are prefixed using the namespace `.waykevaluation-*`. This will prevent this widget to overwrite any CSS applied to the website on which it is implemented on. However, we can not guarantee other CSS files won't overwrite the CSS in _Wayke Valuation_. This is due to it is impossible to protect against element selectors.
+All CSS class names are prefixed using the namespace `.waykeev-*`. This will prevent this widget to overwrite any CSS applied to the website on which it is implemented on. However, we can not guarantee other CSS files won't overwrite the CSS in _Wayke Valuation_. This is due to it is impossible to protect against element selectors.
 
-Reset styles and other necessary CSS targeting elements are selected using a nested selector based of the root element (`.waykevaluation-root`) placed inside a `:where()` to prevent higher specificity than class name selectors.
+Reset styles and other necessary CSS targeting elements are selected using a nested selector based of the root element (`.waykeev-root`) placed inside a `:where()` to prevent higher specificity than class name selectors.
 
 ### Custom theme
 

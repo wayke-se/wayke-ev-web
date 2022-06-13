@@ -1,0 +1,81 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}init {
+  $root: &;
+  
+  position: fixed;
+  padding: size(3);
+  background-color: color(action, alt);
+  color: color(text, main);
+  transform: translateY(size(3));
+  animation: #{$namespace}fade-in 400ms ease, #{$namespace}no-transform 400ms ease forwards;
+  z-index: scss-var(z-index, important);
+
+  &--expanded {
+    #{$root}__expanded {
+      display: block;
+    }
+
+    #{$root}__shrinked {
+      display: none;
+    }
+  }
+
+  &__expanded {
+    display: none;
+  }
+
+  &__shrinked {
+    @include font-regular;
+
+    margin: size(-1) 0;
+    font-size: scss-var(font, size, small);
+
+    #{$root}__header {
+      align-items: center;
+    }
+  }
+
+  &__header {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  &__header-main {
+    flex: 1 1 auto;
+  }
+
+  &__header-btn {
+    flex-shrink: 0;
+    padding-left: size(3);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: size(-3);
+      bottom: size(-2);
+      left: size(-3);
+      right: size(-3);
+    }
+  }
+
+  &__body {
+    margin-top: size(2);
+  }
+
+  &__footer {
+    @include font-regular;
+    
+    display: flex;
+    justify-content: center;
+    margin-top: size(2);
+  }
+
+  &__logo {
+    display: block;
+    width: size(4);
+    fill: currentColor;
+  }
+}

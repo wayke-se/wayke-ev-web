@@ -1,0 +1,142 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}input-selection {
+  $root: &;
+
+  --#{$namespace}icon-size: #{size(2)};
+  --#{$namespace}icon-margin: #{size(1)};
+  --#{$namespace}label-size: #{scss-var(font, size, small)};
+  --#{$namespace}label-line-height: #{scss-var(font, line-height, main)};
+
+  $margin-top-calc: calc((var(--#{$namespace}icon-size) - var(--#{$namespace}label-size) * var(--#{$namespace}label-line-height)) / -2);
+
+  &__input {
+    position: fixed;
+    left: -9999px;
+    opacity: 0;
+
+    &:checked {
+      ~ #{$root}__header {
+        #{$root}__label {
+          @include font-medium;
+        }
+      }
+    }
+
+    // Radio Button
+    &[type='radio'] {
+      ~ #{$root}__header {
+        #{$root}__label {
+          &::before {
+            border-radius: 50%;
+          }
+        }
+      }
+
+      &:checked {
+        ~ #{$root}__header {
+          #{$root}__label {
+            &::before {
+              background-color: var(--#{$namespace}checked-color-alt, color(bg, main)); // --#{$namespace}checked-color-alt set in custom theme style
+              box-shadow: inset 0 0 0 size(0.625) var(--#{$namespace}checked-color, color(action, main)); // --#{$namespace}checked-color set in custom theme style
+            }
+          }
+        }
+      }
+    }
+
+    // Checkbox
+    &[type='checkbox'] {
+      ~ #{$root}__header {
+        #{$root}__label {
+          position: relative;
+
+          &::before {
+            border-radius: scss-var(border, radius, main);
+            z-index: 2;
+          }
+        }
+      }
+
+      &:checked {
+        ~ #{$root}__header {
+          #{$root}__label {
+            &::before {
+              @include mask-image(url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M0 0v16h16V0H0zm12.8 5.7L7 11.5c-.3.3-.8.3-1.2 0L3.2 9c-.3-.3-.3-.8 0-1.2.3-.3.8-.3 1.2 0l1.9 1.9 5.2-5.2c.3-.3.8-.3 1.2 0s.4.8.1 1.2z"/></svg>'));
+              @include mask-size(100%);
+
+              background-color: var(--#{$namespace}checked-color, color(action, main)); // --#{$namespace}checked-color set in custom theme style
+            }
+
+            // Add backdrop to set color of check mark
+            &::after {
+              content: "";
+              position: absolute;
+              width: var(--#{$namespace}icon-size);
+              height: var(--#{$namespace}icon-size);
+              top: $margin-top-calc;
+              left: 0;
+              background-color: var(--#{$namespace}checked-color-alt, color(bg, main)); // --#{$namespace}checked-color-alt set in custom theme style
+              border-radius: 50%; // Avoid pixel bugs on checkbox outer
+              z-index: 1;
+            }
+          }
+        }
+      }
+    }
+
+    &[disabled] {
+      ~ #{$root}__header,
+      ~ #{$root}__description {
+        opacity: 0.37;
+        cursor: not-allowed;
+      }
+    }
+
+    @include focus {
+      outline: none;
+
+      ~ #{$root}__header {
+        #{$root}__label {
+          &::before {
+            @include focus-style;
+          }
+        }
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__label {
+    flex: 1 1 auto;
+    display: flex;
+    line-height: var(--#{$namespace}label-line-height);
+
+    &::before {
+      content: '';
+      flex-shrink: 0;
+      width: var(--#{$namespace}icon-size);
+      height: var(--#{$namespace}icon-size);
+      margin-right: var(--#{$namespace}icon-margin);
+      margin-top: $margin-top-calc;
+      background-color: color(bg, alt);
+      cursor: pointer;
+    }
+  }
+
+  &__meta {
+    flex-shrink: 0;
+    padding-left: size(2);
+  }
+
+  &__description {
+    display: block;
+    padding-top: size(1);
+    padding-left: calc(var(--#{$namespace}icon-size) + var(--#{$namespace}icon-margin));
+    font-size: scss-var(font, size, xsmall);
+  }
+}

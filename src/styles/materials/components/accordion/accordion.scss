@@ -1,0 +1,78 @@
+@use "../../../helpers" as *;
+
+.#{$namespace}accordion {
+  $root: &;
+
+  --#{$namespace}header-title-font-size: #{scss-var(font, size, small)};
+
+  & + #{$root} {
+    border-top: 1px solid color(border, main);
+  }
+
+  &:first-child {
+    margin-top: size(-2);
+  }
+
+  &:last-child {
+    margin-bottom: size(-2);
+  }
+
+  &__checkbox {
+    position: fixed;
+    left: -9999px;
+    opacity: 0;
+
+    &:checked {
+      ~ #{$root}__header {
+        #{$root}__header-icon {
+          .#{$namespace}icon {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      ~ #{$root}__body {
+        display: block;
+      }
+    }
+
+    @include focus {
+      ~ #{$root}__header {
+        @include focus-style;
+      }
+    }
+  }
+
+  &__header {
+    @include user-select(none);
+
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: size(2) 0;
+    cursor: pointer;
+  }
+
+  &__header-title {
+    @include font-medium;
+    
+    flex: 1 1 auto;
+    color: color(text, main);
+    font-size: var(--#{$namespace}header-title-font-size);
+
+    #{$root}__header:hover & {
+      text-decoration: underline;
+    }
+  }
+
+  &__header-icon {
+    flex-shrink: 0;
+    padding-left: size(2);
+    font-size: scss-var(font, size, xsmall);
+  }
+
+  &__body {
+    display: none;
+    padding-bottom: size(2);
+  }
+}

@@ -42,11 +42,11 @@ class InputSelect extends HtmlNode {
   render() {
     const { id, options, name, title, placeholder, onChange } = this.props;
     this.node.innerHTML = `
-      <div class="waykevaluation-input-label">
-        <label for="wayke-estimated-mileage" class="waykevaluation-input-label__label">${title}</label>
+      <div class="waykeev-input-label">
+        <label for="wayke-estimated-mileage" class="waykeev-input-label__label">${title}</label>
       </div>
       <select
-        class="waykevaluation-select"
+        class="waykeev-select"
         ${name ? `name="${name}"` : ''}
         ${id ? `id="${id}"` : ''}
       >

@@ -1,0 +1,11 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}init {
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  &__footer {
+    font-size: scss-var(font, size, xsmall);
+  }
+}

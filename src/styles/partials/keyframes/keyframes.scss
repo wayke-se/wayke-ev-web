@@ -1,0 +1,29 @@
+/// Global keyframes to use in multiple materials
+
+@use '../../helpers/variable/namespace' as *;
+
+/* stylelint-disable keyframes-name-pattern */
+
+@keyframes #{$namespace}no-transform {
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes #{$namespace}fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes #{$namespace}rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* stylelint-enable keyframes-name-pattern */

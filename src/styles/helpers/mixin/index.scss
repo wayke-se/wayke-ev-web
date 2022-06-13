@@ -1,0 +1,13 @@
+/// Forwards all mixins. To access them in other files,
+/// import this file using:
+/// @use '[path_to_helpers]/helpers/mixins' as *;
+
+@forward '_appearance';
+@forward '_custom';
+@forward '_focus';
+@forward '_hover';
+@forward '_mask';
+@forward '_placeholder';
+@forward '_text-size-adjust';
+@forward '_user-select';
+@forward '_utilities';

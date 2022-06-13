@@ -1,0 +1,9 @@
+// Namespace used to prefix CSS
+
+// Prefix used before all classnames
+// Usage: .#{$namespace}*
+$namespace: 'waykeev-';
+
+// Root element selector used to prefix element selectors
+// Usage: :where(#{$root-element} *)
+$root-element: '.waykeev-root';

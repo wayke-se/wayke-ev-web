@@ -1,0 +1,58 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}checklist {
+  $root: &;
+
+  --#{$namespace}checklist-icon-size: 1em;
+  --#{$namespace}checklist-text-font-size: #{scss-var(font, size, regular)};
+  --#{$namespace}checklist-text-line-height: #{scss-var(font, line-height, main)};
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &--trend-up {
+    #{$root}__item {
+      &::before {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M15.6 3.8v7h-2V7.2l-5 5-4-4L2 10.8c-.4.4-1 .4-1.4 0s-.4-1 0-1.4l4-4 4 4 3.6-3.6H8.6v-2h7z" fill="%23#{str-replace(#{color(semantic, success, text)}, "#", "")}"/></svg>');
+      }
+    }
+  }
+
+  &--trend-down {
+    #{$root}__item {
+      &::before {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M15.6 5.2v7h-7v-2h3.6L8.6 6.6l-4 4-4-4c-.4-.4-.4-1 0-1.4s1-.4 1.4 0l2.6 2.6 4-4 5 5V5.2h2z" fill="%23#{str-replace(#{color(semantic, error, text)}, "#", "")}"/></svg>');
+      }
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: stretch;
+    font-size: var(--#{$namespace}checklist-text-font-size);
+    line-height: var(--#{$namespace}checklist-text-line-height);
+
+    &::before {
+      content: '';
+      flex-shrink: 0;
+      display: block;
+      width: var(--#{$namespace}checklist-icon-size);
+      height: var(--#{$namespace}checklist-icon-size);
+      margin-right: size(1.5);
+      margin-top: calc(
+          (
+              var(--#{$namespace}checklist-icon-size) -
+                var(--#{$namespace}checklist-text-font-size) * var(--#{$namespace}checklist-text-line-height)
+            ) / -2
+        );
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M12.3 3.8 6 10.1 3.7 7.8c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4l3 3c.4.4 1 .4 1.4 0l7-7c.4-.4.4-1 0-1.4s-1-.4-1.4 0z" fill="%23#{str-replace(#{color(semantic, success, text)}, "#", "")}"/></svg>');
+      background-repeat: no-repeat;
+      background-size: 100%;
+    }
+
+    & + & {
+      margin-top: size(1);
+    }
+  }
+}

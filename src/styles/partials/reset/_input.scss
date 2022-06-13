@@ -1,0 +1,19 @@
+/// Reset styling on input elements
+
+@use '../../helpers' as *;
+
+:where(
+  #{$root-element} input,
+  #{$root-element} textarea,
+  #{$root-element} select
+) {
+  font: inherit;
+}
+
+:is(
+  #{$root-element} input,
+  #{$root-element} textarea,
+  ##{$namespace}important
+) {
+  font-size: 16px; // Disables zoom on focus in iOS
+}

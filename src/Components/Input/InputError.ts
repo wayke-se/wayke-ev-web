@@ -1,6 +1,6 @@
 import HtmlNode from '../Extension/HtmlNode';
 
-const errorInputClassName = 'waykevaluation-input-error';
+const errorInputClassName = 'waykeev-input-error';
 
 interface InputErrorProps {
   error?: boolean;

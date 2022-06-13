@@ -1,0 +1,56 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}text {
+  // Tone
+  @each $key, $value in color(text) {
+    &--tone-#{$key} {
+      color: $value;
+    }
+  }
+
+  // Size
+  @each $key, $value in scss-var(font, size) {
+    &--size-#{$key} {
+      font-size: $value;
+    }
+  }
+
+  // Align
+  @each $value in const(position, inline, x) {
+    &--align-#{$value} {
+      text-align: $value;
+    }
+  }
+
+  // Vertical align
+  &--valign-middle {
+    vertical-align: middle;
+  }
+
+  // Font
+  &--font-light {
+    @include font-light;
+  }
+
+  &--font-regular {
+    @include font-regular;
+  }
+
+  &--font-medium {
+    @include font-medium;
+  }
+
+  &--font-bold {
+    @include font-bold;
+  }
+
+  // Style
+
+  &--line-through {
+    text-decoration: line-through;
+  }
+
+  &--italic {
+    font-style: italic;
+  }
+}

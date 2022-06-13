@@ -1,3 +1,5 @@
+import './styles/styles.scss';
+
 import { AppProps } from './@types/AppProps';
 
 import { version } from '../package.json';
@@ -24,7 +26,7 @@ class App {
   constructor(props: AppProps) {
     this.props = props;
     const createdRoot = document.createElement('div');
-    createdRoot.className = 'waykevaluation-root';
+    createdRoot.className = 'waykeev-root';
     this.root = createdRoot;
     if (this.props.rootId) {
       const rootNode = document.getElementById(this.props.rootId);
@@ -53,10 +55,7 @@ class App {
 
   render() {
     this.root.innerHTML = `
-      <div style="border: 1px solid black; padding: 8px">
-        <p>Ev calculation</p>
-        <div id="${VIEW_NODE}"></div>
-      </div>
+      <div id="${VIEW_NODE}"></div>
     `;
 
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);

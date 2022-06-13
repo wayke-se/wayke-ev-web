@@ -40,21 +40,24 @@ class InputRangeSlider extends HtmlNode {
       ${
         title
           ? `
-          <div class="waykevaluation-input-label">
-            <label for="wayke-estimated-mileage" class="waykevaluation-input-label__label">${title}</label>
+          <div class="waykeev-input-label">
+            <label class="waykeev-input-label__label">${title}</label>
           </div>
         `
           : ''
       }
-      <input 
-        type="range"
-        ${name ? `name="${name}"` : ''}
-        ${id ? `id="${id}"` : ''}
-        ${step ? `step="${step}"` : ''}
-        min="${min}"
-        max="${max}"
-        value="${value}"
-      />
+      <div class="waykeev-input-range">
+        <input 
+          type="range"
+          ${name ? `name="${name}"` : ''}
+          ${id ? `id="${id}"` : ''}
+          ${step ? `step="${step}"` : ''}
+          min="${min}"
+          max="${max}"
+          value="${value}"
+          class="waykeev-input-range__input"
+        />
+      </div>
     `;
 
     this.contexts.input = this.node.querySelector<HTMLInputElement>('input') || undefined;

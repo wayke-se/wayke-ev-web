@@ -1,0 +1,5 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}textarea {
+  --#{$namespace}textarea-padding: #{size(2)};
+}

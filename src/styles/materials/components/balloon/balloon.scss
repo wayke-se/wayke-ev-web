@@ -1,0 +1,27 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}balloon {
+  padding: size(2);
+  background-color: color(bg, alt);
+  border-radius: scss-var(border, radius, alt);
+  font-size: scss-var(font, size, small);
+
+  &--speak {
+    $arrow-size: size(3.5);
+
+    position: relative;
+    padding: size(4) size(2);
+    margin-top: $arrow-size;
+    background-color: color(bg, main);
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: $arrow-size solid transparent;
+      border-bottom-color: color(bg, main);
+    }
+  }
+}

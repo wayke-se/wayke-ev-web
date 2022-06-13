@@ -1,0 +1,6 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}input-text {
+  --#{$namespace}input-padding: #{size(2)};
+  --#{$namespace}input-height: #{scss-var(size, input-height, desktop)};
+}

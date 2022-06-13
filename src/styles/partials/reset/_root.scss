@@ -1,0 +1,21 @@
+/// Reset styling on root elements
+
+@use '../../helpers' as *;
+
+#{$root-element} *,
+#{$root-element} ::before,
+#{$root-element} ::after {
+  box-sizing: border-box;
+}
+
+:where(#{$root-element}) {
+  @include text-size-adjust(100%); // Prevent font scaling in landscape while allowing user zoom
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @supports (font-size-adjust: 1) {
+    font-size-adjust: 0.5;
+  }
+}

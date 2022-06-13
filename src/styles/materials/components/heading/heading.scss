@@ -1,0 +1,44 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}heading {
+  @include font-bold;
+  
+  margin: 0;
+  line-height: scss-var(font, line-height, alt);
+
+  &:not(.#{$namespace}no-margin) {
+    margin-bottom: size(2);
+  }
+
+  &--1 {
+    font-size: scss-var(font, size, xxxlarge);;
+  }
+
+  &--2 {
+    font-size: scss-var(font, size, xxlarge);
+  }
+
+  &--3 {
+    font-size: scss-var(font, size, xlarge);
+  }
+
+  &--4 {
+    font-size: scss-var(font, size, regular);
+  }
+
+  &--5 {
+    font-size: scss-var(font, size, small);
+
+    &:not(.#{$namespace}no-margin) {
+      margin-bottom: size(1);
+    }
+  }
+  
+  &--6 {
+    font-size: scss-var(font, size, xsmall);
+
+    &:not(.#{$namespace}no-margin) {
+      margin-bottom: size(1);
+    }
+  }
+}

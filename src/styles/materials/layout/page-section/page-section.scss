@@ -1,0 +1,13 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}page-section {
+  & + & {
+    margin-top: size(7);
+  }
+
+  &--alt {
+    padding: var(--#{$namespace}modal-gutter);
+    margin: 0 var(--#{$namespace}modal-gutter-negative-x);
+    background-color: color(bg, alt);
+  }
+}

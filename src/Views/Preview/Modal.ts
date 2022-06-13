@@ -65,12 +65,34 @@ class Modal extends HtmlNode {
 
   render() {
     this.node.innerHTML = `
-      <div style="padding: 8px; border: 1px solid black">
-        <h2>Beräkna laddkostnad</h2>
-        <p>Har du funderat över vad det kostar att ladda en elbil? Här hittar du verktyget som visar dig den uppskattade laddningskostnaden för just den här bilen.</p>
-        <div id="${MILEAGE_SELECT_NODE}"></div>
-        <div id="${MILEAGE_RANGE_NODE}"></div>
-        <div id="${RESULT_NODE}"></div>
+      <div class="waykeev-modal" role="dialog" aria-modal="true" aria-labelledby="wayke-ev-modal-title">
+        <div class="waykeev-modal__container">
+          <div class="waykeev-modal__center">
+            <div class="waykeev-modal__dialog">
+              <div class="waykeev-modal__close">
+                <button title="Stäng modalen" class="waykeev-modal__close-btn">
+                  <span class="waykeev-sr-only">Stäng modalen</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="waykeev-icon" aria-hidden="true">
+                    <path d="M9.1 8l5.9 5.9-1.1 1.1L8 9.1 2.1 15 1 13.9 6.9 8 1 2.1 2.1 1 8 6.9 13.9 1 15 2.1 9.1 8z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="waykeev-modal__body">
+                <div class="waykeev-stack waykeev-stack--3">
+                  <h3 class="waykeev-heading waykeev-heading--3" id="wayke-ev-modal-title">Beräkna laddkostnad</h3>
+                  <div class="waykeev-content">
+                    <p class="waykeev-content__p">Har du funderat över vad det kostar att ladda en elbil? Här hittar du verktyget som visar dig den uppskattade laddningskostnaden för just den här bilen.</p>
+                  </div>
+                </div>
+                <div class="waykeev-stack waykeev-stack--3">
+                  <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_SELECT_NODE}"></div>
+                  <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_RANGE_NODE}"></div>
+                </div>
+                <div class="waykeev-stack waykeev-stack--3" id="${RESULT_NODE}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     `;
 
