@@ -8,6 +8,8 @@
 
   @include remove-direct-child-outer-margins;
 
+  max-width: scss-var(size, content, max-width);
+
   &:not(#{$root}--inherit-size) {
     font-size: var(--#{$namespace}content-font-size);
   }

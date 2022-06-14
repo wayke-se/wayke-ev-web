@@ -1,0 +1,6 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}logo {
+  display: block;
+  max-width: scss-var(size, logo, width);
+}

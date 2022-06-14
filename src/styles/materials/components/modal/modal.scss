@@ -58,7 +58,7 @@
   }
 
   &__header {
-    padding-top: scss-var(size, header, spacing-top);
+    padding-top: scss-var(size, modal, header, spacing-top);
   }
 
   &__body {
@@ -84,7 +84,7 @@
   &__close {
     position: fixed;
     right: var(--#{$namespace}modal-gutter-x);
-    margin-top: math.div(scss-var(size, header, height), 2) + scss-var(size, header, spacing-top) - math.div($modal-close-btn-size, 2);
+    margin-top: math.div(scss-var(size, modal, header, height), 2) + scss-var(size, modal, header, spacing-top) - math.div($modal-close-btn-size, 2);
     z-index: $modal-z-index-close;
 
     // Custom breakpoints for close button to work together with modal max-width

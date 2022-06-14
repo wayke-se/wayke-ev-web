@@ -1,8 +1,8 @@
-# Wayke Ev Web
+# Wayke EV Web
 
-Repository for Wayke Ev Web.
+Repository for Wayke EV Web.
 
-![Screenshot of Wayke Ev Widget](screenshot.png)
+![Screenshot of Wayke EV Widget](screenshot.png)
 
 ## Getting started
 
@@ -61,23 +61,10 @@ The CSS in this repository is built using _SCSS_ and are based on a slighlty mod
 
 ### CSS specificity
 
-All CSS class names are prefixed using the namespace `.waykeev-*`. This will prevent this widget to overwrite any CSS applied to the website on which it is implemented on. However, we can not guarantee other CSS files won't overwrite the CSS in _Wayke Valuation_. This is due to it is impossible to protect against element selectors.
+All CSS class names are prefixed using the namespace `.waykeev-*`. This will prevent this widget to overwrite any CSS applied to the website on which it is implemented on. However, we can not guarantee other CSS files won't overwrite the CSS in _Wayke EV_. This is due to it is impossible to protect against element selectors.
 
 Reset styles and other necessary CSS targeting elements are selected using a nested selector based of the root element (`.waykeev-root`) placed inside a `:where()` to prevent higher specificity than class name selectors.
 
-### Custom theme
-
-This widget supports custom theme. This theme is set by injecting a `style` tag in the `head` with id `wayke-valuation-theme`. This style tag includes CSS selectors to overwrite the default CSS. Keep this in mind when making changes to the default CSS and make sure the custom theme still works after changes made.
-
-#### List of properties available for custom theme
-* Primary button background-color (button--action)
-* Primary button text (button--action)
-* Secondary button background-color (button--action-alt)
-* Secondary button text (button--action-alt)
-* Button border-radius
-* Accent color (init & page-section--action background)
-* Link color
-
 ### Headings
 
-To prevent multiple `h1` on your website, _Wayke Valuation_ does not include a `h1` as root heading level. Instead the headings starts from `h2`.
+To prevent multiple `h1` on your website, _Wayke EV_ does not include a `h1` as root heading level. Instead the headings starts from `h2`.

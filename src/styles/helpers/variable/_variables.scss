@@ -16,10 +16,16 @@ $variables: (
     modal: (
       max-width: 850px,
       outer-spacing: size(3),
+      header: (
+        height: size(5),
+        spacing-top: size(3),
+      ),
     ),
-    header: (
-      height: size(5),
-      spacing-top: size(3),
+    logo: (
+      width: size(7),
+    ),
+    content: (
+      max-width: 640px,
     ),
   ),
   font: (
