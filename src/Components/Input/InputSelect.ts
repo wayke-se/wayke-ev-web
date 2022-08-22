@@ -1,7 +1,7 @@
 import HtmlNode from '../Extension/HtmlNode';
 
 export interface SelectItem {
-  value: string;
+  value: string | number;
   title?: string;
 }
 
@@ -49,6 +49,7 @@ class InputSelect extends HtmlNode {
         class="waykeev-select"
         ${name ? `name="${name}"` : ''}
         ${id ? `id="${id}"` : ''}
+        value="${this.value}"
       >
         ${
           placeholder ? `<option value="placeholder" disabled selected>${placeholder}</option>` : ''
@@ -56,8 +57,8 @@ class InputSelect extends HtmlNode {
         ${options
           .map(
             (option) =>
-              `<option value="${option.value}" ${
-                option.value === this.value ? `selected="selected"` : ''
+              `<option value="${option.value.toString()}" ${
+                option.value.toString() === this.value ? `selected="selected"` : ''
               }>${option.title || option.value}</option>`
           )
           .join('')}

@@ -19,7 +19,7 @@ const MODAL_NODE = 'wayke-ev-web-modal-node';
 
 const DistanceOptions = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
 const DistanceOptionsMapped = DistanceOptions.map((d) => ({
-  value: d.toString(),
+  value: d,
   title: prettyNumber(d, { postfix: 'mil' }),
 }));
 
@@ -56,20 +56,20 @@ class Preview extends HtmlNode {
 
   private onChangeSelect(e: Event) {
     const currentTarget = e.currentTarget as HTMLSelectElement;
-    this.mileage = currentTarget.value;
+    this.mileage = parseInt(currentTarget.value, 10);
+    this.contexts.select?.update(this.mileage.toString());
     this.contexts.range?.update(this.mileage);
-    this.contexts.select?.update(this.mileage);
-    this.contexts.result?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
-    this.contexts.modal?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
+    this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
+    this.contexts.modal?.update(this.charginCostPerKilometer, this.mileage);
   }
 
   private onChangeRange(e: Event) {
     const currentTarget = e.currentTarget as HTMLSelectElement;
-    this.mileage = currentTarget.value;
+    this.mileage = parseInt(currentTarget.value, 10);
+    this.contexts.select?.update(this.mileage.toString());
     this.contexts.range?.update(this.mileage);
-    this.contexts.select?.update(this.mileage);
-    this.contexts.result?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
-    this.contexts.modal?.update(this.charginCostPerKilometer, parseInt(this.mileage, 10));
+    this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
+    this.contexts.modal?.update(this.charginCostPerKilometer, this.mileage);
   }
 
   render() {
@@ -96,7 +96,7 @@ class Preview extends HtmlNode {
           <circle cx="108.72" cy="11.34" r="10.63"></circle>
           <circle cx="46.04" cy="39.68" r="6.38"></circle>
           <circle cx="25.15" cy="11.34" r="4.96"></circle>
-        </svg>,
+        </svg>
       </div>
       <div class="waykeev-stack waykeev-stack--3">
         <h2 class="waykeev-heading waykeev-heading--2">Beräkna laddkostnad</h2>
@@ -133,7 +133,7 @@ class Preview extends HtmlNode {
         id: MILEAGE_SELECT,
         title: 'Din årliga körsträcka',
         name: 'mileage',
-        value: this.mileage,
+        value: this.mileage.toString(),
         options: DistanceOptionsMapped,
         onChange: (e) => this.onChangeSelect(e),
       }
@@ -144,7 +144,7 @@ class Preview extends HtmlNode {
       {
         id: MILEAGE_RANGE,
         name: 'mileage',
-        value: parseInt(this.mileage, 10),
+        value: this.mileage,
         step: 500,
         min: DistanceOptions[0],
         max: DistanceOptions[DistanceOptions.length - 1],
@@ -163,13 +163,13 @@ class Preview extends HtmlNode {
 
     this.contexts.result = new Result(this.node.querySelector<HTMLDivElement>(`#${RESULT_NODE}`), {
       charginCostPerKilometer: this.charginCostPerKilometer,
-      mileage: parseInt(this.mileage, 10),
+      mileage: this.mileage,
     });
 
     this.contexts.modal = new Modal(this.node.querySelector<HTMLDivElement>(`#${MODAL_NODE}`), {
       settings: this.props.settings,
       charginCostPerKilometer: this.charginCostPerKilometer,
-      mileage: parseInt(this.mileage, 10),
+      mileage: this.mileage,
       distanceOptions: DistanceOptions,
       distanceOptionsMapped: DistanceOptionsMapped,
       onChangeSelect: (e) => this.onChangeSelect(e),

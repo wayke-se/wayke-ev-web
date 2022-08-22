@@ -57,9 +57,8 @@ class Modal extends HtmlNode {
   update(charginCostPerKilometer: EvCalculationChargingPerKilometer | undefined, mileage: number) {
     this.charginCostPerKilometer = charginCostPerKilometer;
     this.mileage = mileage;
-
     this.contexts.select?.update(this.mileage.toString());
-    this.contexts.range?.update(this.mileage.toString());
+    this.contexts.range?.update(this.mileage);
     this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
   }
 
@@ -95,6 +94,11 @@ class Modal extends HtmlNode {
         </div>
       </div>
     `;
+
+    const closeButton = this.node.querySelector<HTMLButtonElement>('.waykeev-modal__close-btn');
+    if (closeButton) {
+      closeButton.addEventListener('click', () => this.close());
+    }
 
     this.contexts.select = new InputSelect(
       this.node.querySelector<HTMLDivElement>(`#${MILEAGE_SELECT_NODE}`),

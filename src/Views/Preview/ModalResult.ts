@@ -33,11 +33,6 @@ const RadioElements: RadioItem[] = [
   },
 ];
 
-const calculateCostPerMonth = (costPerKilometer: number | undefined, distance?: number) => {
-  if (!costPerKilometer || !distance) return undefined;
-  return (costPerKilometer * distance * 10) / 12;
-};
-
 interface ModalResultProps {
   settings: AppProps;
   charginCostPerKilometer?: EvCalculationChargingPerKilometer;
@@ -69,16 +64,6 @@ class ModalResult extends HtmlNode {
     this.costPerKilometerCustom = props.charginCostPerKilometer;
 
     this.render();
-  }
-
-  private getCostPerMonth() {
-    const costPerMonth = calculateCostPerMonth(
-      this.priceOption === 'standardPrice'
-        ? this.charginCostPerKilometer?.description.costPerKilometer.value
-        : this.costPerKilometerCustom?.description.costPerKilometer.value,
-      this.mileage
-    );
-    return costPerMonth;
   }
 
   private async fetchData() {
@@ -171,7 +156,7 @@ class ModalResult extends HtmlNode {
         this.priceOption === 'standardPrice'
           ? this.charginCostPerKilometer
           : this.costPerKilometerCustom,
-      mileage: this.props.mileage,
+      mileage: this.mileage || 0,
     });
   }
 }
