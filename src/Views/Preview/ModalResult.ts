@@ -1,5 +1,6 @@
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
+import ErrorAlert from '../../Components/ErrorAlert';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputField from '../../Components/Input/InputField';
 import InputRadioGroup, { RadioItem } from '../../Components/Input/InputRadioGroup';
@@ -12,6 +13,7 @@ const PRICE_NODE = `${PRICE_OPTION}-node`;
 
 const CUSTOM_PRICE_INPUT = 'wayke-ev-extended-price-input-custom-node';
 const CUSTOM_PRICE_INPUT_NODE = `${CUSTOM_PRICE_INPUT}-node`;
+const REQUEST_ERROR = 'wayke-ev-req-error';
 
 const STATS_NODE = 'wayke-ev-extended-stats-node';
 
@@ -35,7 +37,7 @@ const RadioElements: RadioItem[] = [
 
 interface ModalResultProps {
   settings: AppProps;
-  charginCostPerKilometer?: EvCalculationChargingPerKilometer;
+  charginCostPerKilometer: EvCalculationChargingPerKilometer;
   mileage: number;
 }
 
@@ -43,23 +45,26 @@ interface ModalResultContext {
   input?: InputField;
   priceOption?: InputRadioGroup;
   stats?: ModalResultStats;
+  errorAlert?: ErrorAlert;
 }
 
+let storedCostPerKwh: number | undefined;
 let timeoutRef: number = -1;
 class ModalResult extends HtmlNode {
   private readonly props: ModalResultProps;
   private contexts: ModalResultContext = {};
   private priceOption: PriceOptionTypes = STANDARD_PRICE;
   private costPerKwh?: number;
-  private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  private mileage?: number;
+  private charginCostPerKilometer: EvCalculationChargingPerKilometer;
+  private mileage: number;
   private costPerKilometerCustom?: EvCalculationChargingPerKilometer;
 
   constructor(element: HTMLElement | null, props: ModalResultProps) {
     super(element);
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
-    this.costPerKwh = props.charginCostPerKilometer?.description.costPerKwh.value;
+    this.costPerKwh =
+      storedCostPerKwh || (props.charginCostPerKilometer?.description.costPerKwh.value || 0) * 100;
     this.mileage = props.mileage;
     this.costPerKilometerCustom = props.charginCostPerKilometer;
 
@@ -68,15 +73,23 @@ class ModalResult extends HtmlNode {
 
   private async fetchData() {
     if (!this.props.settings.id) return;
+    this.contexts.errorAlert?.update(undefined);
     try {
       const response = await getCostPerKilometer(
         this.props.settings.url,
         this.props.settings.id,
-        this.costPerKwh
+        (this.costPerKwh || 0) / 100
       );
       this.costPerKilometerCustom = response;
-      this.contexts.stats?.update(this.costPerKilometerCustom, this.props.mileage);
+      this.contexts.stats?.update(this.costPerKilometerCustom, this.mileage);
     } catch (e) {
+      this.contexts.errorAlert?.update(
+        `Ett fel har inträffat. <button type="button" title="Försök igen" class="waykeev-link" id="waykeev-error-retry">Försök igen</button>`
+      );
+      this.contexts.errorAlert?.node
+        ?.querySelector('#waykeev-error-retry')
+        ?.addEventListener('click', () => this.fetchData());
+      this.contexts.stats?.hide();
       //console.log('err');
     }
   }
@@ -91,15 +104,24 @@ class ModalResult extends HtmlNode {
       this.costPerKwh !== this.props.charginCostPerKilometer?.description.costPerKwh.value
     ) {
       this.fetchData();
-    } else if (this.props.charginCostPerKilometer) {
-      this.contexts.stats?.update(this.props.charginCostPerKilometer, this.props.mileage);
+    } else if (this.costPerKilometerCustom && this.mileage) {
+      this.contexts.stats?.update(
+        this.priceOption === 'customPrice'
+          ? this.costPerKilometerCustom
+          : this.props.charginCostPerKilometer,
+        this.mileage
+      );
     }
   }
 
-  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, mileage?: number) {
-    this.charginCostPerKilometer = charginCostPerKilometer;
+  update(mileage: number) {
     this.mileage = mileage;
-    this.render();
+    this.contexts.stats?.update(
+      this.priceOption === 'customPrice'
+        ? this.costPerKilometerCustom
+        : this.props.charginCostPerKilometer,
+      this.mileage
+    );
   }
 
   private onChange(e: Event) {
@@ -107,10 +129,12 @@ class ModalResult extends HtmlNode {
     const value = onlyFloat(currentTarget.value);
     currentTarget.value = value;
     this.costPerKwh =
-      parseFloat(value) || this.props.charginCostPerKilometer?.description.costPerKwh.value;
+      parseFloat(value) ||
+      (this.props.charginCostPerKilometer?.description.costPerKwh.value || 0) * 100;
     clearTimeout(timeoutRef);
     timeoutRef = setTimeout(() => {
       if (this.costPerKwh) {
+        storedCostPerKwh = this.costPerKwh;
         this.fetchData();
       }
     }, 250) as unknown as number;
@@ -121,10 +145,9 @@ class ModalResult extends HtmlNode {
       <div class="waykeev-stack waykeev-stack--3">
         <div class="waykeev-stack waykeev-stack--2" id="${PRICE_NODE}"></div>
         <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${REQUEST_ERROR}"></div>
       </div>
-      <div class="waykeev-stack waykeev-stack--3">
-        <div class="waykeev-balloon" id="${STATS_NODE}"></div>
-      </div>
+      <div class="waykeev-stack waykeev-stack--3"id="${STATS_NODE}" />
     `;
 
     if (this.priceOption === 'customPrice') {
@@ -158,6 +181,11 @@ class ModalResult extends HtmlNode {
           : this.costPerKilometerCustom,
       mileage: this.mileage || 0,
     });
+
+    this.contexts.errorAlert = new ErrorAlert(
+      this.node.querySelector<HTMLDivElement>(`#${REQUEST_ERROR}`),
+      {}
+    );
   }
 }
 

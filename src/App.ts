@@ -6,6 +6,7 @@ import { version } from '../package.json';
 import Preview from './Views/Preview';
 import getCostPerKilometer from './Http/getCostPerKilometer';
 import { EvCalculationChargingPerKilometer } from './@types/EvCalculation';
+import { createTheme } from './Utils/theme';
 
 const VIEW_NODE = 'wayke-ev-web-view-node';
 
@@ -36,6 +37,7 @@ class App {
       document.body.appendChild(this.root);
     }
 
+    createTheme(this.props.theme);
     this.root.dataset.version = version;
     this.render();
     if (this.props.id) {
@@ -49,7 +51,7 @@ class App {
       this.state.charginCostPerKilometer = response;
       this.contexts.preview?.update(response);
     } catch (e) {
-      //console.log('err');
+      //
     }
   }
 

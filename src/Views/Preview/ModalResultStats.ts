@@ -25,14 +25,17 @@ class ModalResultStats extends HtmlNode {
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.mileage = props.mileage;
-
     this.render();
   }
 
-  update(charginCostPerKilometer: EvCalculationChargingPerKilometer, mileage: number) {
+  update(charginCostPerKilometer: EvCalculationChargingPerKilometer | undefined, mileage: number) {
     this.charginCostPerKilometer = charginCostPerKilometer;
     this.mileage = mileage;
     this.render();
+  }
+
+  hide() {
+    this.node.innerHTML = '';
   }
 
   render() {
@@ -47,57 +50,62 @@ class ModalResultStats extends HtmlNode {
     const electricalRangeWLTP = vehicle?.electricalRangeWLTP;
 
     this.node.innerHTML = `
-      <div class="waykeev-stack waykeev-stack--3">
-        <div class="waykeev-stack waykeev-stack--1">
-          <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
-            costPerMonth,
-            {
-              postfix: 'kr/mån*',
-              decimals: 0,
-            }
-          )}</div>
+      <div class="waykeev-balloon">
+        <div class="waykeev-stack waykeev-stack--3">
+          <div class="waykeev-stack waykeev-stack--1">
+            <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
+              costPerMonth,
+              {
+                postfix: 'kr/mån*',
+                decimals: 0,
+              }
+            )}</div>
+          </div>
+          <div class="waykeev-stack waykeev-stack--1">
+            <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</div>
+          </div>
         </div>
-        <div class="waykeev-stack waykeev-stack--1">
-          <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</div>
-        </div>
-      </div>
-      <div class="waykeev-stack waykeev-stack--3">
-        <ul class="waykeev-key-value-list">
-          <li class="waykeev-key-value-list__item">
-            <div class="waykeev-key-value-list__key">Fordonets batterikapacitet</div>
-            <div class="waykeev-key-value-list__value">${prettyNumber(batteryCapacity?.value, {
-              postfix: batteryCapacity?.unit,
-            })}</div>
-          </li>
-          <li class="waykeev-key-value-list__item">
-            <div class="waykeev-key-value-list__key">Fordonets räckvidd</div>
-            <div class="waykeev-key-value-list__value">${prettyNumber(electricalRangeWLTP?.value, {
-              postfix: electricalRangeWLTP?.unit,
-            })}</div>
+        <div class="waykeev-stack waykeev-stack--3">
+          <ul class="waykeev-key-value-list">
+            <li class="waykeev-key-value-list__item">
+              <div class="waykeev-key-value-list__key">Fordonets batterikapacitet</div>
+              <div class="waykeev-key-value-list__value">${prettyNumber(batteryCapacity?.value, {
+                postfix: batteryCapacity?.unit,
+              })}</div>
             </li>
-          <li class="waykeev-key-value-list__item">
-            <div class="waykeev-key-value-list__key"> Angiven årlig körsträcka</div>
-            <div class="waykeev-key-value-list__value">${prettyNumber(this.mileage, {
-              postfix: 'mil',
-            })}</div>
-          </li>
-          ${
-            this.props.priceOption === 'standardPrice'
-              ? `
-                <li class="waykeev-key-value-list__item">
-                  <div class="waykeev-key-value-list__key">Elpris schablon, inkl. energiskatt och moms</div>
-                  <div class="waykeev-key-value-list__value">
-                    ${prettyNumber((costPerKwh?.value || 0) * 100, { postfix: 'öre/kWh' })}
-                  </div>
-                </li>
-                <li class="waykeev-key-value-list__item">
-                  <div class="waykeev-key-value-list__key">Elnätsavgift</div>
-                  <div class="waykeev-key-value-list__value">Inte inkluderad i beräkningen</div>
-                </li>
-              `
-              : ''
-          }
-        </ul>
+            <li class="waykeev-key-value-list__item">
+              <div class="waykeev-key-value-list__key">Fordonets räckvidd</div>
+              <div class="waykeev-key-value-list__value">${prettyNumber(
+                electricalRangeWLTP?.value,
+                {
+                  postfix: electricalRangeWLTP?.unit,
+                }
+              )}</div>
+              </li>
+            <li class="waykeev-key-value-list__item">
+              <div class="waykeev-key-value-list__key"> Angiven årlig körsträcka</div>
+              <div class="waykeev-key-value-list__value">${prettyNumber(this.mileage, {
+                postfix: 'mil',
+              })}</div>
+            </li>
+            ${
+              this.props.priceOption === 'standardPrice'
+                ? `
+                  <li class="waykeev-key-value-list__item">
+                    <div class="waykeev-key-value-list__key">Elpris schablon, inkl. energiskatt och moms</div>
+                    <div class="waykeev-key-value-list__value">
+                      ${prettyNumber((costPerKwh?.value || 0) * 100, { postfix: 'öre/kWh' })}
+                    </div>
+                  </li>
+                  <li class="waykeev-key-value-list__item">
+                    <div class="waykeev-key-value-list__key">Elnätsavgift</div>
+                    <div class="waykeev-key-value-list__value">Inte inkluderad i beräkningen</div>
+                  </li>
+                `
+                : ''
+            }
+          </ul>
+        </div>
       </div>
     `;
   }

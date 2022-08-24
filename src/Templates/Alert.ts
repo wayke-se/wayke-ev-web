@@ -20,7 +20,7 @@ const Alert = ({ tone, children }: AlertProps) => `
       </div>
     </div>
     <div class="waykeev-alert__content">
-     ${children}
+     ${children ? children : ''}
     </div>
   </div>
 `;

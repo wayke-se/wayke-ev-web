@@ -6,6 +6,14 @@ This is an embeddable widget used to calculate electric car charging costs.
 
 Documentation goes here...
 
+## Full configuration
+
+### Optional
+
+- `theme.primaryColor` Override primary color. Defaults to `#00b6d3`
+- `theme.primaryColorForeground` Override color placed on top of the primary color. Defaults to `#fff`
+- `theme.linkColor` Override color of links. Defaults to `#00b6d3`
+
 ## CSS specificity
 
 ⚠️ **We can guarantee to not overwrite any of the host site CSS. But it is possible for the host site to overwrite the styling in _Wayke EV_. Read how to prevent such overwrites below.**
@@ -20,11 +28,11 @@ Reset styles and other necessary CSS targeting elements are selected using a nes
 
 If you want to custommize any CSS we recommend you to include a separate CSS file with your styling using our selectors namespaced for higher specificity. I.e., `.you-company-name .waykeev-[COMPONENT_NAME] { };`.
 
-The easiest way to add a namespace is to wrap the mounting element (`#wayke-ev`) with a div having this namespace set following the example below.
+The easiest way to add a namespace is to wrap the mounting element (`#custom-id`) with a div having this namespace set following the example below.
 
 ```html
 <div class="your-company-name">
-  <div id="wayke-ev"></div>
+  <div id="custom-id"></div>
 </div>
 ```
 

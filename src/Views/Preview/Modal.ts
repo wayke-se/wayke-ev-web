@@ -15,11 +15,10 @@ const RESULT_NODE = 'wayke-ev-result-extended-node';
 interface ModalProps {
   settings: AppProps;
   open?: boolean;
-  charginCostPerKilometer?: EvCalculationChargingPerKilometer;
+  charginCostPerKilometer: EvCalculationChargingPerKilometer;
   mileage: number;
   distanceOptions: number[];
   distanceOptionsMapped: SelectItem[];
-  onChangeSelect: (e: Event) => void;
   onChangeRange: (e: Event) => void;
 }
 
@@ -32,7 +31,7 @@ interface ModalContext {
 class Modal extends HtmlNode {
   private readonly props: ModalProps;
   private contexts: ModalContext = {};
-  private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
+  private charginCostPerKilometer: EvCalculationChargingPerKilometer;
   private mileage: number;
 
   constructor(element: HTMLElement | null, props: ModalProps) {
@@ -54,12 +53,12 @@ class Modal extends HtmlNode {
     this.node.innerHTML = '';
   }
 
-  update(charginCostPerKilometer: EvCalculationChargingPerKilometer | undefined, mileage: number) {
+  update(charginCostPerKilometer: EvCalculationChargingPerKilometer, mileage: number) {
     this.charginCostPerKilometer = charginCostPerKilometer;
     this.mileage = mileage;
     this.contexts.select?.update(this.mileage.toString());
     this.contexts.range?.update(this.mileage);
-    this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
+    this.contexts.result?.update(this.mileage);
   }
 
   render() {
@@ -135,7 +134,7 @@ class Modal extends HtmlNode {
         name: 'mileage',
         value: this.mileage.toString(),
         options: this.props.distanceOptionsMapped,
-        onChange: (e) => this.props.onChangeSelect(e),
+        onChange: (e) => this.props.onChangeRange(e),
       }
     );
 

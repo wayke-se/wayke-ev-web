@@ -6,7 +6,7 @@
 
   @include font-regular;
   
-  color: color(link, main);
+  color: var(--#{$namespace}link-color, color(link, main));;
   text-decoration: none;
 
   &:not(#{$root}--no-external-icon) {

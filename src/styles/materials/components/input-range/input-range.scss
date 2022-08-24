@@ -53,15 +53,15 @@
       width: $thumb-size;
       height: $thumb-size;
       margin-top: math.div($track-height, 2) - math.div($thumb-size, 2);
-      background-color: color(bg, main);
-      border: scss-var(border, width, main) solid color(primary, main);
+      background-color: var(--#{$namespace}primary-color-foreground, color(bg, main));
+      border: scss-var(border, width, main) solid var(--#{$namespace}primary-color, color(primary, main));
       border-radius: 50%;
       box-shadow: scss-var(box-shadow, main);
       transform-origin: 50% 50%;
       transition: transform 200ms ease;
     }
     @include input-range-track-progress {
-      background-color: color(primary, main);
+      background-color: var(--#{$namespace}primary-color, color(primary, main));
     }
 
     display: block;
@@ -69,7 +69,7 @@
     height: $track-height;
     margin: 0;
     background-color: color(bg, alt);
-    background-image: linear-gradient(to right, color(primary, main) 0%, color(bg, alt) 0%);
+    background-image: linear-gradient(to right, var(--#{$namespace}primary-color, color(primary, main)) 0%, color(bg, alt) 0%);
     cursor: pointer;
 
     &:active {

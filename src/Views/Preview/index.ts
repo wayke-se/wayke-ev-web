@@ -54,22 +54,15 @@ class Preview extends HtmlNode {
     this.render();
   }
 
-  private onChangeSelect(e: Event) {
-    const currentTarget = e.currentTarget as HTMLSelectElement;
-    this.mileage = parseInt(currentTarget.value, 10);
-    this.contexts.select?.update(this.mileage.toString());
-    this.contexts.range?.update(this.mileage);
-    this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
-    this.contexts.modal?.update(this.charginCostPerKilometer, this.mileage);
-  }
-
   private onChangeRange(e: Event) {
-    const currentTarget = e.currentTarget as HTMLSelectElement;
-    this.mileage = parseInt(currentTarget.value, 10);
-    this.contexts.select?.update(this.mileage.toString());
-    this.contexts.range?.update(this.mileage);
-    this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
-    this.contexts.modal?.update(this.charginCostPerKilometer, this.mileage);
+    if (this.charginCostPerKilometer !== undefined) {
+      const currentTarget = e.currentTarget as HTMLSelectElement;
+      this.mileage = parseInt(currentTarget.value, 10);
+      this.contexts.select?.update(this.mileage.toString());
+      this.contexts.range?.update(this.mileage);
+      this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
+      this.contexts.modal?.update(this.charginCostPerKilometer, this.mileage);
+    }
   }
 
   render() {
@@ -140,7 +133,7 @@ class Preview extends HtmlNode {
         name: 'mileage',
         value: this.mileage.toString(),
         options: DistanceOptionsMapped,
-        onChange: (e) => this.onChangeSelect(e),
+        onChange: (e) => this.onChangeRange(e),
       }
     );
 
@@ -177,7 +170,6 @@ class Preview extends HtmlNode {
       mileage: this.mileage,
       distanceOptions: DistanceOptions,
       distanceOptionsMapped: DistanceOptionsMapped,
-      onChangeSelect: (e) => this.onChangeSelect(e),
       onChangeRange: (e) => this.onChangeRange(e),
     });
   }

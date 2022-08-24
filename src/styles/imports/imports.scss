@@ -9,6 +9,7 @@
 @use '../partials/base/base';
 
 // Components
+@use '../materials/components/alert/alert';
 @use '../materials/components/balloon/balloon';
 @use '../materials/components/content/content';
 @use '../materials/components/disclaimer/disclaimer';
