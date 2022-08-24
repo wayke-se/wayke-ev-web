@@ -104,7 +104,7 @@ class ModalResult extends HtmlNode {
     const currentTarget = e.currentTarget as HTMLInputElement;
     const value = currentTarget.value as PriceOptionTypes;
     this.priceOption = value;
-    pushEvent(EvView.MODAL, EvEvent.TOGGLE_PRICE, value);
+    pushEvent(EvView.MODAL, EvEvent.TOGGLE_PRICE, { priceOption: value });
     this.render();
     if (
       this.priceOption === 'customPrice' &&
