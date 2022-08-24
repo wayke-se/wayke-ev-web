@@ -84,10 +84,10 @@ class Preview extends HtmlNode {
         </div>
       </div>
       <div class="waykeev-stack waykeev-stack--3">
-        <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_SELECT_NODE}" />
-        <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_RANGE_NODE}" />
+        <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_SELECT_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_RANGE_NODE}"></div>
       </div>
-      <div class="waykeev-stack waykeev-stack--3" id="${RESULT_NODE}" />
+      <div class="waykeev-stack waykeev-stack--3" id="${RESULT_NODE}"></div>
       <div class="waykeev-stack waykeev-stack--3">
         <div class="waykeev-hstack waykeev-hstack--spacing-2 waykeev-hstack--align-center">
           <div class="waykeev-hstack__item waykeev-hstack__item--no-shrink" aria-hidden="true">
@@ -99,7 +99,7 @@ class Preview extends HtmlNode {
           </div>
           <div class="waykeev-hstack__item waykeev-hstack__item--grow">
             <span class="waykeev-text waykeev-text--font-medium">Vill du anpassa kostnaden efter ditt elpris?</span>
-            <span id="${MODAL_BUTTON_NODE}" />
+            <span id="${MODAL_BUTTON_NODE}"></span>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@ class Preview extends HtmlNode {
           ${PoweredByWayke()}
         </div>
       </div>
-      <div id="${MODAL_NODE}" />
+      <div id="${MODAL_NODE}"></div>
     `;
 
     this.contexts.select = new InputSelect(

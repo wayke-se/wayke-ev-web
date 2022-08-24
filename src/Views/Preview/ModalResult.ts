@@ -151,11 +151,11 @@ class ModalResult extends HtmlNode {
   render() {
     this.node.innerHTML = `
       <div class="waykeev-stack waykeev-stack--3">
-        <div class="waykeev-stack waykeev-stack--2" id="${PRICE_NODE}" />
-        <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}" />
-        <div class="waykeev-stack waykeev-stack--2" id="${REQUEST_ERROR}" />
+        <div class="waykeev-stack waykeev-stack--2" id="${PRICE_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${REQUEST_ERROR}"></div>
       </div>
-      <div class="waykeev-stack waykeev-stack--3"id="${STATS_NODE}" />
+      <div class="waykeev-stack waykeev-stack--3"id="${STATS_NODE}"></div>
     `;
 
     if (this.priceOption === 'customPrice') {

@@ -67,7 +67,7 @@ class App {
   }
 
   render() {
-    this.root.innerHTML = `<div id="${VIEW_NODE}" />`;
+    this.root.innerHTML = `<div id="${VIEW_NODE}"><div>`;
 
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);
     this.contexts.preview = new Preview(node, {

@@ -85,10 +85,10 @@ class Modal extends HtmlNode {
                   </div>
                 </div>
                 <div class="waykeev-stack waykeev-stack--3">
-                  <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_SELECT_NODE}" />
-                  <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_RANGE_NODE}" />
+                  <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_SELECT_NODE}"></div>
+                  <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_RANGE_NODE}"></div>
                 </div>
-                <div class="waykeev-stack waykeev-stack--3" id="${RESULT_NODE}" />
+                <div class="waykeev-stack waykeev-stack--3" id="${RESULT_NODE}"></div>
               </div>
               <footer class="waykeev-modal__footer">
                 <div class="waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center">
