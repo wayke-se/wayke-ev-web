@@ -147,6 +147,7 @@ class Modal extends HtmlNode {
         step: 500,
         min: this.props.distanceOptions[0],
         max: this.props.distanceOptions[this.props.distanceOptions.length - 1],
+        label: 'Din årliga körsträcka',
         onChange: (e) => this.props.onChangeRange(e),
       }
     );

@@ -8,6 +8,7 @@ interface InputRangeSliderProps {
   readonly min: number;
   readonly max: number;
   readonly step?: number;
+  readonly label?: string;
   readonly onChange: (e: Event) => void;
 }
 
@@ -85,7 +86,7 @@ class InputRangeSlider extends HtmlNode {
   }
 
   render() {
-    const { id, name, value, title, min, max, step, onChange } = this.props;
+    const { id, name, value, title, min, max, step, label, onChange } = this.props;
     this.node.innerHTML = `
       ${
         title
@@ -106,6 +107,7 @@ class InputRangeSlider extends HtmlNode {
           max="${max}"
           value="${value}"
           class="waykeev-input-range__input"
+          ${label ? `aria-label="${label}"` : ''}
         />
       </div>
     `;

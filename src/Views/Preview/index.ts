@@ -117,7 +117,7 @@ class Preview extends HtmlNode {
               <circle cx="25.15" cy="11.34" r="4.96"></circle>
             </svg>
           </div>
-          <div class="waykeev-hstack__item">
+          <div class="waykeev-hstack__item waykeev-text waykeev-text--size-small waykeev-text--font-regular">
             Powered by <a href="https://www.wayke.se/" title="Gå till wayke.se" target="_blank" rel="noopener noreferer" class="waykeev-link waykeev-link--no-external-icon waykeev-link--current-color waykeev-link--underline">Wayke</a>
           </div>
         </div>
@@ -146,6 +146,7 @@ class Preview extends HtmlNode {
         step: 500,
         min: DistanceOptions[0],
         max: DistanceOptions[DistanceOptions.length - 1],
+        label: 'Din årliga körsträcka',
         onChange: (e) => this.onChangeRange(e),
       }
     );
