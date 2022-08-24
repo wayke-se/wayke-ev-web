@@ -10,5 +10,7 @@ window.addEventListener('DOMContentLoaded', (_) => {
       primaryColorForeground: '#b8dbbb',
       linkColor: '#0000ff',
     },
+    // eslint-disable-next-line
+    onEvent: (a, b, c) => console.log(a, b, c),
   });
 });

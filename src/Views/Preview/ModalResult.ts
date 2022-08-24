@@ -5,6 +5,8 @@ import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputField from '../../Components/Input/InputField';
 import InputRadioGroup, { RadioItem } from '../../Components/Input/InputRadioGroup';
 import getCostPerKilometer from '../../Http/getCostPerKilometer';
+import { RequestError } from '../../Http/http';
+import { EvEvent, EvView, pushEvent } from '../../Utils/events';
 import { onlyFloat } from '../../Utils/format';
 import ModalResultStats from './ModalResultStats';
 
@@ -75,14 +77,19 @@ class ModalResult extends HtmlNode {
     if (!this.props.settings.id) return;
     this.contexts.errorAlert?.update(undefined);
     try {
+      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_COST_PENDING);
       const response = await getCostPerKilometer(
         this.props.settings.url,
         this.props.settings.id,
         (this.costPerKwh || 0) / 100
       );
+
+      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_COST_SUCCEEDED);
       this.costPerKilometerCustom = response;
       this.contexts.stats?.update(this.costPerKilometerCustom, this.mileage);
     } catch (e) {
+      const statusCode = (e as RequestError)?.status;
+      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_COST_FAILED, { statusCode });
       this.contexts.errorAlert?.update(
         `Ett fel har inträffat. <button type="button" title="Försök igen" class="waykeev-link" id="waykeev-error-retry">Försök igen</button>`
       );
@@ -90,7 +97,6 @@ class ModalResult extends HtmlNode {
         ?.querySelector('#waykeev-error-retry')
         ?.addEventListener('click', () => this.fetchData());
       this.contexts.stats?.hide();
-      //console.log('err');
     }
   }
 
@@ -98,6 +104,7 @@ class ModalResult extends HtmlNode {
     const currentTarget = e.currentTarget as HTMLInputElement;
     const value = currentTarget.value as PriceOptionTypes;
     this.priceOption = value;
+    pushEvent(EvView.MODAL, EvEvent.TOGGLE_PRICE, value);
     this.render();
     if (
       this.priceOption === 'customPrice' &&
@@ -134,6 +141,7 @@ class ModalResult extends HtmlNode {
     clearTimeout(timeoutRef);
     timeoutRef = setTimeout(() => {
       if (this.costPerKwh) {
+        pushEvent(EvView.MODAL, EvEvent.CUSTOM_PRICE_CHANGE, { costPerKwh: this.costPerKwh });
         storedCostPerKwh = this.costPerKwh;
         this.fetchData();
       }
@@ -143,9 +151,9 @@ class ModalResult extends HtmlNode {
   render() {
     this.node.innerHTML = `
       <div class="waykeev-stack waykeev-stack--3">
-        <div class="waykeev-stack waykeev-stack--2" id="${PRICE_NODE}"></div>
-        <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}"></div>
-        <div class="waykeev-stack waykeev-stack--2" id="${REQUEST_ERROR}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${PRICE_NODE}" />
+        <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}" />
+        <div class="waykeev-stack waykeev-stack--2" id="${REQUEST_ERROR}" />
       </div>
       <div class="waykeev-stack waykeev-stack--3"id="${STATS_NODE}" />
     `;

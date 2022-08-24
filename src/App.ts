@@ -7,6 +7,8 @@ import Preview from './Views/Preview';
 import getCostPerKilometer from './Http/getCostPerKilometer';
 import { EvCalculationChargingPerKilometer } from './@types/EvCalculation';
 import { createTheme } from './Utils/theme';
+import { EvEvent, EvView, pushEvent, registerEventListner } from './Utils/events';
+import { RequestError } from './Http/http';
 
 const VIEW_NODE = 'wayke-ev-web-view-node';
 
@@ -39,7 +41,12 @@ class App {
 
     createTheme(this.props.theme);
     this.root.dataset.version = version;
+    if (this.props.onEvent) {
+      registerEventListner(this.props.onEvent);
+    }
+
     this.render();
+    pushEvent(EvView.MAIN, EvEvent.INITIALIZED);
     if (this.props.id) {
       this.fetchData(this.props.id);
     }
@@ -47,18 +54,20 @@ class App {
 
   private async fetchData(id: string) {
     try {
+      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_PENDING);
       const response = await getCostPerKilometer(this.props.url, id);
+
+      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_SUCCEEDED);
       this.state.charginCostPerKilometer = response;
       this.contexts.preview?.update(response);
     } catch (e) {
-      //
+      const statusCode = (e as RequestError)?.status;
+      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_FAILED, { statusCode });
     }
   }
 
   render() {
-    this.root.innerHTML = `
-      <div id="${VIEW_NODE}"></div>
-    `;
+    this.root.innerHTML = `<div id="${VIEW_NODE}" />`;
 
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);
     this.contexts.preview = new Preview(node, {

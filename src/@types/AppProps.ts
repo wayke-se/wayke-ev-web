@@ -1,3 +1,5 @@
+import { EvView, EvEvent } from '../Utils/events';
+
 export interface Theme {
   primaryColor?: string;
   primaryColorForeground?: string;
@@ -9,4 +11,5 @@ export interface AppProps {
   url: string;
   id?: string;
   theme?: Theme;
+  onEvent?: (view: EvView, event: EvEvent, data?: any) => void;
 }
