@@ -20,7 +20,7 @@ Reset styles and other necessary CSS targeting elements are selected using a nes
 
 If you want to custommize any CSS we recommend you to include a separate CSS file with your styling using our selectors namespaced for higher specificity. I.e., `.you-company-name .waykeev-[COMPONENT_NAME] { };`.
 
-The easiest way to add a namespace is to wrap the mounting element (`#wayke-valuation`) with a div having this namespace set following the example below.
+The easiest way to add a namespace is to wrap the mounting element (`#wayke-ev`) with a div having this namespace set following the example below.
 
 ```html
 <div class="your-company-name">
@@ -32,4 +32,4 @@ The easiest way to add a namespace is to wrap the mounting element (`#wayke-valu
 
 ## Headings
 
-To prevent multiple `h1` on your website, _Wayke Valuation_ does not include a `h1` as root heading level. Instead the headings starts from h2.
+To prevent multiple `h1` on your website, _Wayke EV_ does not include a `h1` as root heading level. Instead the headings starts from h2.
