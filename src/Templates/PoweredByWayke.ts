@@ -19,7 +19,7 @@ const PoweredByWayke = () => `
             <circle cx="25.15" cy="11.34" r="4.96"></circle>
         </svg>
     </div>
-    <div class="waykeev-hstack__item">Powered by <a href="https://www.wayke.se/" title="Gå till wayke.se" target="_blank" rel="noopener noreferer" class="waykeev-link waykeev-link--no-external-icon waykeev-link--current-color waykeev-link--underline">Wayke</a></div>
+    <div class="waykeev-hstack__item waykeev-text waykeev-text--size-small waykeev-text--font-regular">Powered by <a href="https://www.wayke.se/" title="Gå till wayke.se" target="_blank" rel="noopener noreferer" class="waykeev-link waykeev-link--no-external-icon waykeev-link--current-color waykeev-link--underline">Wayke</a></div>
 `;
 
 export default PoweredByWayke;

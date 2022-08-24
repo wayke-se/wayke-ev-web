@@ -132,6 +132,7 @@ class Preview extends HtmlNode {
         step: 500,
         min: DistanceOptions[0],
         max: DistanceOptions[DistanceOptions.length - 1],
+        label: 'Din årliga körsträcka',
         onChange: (e) => this.onChangeRange(e),
       }
     );
