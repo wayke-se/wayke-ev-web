@@ -75,12 +75,6 @@
     font-size: scss-var(font, size, small);
   }
 
-  &__footer-logo {
-    display: block;
-    width: size(5);
-    fill: currentColor;
-  }
-
   &__close {
     position: fixed;
     right: var(--#{$namespace}modal-gutter-x);

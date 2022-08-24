@@ -18,6 +18,10 @@
     align-items: flex-end;
   }
 
+  &--justify-center {
+    justify-content: center;
+  }
+
   &--equal-width {
     #{$root}__item {
       width: 100%;

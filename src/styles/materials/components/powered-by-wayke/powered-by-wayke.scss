@@ -1,0 +1,7 @@
+@use '../../../helpers' as *;
+
+.#{$namespace}powered-by-wayke {
+  display: block;
+  width: size(5);
+  fill: currentColor;
+}
