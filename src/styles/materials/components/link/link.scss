@@ -35,6 +35,7 @@
     &:not(#{$root}--has-content) {
       display: inline-block;
       vertical-align: baseline;
+      text-align: left;
     }
   }
 

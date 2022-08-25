@@ -55,6 +55,7 @@
     color: color(text, main);
     overflow: hidden;
     z-index: $modal-z-index-dialog;
+    animation: #{$namespace}fade-in 400ms ease;
   }
 
   &__header {

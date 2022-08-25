@@ -8,6 +8,5 @@
 
   &__dialog {
     border-radius: scss-var(border, radius, alt);
-    animation: #{$namespace}fade-in 400ms ease;
   }
 }
