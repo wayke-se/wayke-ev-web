@@ -19,7 +19,7 @@ export enum EvView {
   MODAL = 'MODAL',
 }
 
-type Listner = (view: EvView, ecomEvent: EvEvent, data?: { [key: string]: any }) => void;
+type Listner = (view: EvView, event: EvEvent, data?: { [key: string]: any }) => void;
 
 const listners: Listner[] = [];
 

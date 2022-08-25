@@ -11,7 +11,7 @@ npm install @wayke-se/wayke-ev-web
 ```
 
 ```js
-import WaykeEcomWeb from "@wayke-se/wayke-ev-web";
+import WaykeEvWeb from "@wayke-se/wayke-ev-web";
 import "@wayke-se/wayke-ev-web/dist/index.css";
 
 const context = new WaykeEvWeb({
