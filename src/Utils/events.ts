@@ -5,11 +5,11 @@ export enum EvEvent {
   INITIAL_REQUEST_PENDING = 'INITIAL_REQUEST_PENDING',
   INITIAL_REQUEST_SUCCEEDED = 'INITIAL_REQUEST_SUCCEEDED',
   INITIAL_REQUEST_FAILED = 'INITIAL_REQUEST_FAILED',
-  MODAL_CLOSED = 'MODAL_CLOSED',
   MODAL_OPENED = 'MODAL_OPENED',
-  REQUEST_CUSTOM_COST_PENDING = 'REQUEST_CUSTOM_COST_PENDING',
-  REQUEST_CUSTOM_COST_SUCCEEDED = 'REQUEST_CUSTOM_COST_SUCCEEDED',
-  REQUEST_CUSTOM_COST_FAILED = 'REQUEST_CUSTOM_COST_FAILED',
+  MODAL_CLOSED = 'MODAL_CLOSED',
+  REQUEST_CUSTOM_PRICE_PENDING = 'REQUEST_CUSTOM_PRICE_PENDING',
+  REQUEST_CUSTOM_PRICE_SUCCEEDED = 'REQUEST_CUSTOM_PRICE_SUCCEEDED',
+  REQUEST_CUSTOM_PRICE_FAILED = 'REQUEST_CUSTOM_PRICE_FAILED',
   TOGGLE_PRICE = 'TOGGLE_PRICE',
   CUSTOM_PRICE_CHANGE = 'CUSTOM_PRICE_CHANGE',
 }
@@ -19,7 +19,7 @@ export enum EvView {
   MODAL = 'MODAL',
 }
 
-type Listner = (view: EvView, ecomEvent: EvEvent, data?: { [key: string]: any }) => void;
+type Listner = (view: EvView, event: EvEvent, data?: { [key: string]: any }) => void;
 
 const listners: Listner[] = [];
 
@@ -34,15 +34,7 @@ export const unregisterEventListner = (fn: Listner) => {
   }
 };
 
-interface EventHistory {
-  view: EvView;
-  ecomEvent: EvEvent;
-  data?: { [key: string]: any };
-}
-
-export const eventHistory: EventHistory[] = [];
-export const getLastHistory = () => eventHistory[eventHistory.length - 1];
-export const pushEvent = (view: EvView, ecomEvent: EvEvent, data?: any) => {
-  eventHistory.push({ view, ecomEvent });
-  listners.forEach((fn) => fn(view, ecomEvent, data));
+export const pushEvent = (view: EvView, evEvent: EvEvent, data?: any) => {
+  if (!listners.length) return;
+  listners.forEach((fn) => fn(view, evEvent, data));
 };

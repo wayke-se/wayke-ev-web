@@ -46,7 +46,7 @@ class App {
     }
 
     this.render();
-    pushEvent(EvView.MAIN, EvEvent.INITIALIZED);
+    pushEvent(EvView.MAIN, EvEvent.INITIALIZED, { id: this.props.id });
     if (this.props.id) {
       this.fetchData(this.props.id);
     }
@@ -54,15 +54,15 @@ class App {
 
   private async fetchData(id: string) {
     try {
-      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_PENDING);
+      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_PENDING, { id: this.props.id });
       const response = await getCostPerKilometer(this.props.url, id);
 
-      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_SUCCEEDED);
+      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_SUCCEEDED, { id: this.props.id });
       this.state.charginCostPerKilometer = response;
       this.contexts.preview?.update(response);
     } catch (e) {
       const statusCode = (e as RequestError)?.status;
-      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_FAILED, { statusCode });
+      pushEvent(EvView.MAIN, EvEvent.INITIAL_REQUEST_FAILED, { id: this.props.id, statusCode });
     }
   }
 
