@@ -44,7 +44,7 @@ class LinkButton extends HtmlNode {
         type="button"
         ${id ? `id="${id}"` : ''}
         title="${title}"
-        ${disabled && `disabled=""`}
+        ${disabled ? `disabled=""` : ''}
         class="waykeev-link"
       >
         <span class="waykeev-link__content">${title}</span>
