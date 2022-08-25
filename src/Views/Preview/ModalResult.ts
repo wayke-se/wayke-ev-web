@@ -77,19 +77,24 @@ class ModalResult extends HtmlNode {
     if (!this.props.settings.id) return;
     this.contexts.errorAlert?.update(undefined);
     try {
-      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_COST_PENDING);
+      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_PRICE_PENDING, { id: this.props.settings.id });
       const response = await getCostPerKilometer(
         this.props.settings.url,
         this.props.settings.id,
         (this.costPerKwh || 0) / 100
       );
 
-      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_COST_SUCCEEDED);
+      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_PRICE_SUCCEEDED, {
+        id: this.props.settings.id,
+      });
       this.costPerKilometerCustom = response;
       this.contexts.stats?.update(this.costPerKilometerCustom, this.mileage);
     } catch (e) {
       const statusCode = (e as RequestError)?.status;
-      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_COST_FAILED, { statusCode });
+      pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_PRICE_FAILED, {
+        id: this.props.settings.id,
+        statusCode,
+      });
       this.contexts.errorAlert?.update(
         `Ett fel har inträffat. <button type="button" title="Försök igen" class="waykeev-link" id="waykeev-error-retry">Försök igen</button>`
       );
@@ -104,7 +109,10 @@ class ModalResult extends HtmlNode {
     const currentTarget = e.currentTarget as HTMLInputElement;
     const value = currentTarget.value as PriceOptionTypes;
     this.priceOption = value;
-    pushEvent(EvView.MODAL, EvEvent.TOGGLE_PRICE, { priceOption: value });
+    pushEvent(EvView.MODAL, EvEvent.TOGGLE_PRICE, {
+      id: this.props.settings.id,
+      priceOption: value,
+    });
     this.render();
     if (
       this.priceOption === 'customPrice' &&
@@ -141,7 +149,7 @@ class ModalResult extends HtmlNode {
     clearTimeout(timeoutRef);
     timeoutRef = setTimeout(() => {
       if (this.costPerKwh) {
-        pushEvent(EvView.MODAL, EvEvent.CUSTOM_PRICE_CHANGE, { costPerKwh: this.costPerKwh });
+        pushEvent(EvView.MODAL, EvEvent.CUSTOM_PRICE_CHANGE, { customPrice: this.costPerKwh });
         storedCostPerKwh = this.costPerKwh;
         this.fetchData();
       }
@@ -168,6 +176,8 @@ class ModalResult extends HtmlNode {
           value: this.costPerKwh?.toString() || '',
           unit: 'öre/kWh',
           information: 'Ange ditt totala pris per kWh så som det står på din faktura.',
+          pattern: '[0-9]*',
+          inputmode: 'numeric',
           onChange: (e) => this.onChange(e),
         }
       );

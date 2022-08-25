@@ -7,9 +7,10 @@ export interface Theme {
 }
 
 export interface AppProps {
-  rootId?: string;
   url: string;
-  id?: string;
+  id: string;
+  rootId?: string;
+  hash?: boolean;
   theme?: Theme;
   onEvent?: (view: EvView, event: EvEvent, data?: any) => void;
 }

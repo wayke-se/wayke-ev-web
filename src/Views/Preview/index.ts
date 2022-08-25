@@ -49,6 +49,18 @@ class Preview extends HtmlNode {
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.render();
+
+    if (this.props.settings.hash) {
+      window.addEventListener(
+        'hashchange',
+        () => {
+          if (!location.hash) {
+            this.contexts.modal?.close();
+          }
+        },
+        false
+      );
+    }
   }
 
   update(charginCostPerKilometer?: EvCalculationChargingPerKilometer) {
@@ -61,7 +73,8 @@ class Preview extends HtmlNode {
       EvView.MAIN,
       (e.currentTarget as HTMLInputElement | HTMLSelectElement).nodeName === 'SELECT'
         ? EvEvent.MILEAGE_SELECT
-        : EvEvent.MILEAGE_SLIDER
+        : EvEvent.MILEAGE_SLIDER,
+      { id: this.props.settings.id }
     );
     if (this.charginCostPerKilometer !== undefined) {
       const currentTarget = e.currentTarget as HTMLSelectElement;
@@ -143,8 +156,11 @@ class Preview extends HtmlNode {
         id: MODAL_BUTTON,
         title: 'Öppna uträknaren',
         onClick: () => {
-          pushEvent(EvView.MAIN, EvEvent.MODAL_OPENED);
+          pushEvent(EvView.MAIN, EvEvent.MODAL_OPENED, { id: this.props.settings.id });
           this.contexts.modal?.open();
+          if (this.props.settings.hash) {
+            location.hash = 'wayke-ev';
+          }
         },
       }
     );

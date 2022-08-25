@@ -104,8 +104,11 @@ class Modal extends HtmlNode {
     const closeButton = this.node.querySelector<HTMLButtonElement>('.waykeev-modal__close-btn');
     if (closeButton) {
       closeButton.addEventListener('click', () => {
-        pushEvent(EvView.MODAL, EvEvent.MODAL_CLOSED);
+        pushEvent(EvView.MODAL, EvEvent.MODAL_CLOSED, { id: this.props.settings.id });
         this.close();
+        if (this.props.settings.hash) {
+          location.hash = '';
+        }
       });
     }
 
