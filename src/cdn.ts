@@ -7,7 +7,7 @@ declare global {
 }
 
 window.addEventListener('DOMContentLoaded', (_) => {
-  const scriptTag = document.querySelector<HTMLScriptElement>('script[src*="wayke-ecom-web"]');
+  const scriptTag = document.querySelector<HTMLScriptElement>('script[src*="wayke-ev-web"]');
   if (scriptTag) {
     const shouldInject = !scriptTag.getAttribute('disablecssinjection');
     if (shouldInject) {
