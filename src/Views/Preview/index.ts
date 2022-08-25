@@ -111,7 +111,7 @@ class Preview extends HtmlNode {
             </div>
           </div>
           <div class="waykeev-hstack__item waykeev-hstack__item--grow">
-            <span class="waykeev-text waykeev-text--font-medium">Vill du anpassa kostnaden efter ditt elpris?</span>
+            <span class="waykeev-text waykeev-text--font-medium waykeev-text--bump-right">Vill du anpassa kostnaden efter ditt elpris?</span>
             <span id="${MODAL_BUTTON_NODE}"></span>
           </div>
         </div>

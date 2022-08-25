@@ -53,4 +53,11 @@
   &--italic {
     font-style: italic;
   }
+
+  // Utilities
+
+  // Add inline margin to the right
+  &--bump-right {
+    margin-right: 0.25em;
+  }
 }
