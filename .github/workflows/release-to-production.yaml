@@ -33,12 +33,12 @@ jobs:
         run: |
           npm run build
 
-#      - name: Publish package to npm
-#        run: |
-#          npm ci
-#          npm publish --access public
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish package to npm
+        run: |
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Use Python 3.8
         uses: actions/setup-python@v1
