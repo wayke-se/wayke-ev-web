@@ -7,12 +7,12 @@ This is an embeddable widget used to calculate electric car charging costs.
 __Using npm__
 
 ```bash
-npm install @wayke-se/wayke-ev-web
+npm install @wayke-se/ev-web
 ```
 
 ```js
-import WaykeEvWeb from "@wayke-se/wayke-ev-web";
-import "@wayke-se/wayke-ev-web/dist/index.css";
+import WaykeEvWeb from "@wayke-se/ev-web";
+import "@wayke-se/ev-web/dist/index.css";
 
 const context = new WaykeEvWeb({
     url: 'https://api.wayke.se',
