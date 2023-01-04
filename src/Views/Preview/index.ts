@@ -41,7 +41,7 @@ interface PreviewContext {
 class Preview extends HtmlNode {
   private readonly props: PreviewProps;
   private contexts: PreviewContext = {};
-  private mileage = DistanceOptionsMapped[4].value;
+  private mileage = DistanceOptionsMapped[2].value;
   private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
 
   constructor(element: HTMLElement | null, props: PreviewProps) {

@@ -37,6 +37,8 @@ class Result extends HtmlNode {
       this.mileage
     );
 
+    const costPerKwh = this.charginCostPerKilometer?.description.costPerKwh;
+
     this.node.innerHTML = `
       <div class="waykeev-balloon">
         <div class="waykeev-stack waykeev-stack--1">
@@ -49,7 +51,10 @@ class Result extends HtmlNode {
           )}</div>
         </div>
         <div class="waykeev-stack waykeev-stack--1">
-          <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på 130 öre/kWh.</div>
+          <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på ${prettyNumber(
+            (costPerKwh?.value || 0) * 100,
+            { postfix: 'öre/kWh' }
+          )}.</div>
         </div>
       </div>
     `;
