@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import LinkButton from '../../Components/LinkButton/LinkButton';
@@ -91,7 +92,7 @@ class Preview extends HtmlNode {
 
     this.node.innerHTML = `
       <div class="waykeev-stack waykeev-stack--3">
-        <h2 class="waykeev-heading waykeev-heading--2">Beräkna laddkostnad</h2>
+        <h2 class="waykeev-heading waykeev-heading--2">${i18next.t('evTitle')}</h2>
         <div class="waykeev-content">
           <p class="waykeev-content__p">Se vad det kostar att ladda denna elbil per månad. Du behöver bara ange din årliga körsträcka för att se fordonets uppskattade laddningskostnad.</p>
         </div>

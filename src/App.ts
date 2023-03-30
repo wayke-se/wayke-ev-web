@@ -9,6 +9,7 @@ import { EvCalculationChargingPerKilometer } from './@types/EvCalculation';
 import { createTheme } from './Utils/theme';
 import { EvEvent, EvView, pushEvent, registerEventListner } from './Utils/events';
 import { RequestError } from './Http/http';
+import i18n from './Utils/i18n';
 
 const VIEW_NODE = 'wayke-ev-web-view-node';
 
@@ -28,6 +29,7 @@ class App {
 
   constructor(props: AppProps) {
     this.props = props;
+    i18n(props.marketCode || 'SE');
     const createdRoot = document.createElement('div');
     createdRoot.className = 'waykeev-root';
     this.root = createdRoot;

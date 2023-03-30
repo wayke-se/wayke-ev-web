@@ -1,8 +1,8 @@
-const fs = require('fs');
-const { sassPlugin } = require('esbuild-sass-plugin');
-const { build } = require('esbuild');
+import fs from 'fs';
+import * as esbuild from 'esbuild';
+import { sassPlugin } from 'esbuild-sass-plugin';
 
-const shared = {
+const Shared = {
   entryPoints: ['src/cdn.ts'],
   bundle: true,
   minify: true,
@@ -50,12 +50,18 @@ const minify = () => {
   });
 };
 
-build({
-  ...shared,
+const ctx = esbuild.build({
+  ...Shared,
   outfile: 'dist-cdn/index.js',
   format: 'esm',
-}).then(() => {
+});
+
+try {
+  await ctx;
   // eslint-disable-next-line
   console.log('Post processing started...');
   minify();
-});
+} catch (e) {
+  // eslint-disable-next-line
+  console.log('Error occured', e);
+}
