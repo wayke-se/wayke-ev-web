@@ -4,7 +4,6 @@ import { getLanguage } from './market';
 
 const i18n = (marketCode?: MarketCode) => {
   const locale = getLanguage(marketCode);
-
   i18next.init({
     lng: locale || 'en-US',
     fallbackLng: 'en-US',
