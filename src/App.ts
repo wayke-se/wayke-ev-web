@@ -29,7 +29,7 @@ class App {
 
   constructor(props: AppProps) {
     this.props = props;
-    i18n(props.marketCode || 'SE');
+    i18n(props.marketCode);
     const createdRoot = document.createElement('div');
     createdRoot.className = 'waykeev-root';
     this.root = createdRoot;

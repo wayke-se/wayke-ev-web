@@ -5,8 +5,7 @@ export const getLanguage = (marketCode?: MarketCode) => {
     case 'NO':
       return 'nb-NO';
     case 'SE':
-      return 'sv-SE';
     default:
-      return 'en-US';
+      return 'sv-SE';
   }
 };
