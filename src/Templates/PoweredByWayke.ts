@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 const PoweredByWayke = () => `
     <div class="waykeev-hstack__item waykeev-hstack__item--no-shrink">
         <svg class="waykeev-powered-by-wayke" viewBox="0 0 185.57 109.13" preserveAspectRatio="xMinYMid" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -19,7 +21,13 @@ const PoweredByWayke = () => `
             <circle cx="25.15" cy="11.34" r="4.96"></circle>
         </svg>
     </div>
-    <div class="waykeev-hstack__item waykeev-text waykeev-text--size-small waykeev-text--font-regular">Powered by <a href="https://www.wayke.se/" title="Gå till wayke.se" target="_blank" rel="noopener noreferer" class="waykeev-link waykeev-link--no-external-icon waykeev-link--current-color waykeev-link--underline">Wayke</a></div>
+    <div class="waykeev-hstack__item waykeev-text waykeev-text--size-small waykeev-text--font-regular">
+        ${i18next.t('poweredBy')} <a href="https://www.wayke.se/" title="${i18next.t(
+  'goToBrandSite'
+)}" target="_blank" rel="noopener noreferer" class="waykeev-link waykeev-link--no-external-icon waykeev-link--current-color waykeev-link--underline">${i18next.t(
+  'brand'
+)}</a>
+    </div>
 `;
 
 export default PoweredByWayke;

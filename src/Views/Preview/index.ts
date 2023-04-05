@@ -21,10 +21,11 @@ const RESULT_NODE = 'wayke-ev-result-node';
 const MODAL_NODE = 'wayke-ev-web-modal-node';
 
 const DistanceOptions = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
-const DistanceOptionsMapped = DistanceOptions.map((d) => ({
-  value: d,
-  title: prettyNumber(d, { postfix: 'mil' }),
-}));
+const DistanceOptionsMapped = () =>
+  DistanceOptions.map((d) => ({
+    value: d,
+    title: prettyNumber(d, { postfix: i18next.t('mileageUnit') || undefined }),
+  }));
 
 interface PreviewProps {
   settings: AppProps;
@@ -42,7 +43,7 @@ interface PreviewContext {
 class Preview extends HtmlNode {
   private readonly props: PreviewProps;
   private contexts: PreviewContext = {};
-  private mileage = DistanceOptionsMapped[2].value;
+  private mileage = DistanceOptionsMapped()[2].value;
   private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
 
   constructor(element: HTMLElement | null, props: PreviewProps) {
@@ -94,7 +95,9 @@ class Preview extends HtmlNode {
       <div class="waykeev-stack waykeev-stack--3">
         <h2 class="waykeev-heading waykeev-heading--2">${i18next.t('evTitle')}</h2>
         <div class="waykeev-content">
-          <p class="waykeev-content__p">Se vad det kostar att ladda denna elbil per månad. Du behöver bara ange din årliga körsträcka för att se fordonets uppskattade laddningskostnad.</p>
+          <p class="waykeev-content__p">
+            ${i18next.t('evDescription')}
+          </p>
         </div>
       </div>
       <div class="waykeev-stack waykeev-stack--3">
@@ -112,7 +115,9 @@ class Preview extends HtmlNode {
             </div>
           </div>
           <div class="waykeev-hstack__item waykeev-hstack__item--grow">
-            <span class="waykeev-text waykeev-text--font-medium waykeev-text--bump-right">Vill du anpassa kostnaden efter ditt elpris?</span>
+            <span class="waykeev-text waykeev-text--font-medium waykeev-text--bump-right">${i18next.t(
+              'adjustCostToYourElectricityPrice'
+            )}</span>
             <span id="${MODAL_BUTTON_NODE}"></span>
           </div>
         </div>
@@ -129,10 +134,10 @@ class Preview extends HtmlNode {
       this.node.querySelector<HTMLDivElement>(`#${MILEAGE_SELECT_NODE}`),
       {
         id: MILEAGE_SELECT,
-        title: 'Din årliga körsträcka',
+        title: i18next.t('yourYearlyMileage'),
         name: 'mileage',
         value: this.mileage.toString(),
-        options: DistanceOptionsMapped,
+        options: DistanceOptionsMapped(),
         onChange: (e) => this.onChangeRange(e),
       }
     );
@@ -146,7 +151,7 @@ class Preview extends HtmlNode {
         step: 500,
         min: DistanceOptions[0],
         max: DistanceOptions[DistanceOptions.length - 1],
-        label: 'Din årliga körsträcka',
+        label: i18next.t('yourYearlyMileage') || undefined,
         onChange: (e) => this.onChangeRange(e),
       }
     );
@@ -155,7 +160,7 @@ class Preview extends HtmlNode {
       this.node.querySelector<HTMLDivElement>(`#${MODAL_BUTTON_NODE}`),
       {
         id: MODAL_BUTTON,
-        title: 'Öppna uträknaren',
+        title: i18next.t('openCalculator'),
         onClick: () => {
           pushEvent(EvView.MAIN, EvEvent.MODAL_OPENED, { id: this.props.settings.id });
           this.contexts.modal?.open();
@@ -176,7 +181,7 @@ class Preview extends HtmlNode {
       charginCostPerKilometer: this.charginCostPerKilometer,
       mileage: this.mileage,
       distanceOptions: DistanceOptions,
-      distanceOptionsMapped: DistanceOptionsMapped,
+      distanceOptionsMapped: DistanceOptionsMapped(),
       onChangeRange: (e) => this.onChangeRange(e),
     });
   }

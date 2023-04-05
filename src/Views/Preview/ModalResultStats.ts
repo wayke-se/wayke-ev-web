@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
@@ -56,33 +57,36 @@ class ModalResultStats extends HtmlNode {
             <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
               costPerMonth,
               {
-                postfix: 'kr/mån*',
+                postfix: `${i18next.t('costPerMonth')}*`,
                 decimals: 0,
               }
             )}</div>
           </div>
           <div class="waykeev-stack waykeev-stack--1">
             <div class="waykeev-disclaimer">
-            *Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt ${
+            * ${i18next.t(
               this.props.priceOption === 'standardPrice'
-                ? `en schablonkostnad på ${prettyNumber((costPerKwh?.value || 0) * 100, {
-                    postfix: 'öre/kWh',
-                  })}.`
-                : `det egna angivna elpriset.`
-            }
+                ? 'costPerMonthDisclaimer.templated'
+                : 'costPerMonthDisclaimer.statedPrice',
+              {
+                costPerKwh: prettyNumber((costPerKwh?.value || 0) * 100, {
+                  postfix: i18next.t('costPerKwh') || undefined,
+                }),
+              }
+            )}
             </div>
           </div>
         </div>
         <div class="waykeev-stack waykeev-stack--3">
           <ul class="waykeev-key-value-list">
             <li class="waykeev-key-value-list__item">
-              <div class="waykeev-key-value-list__key">Fordonets batterikapacitet</div>
+              <div class="waykeev-key-value-list__key">${i18next.t('vehicleBatteryCapacity')}</div>
               <div class="waykeev-key-value-list__value">${prettyNumber(batteryCapacity?.value, {
                 postfix: batteryCapacity?.unit,
               })}</div>
             </li>
             <li class="waykeev-key-value-list__item">
-              <div class="waykeev-key-value-list__key">Fordonets räckvidd</div>
+              <div class="waykeev-key-value-list__key">${i18next.t('vehicleRange')}</div>
               <div class="waykeev-key-value-list__value">${prettyNumber(
                 electricalRangeWLTP?.value,
                 {
@@ -91,23 +95,31 @@ class ModalResultStats extends HtmlNode {
               )}</div>
               </li>
             <li class="waykeev-key-value-list__item">
-              <div class="waykeev-key-value-list__key"> Angiven årlig körsträcka</div>
+              <div class="waykeev-key-value-list__key">${i18next.t('statedAnnualMileage')}</div>
               <div class="waykeev-key-value-list__value">${prettyNumber(this.mileage, {
-                postfix: 'mil',
+                postfix: i18next.t('mileageUnit', { count: this.mileage }) || undefined,
               })}</div>
             </li>
             ${
               this.props.priceOption === 'standardPrice'
                 ? `
                   <li class="waykeev-key-value-list__item">
-                    <div class="waykeev-key-value-list__key">Elpris schablon, inkl. energiskatt och moms</div>
+                    <div class="waykeev-key-value-list__key">${i18next.t(
+                      'electricityPriceTemplateIncVat'
+                    )}</div>
                     <div class="waykeev-key-value-list__value">
-                      ${prettyNumber((costPerKwh?.value || 0) * 100, { postfix: 'öre/kWh' })}
+                      ${prettyNumber((costPerKwh?.value || 0) * 100, {
+                        postfix: i18next.t('costPerKwh') || undefined,
+                      })}
                     </div>
                   </li>
                   <li class="waykeev-key-value-list__item">
-                    <div class="waykeev-key-value-list__key">Elnätsavgift</div>
-                    <div class="waykeev-key-value-list__value">Inte inkluderad i beräkningen</div>
+                    <div class="waykeev-key-value-list__key">${i18next.t(
+                      'electricGridFee.key'
+                    )}</div>
+                    <div class="waykeev-key-value-list__value">${i18next.t(
+                      'electricGridFee.value'
+                    )}</div>
                   </li>
                 `
                 : ''

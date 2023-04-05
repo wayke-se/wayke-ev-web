@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
@@ -45,16 +46,19 @@ class Result extends HtmlNode {
           <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
             costPerMonth,
             {
-              postfix: 'kr/mån*',
+              postfix: `${i18next.t('costPerMonth')}*`,
               decimals: 0,
             }
           )}</div>
         </div>
         <div class="waykeev-stack waykeev-stack--1">
-          <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på ${prettyNumber(
-            (costPerKwh?.value || 0) * 100,
-            { postfix: 'öre/kWh' }
-          )}.</div>
+          <div class="waykeev-disclaimer">
+            * ${i18next.t('costPerMonthDisclaimer.templated', {
+              costPerKwh: prettyNumber((costPerKwh?.value || 0) * 100, {
+                postfix: i18next.t('costPerKwh') || undefined,
+              }),
+            })}
+          </div>
         </div>
       </div>
     `;
