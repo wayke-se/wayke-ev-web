@@ -8,4 +8,5 @@
   color-scheme: light; // Force light mode if host site has color-scheme set as meta tag
   font-size: scss-var(font, size, regular);
   line-height: scss-var(font, line-height, main);
+  -webkit-print-color-adjust: exact; // Make printed document look like the rendered page
 }
