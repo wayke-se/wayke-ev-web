@@ -37,6 +37,7 @@
   --palette-error-500: #f6432b;
   --palette-error-700: #980812;
 
+  // Brand: Drive
   &[data-market="NO"] {
     // Palette
     --palette-base-100: #fff;
@@ -74,6 +75,7 @@
     --c-link: var(--palette-accent-01-500);
   }
 
+  // Brand: Wayke
   &[data-market="SE"] {
     // Palette
     --palette-base-100: #fff;
