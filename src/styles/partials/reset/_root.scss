@@ -11,9 +11,9 @@
 :where(#{$root-element}) {
   @include text-size-adjust(100%); // Prevent font scaling in landscape while allowing user zoom
 
-  border: 1px solid color(border, main);
+  border: 1px solid var(--c-border);
   padding: size(3);
-  color: color(text, main);
+  color: var(--c-text);
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

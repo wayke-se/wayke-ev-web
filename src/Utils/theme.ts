@@ -9,20 +9,10 @@ export const createTheme = (theme?: Theme) => {
   style.id = WAYKE_EV_THEME;
 
   style.innerHTML = `
-    ${
-      theme.primaryColor || theme.primaryColorForeground || theme.linkColor
-        ? `
-      :root {
-        ${theme.primaryColor ? `--waykeev-primary-color: ${theme.primaryColor};` : ''}
-        ${
-          theme.primaryColorForeground
-            ? `--waykeev-primary-color-foreground: ${theme.primaryColorForeground};`
-            : ''
-        }
-        ${theme.linkColor ? `--waykeev-link-color: ${theme.linkColor};` : ''}
-      }
-    `
-        : ''
+    .waykeev-root {
+      --theme-primary-bg: ${theme.primaryColor || 'initial'};
+      --theme-primary-fg: ${theme.primaryColorForeground || 'initial'};
+      --theme-link-color: ${theme.linkColor || 'initial'};
     }
   `;
 

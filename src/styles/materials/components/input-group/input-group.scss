@@ -16,7 +16,7 @@
 
   &--has-error {
     .#{$namespace}input-label__label {
-      color: color(semantic, error, text);
+      color: var(--c-input-error-text);
     }
   }
 

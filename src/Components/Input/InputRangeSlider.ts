@@ -70,18 +70,7 @@ class InputRangeSlider extends HtmlNode {
   updateRangeSliderColor(element?: HTMLInputElement) {
     const elem = element || this.node.querySelector<HTMLInputElement>(`#${this.props.id}`);
     if (elem) {
-      const style = getComputedStyle(elem);
-      const currentBackgroundImageBits = style.backgroundImage.split(',');
-      currentBackgroundImageBits[3] = currentBackgroundImageBits[3]?.replace(
-        /(?:[1-9]\d?%|0%|100%)/,
-        `${this.currentValueInPercentage}%`
-      );
-      currentBackgroundImageBits[6] = currentBackgroundImageBits[6]?.replace(
-        /(?:[1-9]\d?%|0%|100%)/,
-        `${this.currentValueInPercentage}%`
-      );
-
-      elem.style.backgroundImage = currentBackgroundImageBits.join(',');
+      elem.style.setProperty('--percentage', `${this.currentValueInPercentage}%`);
     }
   }
 

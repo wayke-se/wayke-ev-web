@@ -43,6 +43,7 @@ class App {
 
     createTheme(this.props.theme);
     this.root.dataset.version = version;
+    this.root.dataset.market = props.marketCode;
     if (this.props.onEvent) {
       registerEventListner(this.props.onEvent);
     }
@@ -74,6 +75,7 @@ class App {
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);
     this.contexts.preview = new Preview(node, {
       settings: this.props,
+      market: this.props.marketCode,
     });
   }
 }

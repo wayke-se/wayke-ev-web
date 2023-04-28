@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
+import { MarketCode } from '../../@types/MarketCode';
 import LinkButton from '../../Components/LinkButton/LinkButton';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputRangeSlider from '../../Components/Input/InputRangeSlider';
@@ -29,6 +30,7 @@ const DistanceOptionsMapped = () =>
 
 interface PreviewProps {
   settings: AppProps;
+  market?: MarketCode;
   charginCostPerKilometer?: EvCalculationChargingPerKilometer;
 }
 
@@ -124,7 +126,7 @@ class Preview extends HtmlNode {
       </div>
       <div class="waykeev-stack waykeev-stack--3">
         <div class="waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center waykeev-hstack--justify-center">
-          ${PoweredByWayke()}
+          ${PoweredByWayke(this.props.market)}
         </div>
       </div>
       <div id="${MODAL_NODE}"></div>
@@ -182,6 +184,7 @@ class Preview extends HtmlNode {
       mileage: this.mileage,
       distanceOptions: DistanceOptions,
       distanceOptionsMapped: DistanceOptionsMapped(),
+      market: this.props.market,
       onChangeRange: (e) => this.onChangeRange(e),
     });
   }

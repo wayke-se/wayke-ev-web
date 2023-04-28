@@ -8,4 +8,148 @@
   $modal-gutter-y: size(4);
 
   @include create-modal-gutter($modal-gutter-x, $modal-gutter-y);
+
+  // Palette
+  --palette-base-100: #fff;
+  --palette-base-200: #f6f6f6;
+  --palette-base-300: #f0f0f0;
+  --palette-base-500: #707070;
+  --palette-base-700: #484848;
+  --palette-base-900: #282828;
+  --palette-primary-100: #ecf6ff;
+  --palette-primary-300: #d5edff;
+  --palette-primary-500: #0057ff;
+  --palette-primary-700: #00489b;
+  --palette-info-100: #ecf6ff;
+  --palette-info-300: #d5edff;
+  --palette-info-500: #0057ff;
+  --palette-info-700: #00489b;
+  --palette-success-100: #f1fbf6;
+  --palette-success-300: #ddf8eb;
+  --palette-success-500: #00a962;
+  --palette-success-700: #fffae9;
+  --palette-warning-100: #fffae9;
+  --palette-warning-300: #fff3c9;
+  --palette-warning-500: #ea8c00;
+  --palette-warning-700: #884a00;
+  --palette-error-100: #fff3f1;
+  --palette-error-300: #ffdeda;
+  --palette-error-500: #f6432b;
+  --palette-error-700: #980812;
+
+  &[data-market="NO"] {
+    // Palette
+    --palette-base-100: #fff;
+    --palette-base-200: #f1f1f1;
+    --palette-base-300: #e0e0e0;
+    --palette-base-500: #505862;
+    --palette-base-700: #302f31;
+    --palette-base-900: #272a2f;
+    --palette-primary-100: #fce7d7;
+    --palette-primary-300: #f6c5a0;
+    --palette-primary-500: #f36c3b;
+    --palette-primary-700: #703615;
+    --palette-accent-01-100: #ebf3f8;
+    --palette-accent-01-300: #c8dcec;
+    --palette-accent-01-500: #2d72a8;
+    --palette-accent-01-700: #005086;
+    --palette-info-100: #e1f1ff;
+    --palette-info-300: #b2d4f3;
+    --palette-info-500: #3b76e7;
+    --palette-info-700: #063084;
+    --palette-success-100: #e8f8ec;
+    --palette-success-300: #bce1c6;
+    --palette-success-500: #4e9862;
+    --palette-success-700: #014d1c;
+    --palette-warning-100: #fff7e1;
+    --palette-warning-300: #f6e3b2;
+    --palette-warning-500: #eabf52;
+    --palette-warning-700: #674208;
+    --palette-error-100: #f6edec;
+    --palette-error-300: #f2d8d5;
+    --palette-error-500: #dd4c38;
+    --palette-error-700: #8e0f02;
+
+    // Global colors
+    --c-link: var(--palette-accent-01-500);
+  }
+
+  &[data-market="SE"] {
+    // Palette
+    --palette-base-100: #fff;
+    --palette-base-200: #f0f0f0;
+    --palette-base-300: #e1e1e1;
+    --palette-base-500: #707070;
+    --palette-base-700: #424242;
+    --palette-base-900: #181818;
+    --palette-primary-100: #faeeed;
+    --palette-primary-300: #fad5d5;
+    --palette-primary-500: #ea576e;
+    --palette-primary-700: #8f051a;
+    --palette-accent-01-100: #dff3f7;
+    --palette-accent-01-300: #bee3ee;
+    --palette-accent-01-500: #00b6d2;
+    --palette-accent-01-700: #022d3f;
+    --palette-info-100: #e1f1ff;
+    --palette-info-300: #b2d4f3;
+    --palette-info-500: #3b76e7;
+    --palette-info-700: #063084;
+    --palette-success-100: #e5f7ed;
+    --palette-success-300: #abd9c1;
+    --palette-success-500: #448f67;
+    --palette-success-700: #15452b;
+    --palette-warning-100: #fff2e1;
+    --palette-warning-300: #f9dbb6;
+    --palette-warning-500: #fda32b;
+    --palette-warning-700: #673c03;
+    --palette-error-100: #ffe4e4;
+    --palette-error-300: #ffbbbb;
+    --palette-error-500: #eb2a2a;
+    --palette-error-700: #760f0f;
+
+    // Global colors
+    --c-link: var(--palette-accent-01-500);
+    --c-input-accent: var(--palette-accent-01-500);
+  }
+
+  // Global colors
+  --c-bg: var(--palette-base-100);
+  --c-bg-alt: var(--palette-base-200);
+  --c-text: var(--palette-base-700);
+  --c-text-muted: var(--palette-base-500);
+  --c-border: var(--palette-base-300);
+  --c-link: var(--palette-primary-500);
+  --c-input-bg: var(--palette-base-100);
+  --c-input-text: var(--palette-base-700);
+  --c-input-affix: var(--palette-base-500);
+  --c-input-placeholder: var(--palette-base-500);
+  --c-input-border: var(--palette-base-300);
+  --c-input-border-focus: var(--palette-base-500);
+  --c-input-accent: var(--palette-primary-500);
+  --c-input-required: var(--palette-error-500);
+  --c-input-error-text: var(--palette-error-500);
+  --c-input-error-border: var(--palette-error-500);
+  --c-input-disabled-bg: var(--palette-base-200);
+  --c-overlay: var(--palette-base-900);
+  --c-focus: var(--palette-info-500);
+  --c-semantic-neutral-100: var(--palette-base-100);
+  --c-semantic-neutral-300: var(--palette-base-300);
+  --c-semantic-neutral-500: var(--palette-base-500);
+  --c-semantic-neutral-700: var(--palette-base-700);
+  --c-semantic-info-100: var(--palette-info-100);
+  --c-semantic-info-300: var(--palette-info-300);
+  --c-semantic-info-500: var(--palette-info-500);
+  --c-semantic-info-700: var(--palette-info-700);
+  --c-semantic-success-100: var(--palette-success-100);
+  --c-semantic-success-300: var(--palette-success-300);
+  --c-semantic-success-500: var(--palette-success-500);
+  --c-semantic-success-700: var(--palette-success-700);
+  --c-semantic-warning-100: var(--palette-warning-100);
+  --c-semantic-warning-300: var(--palette-warning-300);
+  --c-semantic-warning-500: var(--palette-warning-500);
+  --c-semantic-warning-700: var(--palette-warning-700);
+  --c-semantic-error-100: var(--palette-error-100);
+  --c-semantic-error-300: var(--palette-error-300);
+  --c-semantic-error-500: var(--palette-error-500);
+  --c-semantic-error-700: var(--palette-error-700);
 }

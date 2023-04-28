@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
+import { MarketCode } from '../../@types/MarketCode';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputRangeSlider from '../../Components/Input/InputRangeSlider';
 import InputSelect, { SelectItem } from '../../Components/Input/InputSelect';
@@ -22,6 +23,7 @@ interface ModalProps {
   mileage: number;
   distanceOptions: number[];
   distanceOptionsMapped: SelectItem[];
+  market?: MarketCode;
   onChangeRange: (e: Event) => void;
 }
 
@@ -99,7 +101,7 @@ class Modal extends HtmlNode {
               </div>
               <footer class="waykeev-modal__footer">
                 <div class="waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center">
-                  ${PoweredByWayke()}
+                  ${PoweredByWayke(this.props.market)}
                 </div>
               </div>
             </div>

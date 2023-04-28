@@ -7,7 +7,7 @@
 .#{$namespace}input-label {
   $root: &;
 
-  --#{$namespace}label-font-size: #{scss-var(font, size, xsmall)};
+  --label-font-size: #{scss-var(font, size, xsmall)};
 
   display: flex;
   flex-wrap: wrap;
@@ -21,14 +21,14 @@
     @include font-medium;
 
     display: block;
-    color: color(text, main);
-    font-size: var(--#{$namespace}label-font-size);
+    color: var(--c-text);
+    font-size: var(--label-font-size);
 
     &--is-required {
       &::after {
         content: '*';
         margin-left: 0.25ch;
-        color: color(semantic, error, text);
+        color: var(--c-input-required);
       }
     }
 
@@ -37,7 +37,7 @@
     }
 
     #{$root}--has-error & {
-      color: color(semantic, error, text);
+      color: var(--c-input-error-text);
     }
   }
 
@@ -50,14 +50,12 @@
   &__help-btn {
     position: relative;
     font-size: scss-var(font, size, regular);
-    color: var(--#{$namespace}link-color, color(link, main));
+    color: var(--theme-link-color, var(--c-link));
     border-radius: 50%; // Used to display a round focus outline
     transition: color 200ms ease;
 
     &:hover {
-      &::after {
-        opacity: 1;
-      }
+      color: currentColor;
     }
 
     // Increase hitbox of button to increase accessibility
@@ -71,26 +69,11 @@
       transform: translate(-50%, -50%);
       border-radius: 50%;
     }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: size(3);
-      height: size(3);
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background-color: color(bg, alt);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 200ms ease;
-    }
   }
 
   &__foldout {
     width: 100%;
-    background-color: color(bg, alt);
+    background-color: var(--c-bg-alt);
     padding: size(1.5);
     margin-top: size(0.5);
     border-radius: scss-var(border, radius, main);

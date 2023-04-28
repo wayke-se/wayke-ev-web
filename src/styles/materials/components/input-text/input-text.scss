@@ -11,21 +11,22 @@
   display: flex;
   align-items: stretch;
   height: var(--#{$namespace}input-height);
-  background-color: color(bg, main);
-  border: scss-var(border, width, main) solid color(border, main);
+  background-color: var(--c-input-bg);
+  color: var(--c-input-text);
+  border: scss-var(border, width, main) solid var(--c-input-border);
   border-radius: scss-var(border, radius, main);
   box-shadow: scss-var(box-shadow, alt);
 
   &--has-error {
-    border-color: color(semantic, error, text);
+    border-color: var(--c-input-error-border);
   }
 
   &--readonly {
-    background-color: color(disabled, bg);
+    background-color: var(--c-input-disabled-bg);
   }
 
   &:not(#{$root}--has-error):not(#{$root}--readonly):focus-within {
-    border-color: color.adjust(color(border, main), $lightness: -20%);
+    border-color: var(--c-input-border-focus);
   }
 
   &__input {
@@ -59,7 +60,7 @@
     @include placeholder {
       @include font-light;
 
-      color: color(text, alt);
+      color: var(--c-input-placeholder);
     }
   }
 
@@ -68,7 +69,7 @@
     display: flex;
     align-items: center;
     padding-right: var(--#{$namespace}input-padding);
-    color: color(text, alt);
+    color: var(--c-input-affix);
     font-size: var(--#{$namespace}unit-font-size);
   }
 
@@ -77,7 +78,7 @@
     display: flex;
     align-items: center;
     padding-left: var(--#{$namespace}input-padding);
-    color: color(text, alt);
+    color: var(--c-input-affix);
     font-size: var(--#{$namespace}unit-font-size);
 
     &--illustration {
