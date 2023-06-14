@@ -7,6 +7,7 @@ import Preview from './Views/Preview';
 import getCostPerKilometer from './Http/getCostPerKilometer';
 import { EvCalculationChargingPerKilometer } from './@types/EvCalculation';
 import { createTheme } from './Utils/theme';
+import { loadFont } from './Utils/font';
 import { EvEvent, EvView, pushEvent, registerEventListner } from './Utils/events';
 import { RequestError } from './Http/http';
 import i18n from './Utils/i18n';
@@ -42,6 +43,7 @@ class App {
     }
 
     createTheme(this.props.theme);
+    loadFont(this.props.marketCode);
     this.root.dataset.version = version;
     this.root.dataset.market = props.marketCode;
     if (this.props.onEvent) {
