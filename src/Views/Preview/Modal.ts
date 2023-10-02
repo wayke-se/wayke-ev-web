@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import { MarketCode } from '../../@types/MarketCode';
@@ -7,6 +6,7 @@ import InputRangeSlider from '../../Components/Input/InputRangeSlider';
 import InputSelect, { SelectItem } from '../../Components/Input/InputSelect';
 import PoweredByWayke from '../../Templates/PoweredByWayke';
 import { EvEvent, EvView, pushEvent } from '../../Utils/events';
+import i18next from '../../Utils/i18n';
 import ModalResult from './ModalResult';
 
 const DISTANCE_SELECT = 'wayke-ev-extended-distance-select';

@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import { MarketCode } from '../../@types/MarketCode';
@@ -11,6 +10,7 @@ import Modal from './Modal';
 import Result from './Result';
 import { EvEvent, EvView, pushEvent } from '../../Utils/events';
 import PoweredByWayke from '../../Templates/PoweredByWayke';
+import i18next from '../../Utils/i18n';
 
 const MODAL_BUTTON = 'wayke-ev-modal-button';
 const MODAL_BUTTON_NODE = `${MODAL_BUTTON}-node`;

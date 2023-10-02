@@ -1,8 +1,12 @@
-import i18next from 'i18next';
+import i18next_default from 'i18next';
 import { MarketCode } from '../@types/MarketCode';
 import { getLanguage } from './market';
 
-const i18n = (marketCode?: MarketCode) => {
+const i18next: typeof i18next_default = i18next_default.createInstance();
+
+export const t = (key: string, options?: any) => i18next?.t(key, options);
+
+export const initializeI18N = (marketCode?: MarketCode) => {
   const locale = getLanguage(marketCode);
   i18next.init({
     lng: locale || 'en-US',
@@ -93,7 +97,7 @@ const i18n = (marketCode?: MarketCode) => {
           standardPrice: 'Standardpris',
           statedPrice: 'Egen strømpris',
           tryAgain: 'Prøv igjen',
-          vehicleRange: 'Vehicle Range',
+          vehicleRange: 'Rekkevidde til kjøretøyet',
           vehicleBatteryCapacity: 'Batterikapasitetsområde for kjøretøy',
           yourElectricPrice: 'Din strømpris',
           yourYearlyDistance: 'Din årlige kjørelengde',
@@ -156,4 +160,4 @@ const i18n = (marketCode?: MarketCode) => {
   });
 };
 
-export default i18n;
+export default i18next;

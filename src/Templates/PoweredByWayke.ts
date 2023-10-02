@@ -1,6 +1,5 @@
-import i18next from 'i18next';
-
 import { MarketCode } from '../@types/MarketCode';
+import i18next from '../Utils/i18n';
 import { getSymbolLogotype } from './Logotype';
 
 const PoweredByWayke = (market?: MarketCode) => `

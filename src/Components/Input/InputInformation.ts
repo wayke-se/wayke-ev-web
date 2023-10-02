@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next from '../../Utils/i18n';
 import HtmlNode from '../Extension/HtmlNode';
 
 const helpClassName = 'waykeev-input-label__help';
