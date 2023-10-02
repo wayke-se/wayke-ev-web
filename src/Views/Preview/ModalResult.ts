@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import ErrorAlert from '../../Components/ErrorAlert';
@@ -11,6 +10,7 @@ import { EvEvent, EvView, pushEvent } from '../../Utils/events';
 import { onlyFloat } from '../../Utils/format';
 import ModalResultStats from './ModalResultStats';
 import { MarketCode } from '../../@types/MarketCode';
+import i18next from '../../Utils/i18n';
 
 const PRICE_OPTION = 'wayke-ev-extended-price-option';
 const PRICE_NODE = `${PRICE_OPTION}-node`;

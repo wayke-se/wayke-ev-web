@@ -10,7 +10,7 @@ import { createTheme } from './Utils/theme';
 import { loadFont } from './Utils/font';
 import { EvEvent, EvView, pushEvent, registerEventListner } from './Utils/events';
 import { RequestError } from './Http/http';
-import i18n from './Utils/i18n';
+import { initializeI18N } from './Utils/i18n';
 
 const VIEW_NODE = 'wayke-ev-web-view-node';
 
@@ -30,7 +30,7 @@ class App {
 
   constructor(props: AppProps) {
     this.props = props;
-    i18n(props.marketCode);
+    initializeI18N(this.props.marketCode);
     const createdRoot = document.createElement('div');
     createdRoot.className = 'waykeev-root';
     this.root = createdRoot;
@@ -71,7 +71,7 @@ class App {
     }
   }
 
-  render() {
+  async render() {
     this.root.innerHTML = `<div id="${VIEW_NODE}"><div>`;
 
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);

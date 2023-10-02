@@ -1,8 +1,8 @@
-import i18next from 'i18next';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
 import { MarketCode } from '../../@types/MarketCode';
+import i18next from '../../Utils/i18n';
 
 const calculateCostPerMonth = (
   costPerKilometer: number | undefined,
