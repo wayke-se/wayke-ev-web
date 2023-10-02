@@ -7,8 +7,10 @@ import Preview from './Views/Preview';
 import getCostPerKilometer from './Http/getCostPerKilometer';
 import { EvCalculationChargingPerKilometer } from './@types/EvCalculation';
 import { createTheme } from './Utils/theme';
+import { loadFont } from './Utils/font';
 import { EvEvent, EvView, pushEvent, registerEventListner } from './Utils/events';
 import { RequestError } from './Http/http';
+import i18n from './Utils/i18n';
 
 const VIEW_NODE = 'wayke-ev-web-view-node';
 
@@ -28,6 +30,7 @@ class App {
 
   constructor(props: AppProps) {
     this.props = props;
+    i18n(props.marketCode);
     const createdRoot = document.createElement('div');
     createdRoot.className = 'waykeev-root';
     this.root = createdRoot;
@@ -40,7 +43,9 @@ class App {
     }
 
     createTheme(this.props.theme);
+    loadFont(this.props.marketCode);
     this.root.dataset.version = version;
+    this.root.dataset.market = props.marketCode;
     if (this.props.onEvent) {
       registerEventListner(this.props.onEvent);
     }
@@ -72,6 +77,7 @@ class App {
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);
     this.contexts.preview = new Preview(node, {
       settings: this.props,
+      marketCode: this.props.marketCode,
     });
   }
 }

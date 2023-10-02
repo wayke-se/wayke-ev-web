@@ -2,6 +2,11 @@
 
 .#{$namespace}powered-by-wayke {
   display: block;
-  width: size(5);
+  height: size(2.5);
   fill: currentColor;
+
+  // Market specific styling
+  [data-market="NO"] & {
+    height: size(3);
+  }
 }

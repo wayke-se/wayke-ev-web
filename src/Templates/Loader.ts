@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 type LoaderType = 'inline';
 
 interface LoaderProps {
@@ -23,7 +25,7 @@ const Loader = (props?: LoaderProps) => {
   return `
   <div class="${classList.join(' ')}" role="status">
     <div class="waykeev-loader__spinner" aria-hidden="true"></div>
-    <div class="waykeev-sr-only">Laddar...</div>
+    <div class="waykeev-sr-only">${i18next.t('loading')}...</div>
   </div>
 `;
 };

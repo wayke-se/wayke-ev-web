@@ -45,6 +45,7 @@ The associated css is injected into head by default once a `new WaykeEvWeb(...)`
 ```js
 new WaykeEvWeb({
   url: 'https://api.wayke.se',
+  marketCode: 'SE',
   id: '4a18e9a4-f7ee-458e-8bb4-9b6b8b778bbf',
   rootId: 'custom-id',
   theme: {
@@ -62,11 +63,13 @@ new WaykeEvWeb({
 
 | Environment | Url |
 | ----------- | --- |
-| Test | https://test-ext-api.wayketech.se |
+| Test | https://api.wayketech.se |
 | Production | https://api.wayke.se |
 
 
 ### Optional
+
+- `marketCode` Provide custom element that WaykeValuationWeb should append to. Defaults to `undefined`, possible values are `EN`, `SE` and `NO`. If left undefined then `EN` will be used.
 - `rootId` Choose the element, id, that WakeEvWeb should append to, by default it will be appended to the body.
 - `hash` Enables hash in route. Will prevent the user from navigating to the previous page when using the back button. It's recommended to enable this option for a better experience in mobile as the modal takes up the whole screen.
 - `onEvent` Listen to events. See [Events](#events) below.
@@ -82,8 +85,8 @@ new WaykeEvWeb({
 | MAIN  | INITIAL_REQUEST_PENDING        | `{ "id": string }`                                                  |
 | MAIN  | INITIAL_REQUEST_SUCCEEDED      | `{ "id": string }`                                                  |
 | MAIN  | INITIAL_REQUEST_FAILED         | `{ "id": string, "statusCode": number \| undefined }`               |
-| MAIN  | MILEAGE_SLIDER                 | `{ "id": string }`                                                  |
-| MAIN  | MILEAGE_SELECT                 | `{ "id": string }`                                                  |
+| MAIN  | DISTANCE_SLIDER                | `{ "id": string }`                                                  |
+| MAIN  | DISTANCE_SELECT                | `{ "id": string }`                                                  |
 | MAIN  | MODAL_OPENED                   | `{ "id": string }`                                                  |
 | MODAL | MODAL_CLOSED                   | `{ "id": string }`                                                  |
 | MODAL | REQUEST_CUSTOM_PRICE_PENDING   | `{ "id": string }`                                                  |

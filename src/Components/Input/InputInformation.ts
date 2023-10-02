@@ -1,3 +1,4 @@
+import i18next from 'i18next';
 import HtmlNode from '../Extension/HtmlNode';
 
 const helpClassName = 'waykeev-input-label__help';
@@ -36,8 +37,8 @@ class InputInformation extends HtmlNode {
 
       if (this.open) {
         label.innerHTML = `
-          <button class="waykeev-input-label__help-btn" title="Vad betyder detta?">
-            <span class="waykeev-sr-only">Stäng hjälp</span>
+          <button class="waykeev-input-label__help-btn" title="${i18next.t('hideHelp')}">
+            <span class="waykeev-sr-only">${i18next.t('hideHelp')}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -56,8 +57,8 @@ class InputInformation extends HtmlNode {
       } else {
         existFoldout?.remove();
         label.innerHTML = `
-          <button class="waykeev-input-label__help-btn" title="Vad betyder detta?">
-            <span class="waykeev-sr-only">Visa hjälp</span>
+          <button class="waykeev-input-label__help-btn" title="${i18next.t('showHelp')}">
+            <span class="waykeev-sr-only">${i18next.t('showHelp')}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"

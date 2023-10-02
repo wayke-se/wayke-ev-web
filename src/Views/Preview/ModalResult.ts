@@ -1,14 +1,16 @@
+import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import ErrorAlert from '../../Components/ErrorAlert';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputField from '../../Components/Input/InputField';
-import InputRadioGroup, { RadioItem } from '../../Components/Input/InputRadioGroup';
+import InputRadioGroup from '../../Components/Input/InputRadioGroup';
 import getCostPerKilometer from '../../Http/getCostPerKilometer';
 import { RequestError } from '../../Http/http';
 import { EvEvent, EvView, pushEvent } from '../../Utils/events';
 import { onlyFloat } from '../../Utils/format';
 import ModalResultStats from './ModalResultStats';
+import { MarketCode } from '../../@types/MarketCode';
 
 const PRICE_OPTION = 'wayke-ev-extended-price-option';
 const PRICE_NODE = `${PRICE_OPTION}-node`;
@@ -24,23 +26,24 @@ const CUSTOM_PRICE = 'customPrice';
 
 type PriceOptionTypes = 'standardPrice' | 'customPrice';
 
-const RadioElements: RadioItem[] = [
+const RadioElements = () => [
   {
     id: `radio-standard-price`,
     value: STANDARD_PRICE,
-    title: 'Schablonpris',
+    title: i18next.t('standardPrice') || undefined,
   },
   {
     id: `radio-custom-price`,
     value: CUSTOM_PRICE,
-    title: 'Eget elpris',
+    title: i18next.t('statedPrice') || undefined,
   },
 ];
 
 interface ModalResultProps {
   settings: AppProps;
   charginCostPerKilometer: EvCalculationChargingPerKilometer;
-  mileage: number;
+  distance: number;
+  marketCode: MarketCode;
 }
 
 interface ModalResultContext {
@@ -58,8 +61,9 @@ class ModalResult extends HtmlNode {
   private priceOption: PriceOptionTypes = STANDARD_PRICE;
   private costPerKwh?: number;
   private charginCostPerKilometer: EvCalculationChargingPerKilometer;
-  private mileage: number;
+  private distance: number;
   private costPerKilometerCustom?: EvCalculationChargingPerKilometer;
+  private marketCode: MarketCode;
 
   constructor(element: HTMLElement | null, props: ModalResultProps) {
     super(element);
@@ -67,8 +71,9 @@ class ModalResult extends HtmlNode {
     this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.costPerKwh =
       storedCostPerKwh || (props.charginCostPerKilometer?.description.costPerKwh.value || 0) * 100;
-    this.mileage = props.mileage;
+    this.distance = props.distance;
     this.costPerKilometerCustom = props.charginCostPerKilometer;
+    this.marketCode = props.marketCode;
 
     this.render();
   }
@@ -88,7 +93,7 @@ class ModalResult extends HtmlNode {
         id: this.props.settings.id,
       });
       this.costPerKilometerCustom = response;
-      this.contexts.stats?.update(this.costPerKilometerCustom, this.mileage);
+      this.contexts.stats?.update(this.costPerKilometerCustom, this.distance);
     } catch (e) {
       const statusCode = (e as RequestError)?.status;
       pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_PRICE_FAILED, {
@@ -96,7 +101,11 @@ class ModalResult extends HtmlNode {
         statusCode,
       });
       this.contexts.errorAlert?.update(
-        `Ett fel har inträffat. <button type="button" title="Försök igen" class="waykeev-link" id="waykeev-error-retry">Försök igen</button>`
+        `${i18next.t('anErrorHasOccured')} <button type="button" title="${i18next.t(
+          'tryAgain'
+        )}" class="waykeev-link" id="waykeev-error-retry">
+          ${i18next.t('tryAgain')}
+        </button>`
       );
       this.contexts.errorAlert?.node
         ?.querySelector('#waykeev-error-retry')
@@ -119,23 +128,23 @@ class ModalResult extends HtmlNode {
       this.costPerKwh !== this.props.charginCostPerKilometer?.description.costPerKwh.value
     ) {
       this.fetchData();
-    } else if (this.costPerKilometerCustom && this.mileage) {
+    } else if (this.costPerKilometerCustom && this.distance) {
       this.contexts.stats?.update(
         this.priceOption === 'customPrice'
           ? this.costPerKilometerCustom
           : this.props.charginCostPerKilometer,
-        this.mileage
+        this.distance
       );
     }
   }
 
-  update(mileage: number) {
-    this.mileage = mileage;
+  update(distance: number) {
+    this.distance = distance;
     this.contexts.stats?.update(
       this.priceOption === 'customPrice'
         ? this.costPerKilometerCustom
         : this.props.charginCostPerKilometer,
-      this.mileage
+      this.distance
     );
   }
 
@@ -163,7 +172,7 @@ class ModalResult extends HtmlNode {
         <div class="waykeev-stack waykeev-stack--2" id="${CUSTOM_PRICE_INPUT_NODE}"></div>
         <div class="waykeev-stack waykeev-stack--2" id="${REQUEST_ERROR}"></div>
       </div>
-      <div class="waykeev-stack waykeev-stack--3"id="${STATS_NODE}"></div>
+      <div class="waykeev-stack waykeev-stack--3" id="${STATS_NODE}"></div>
     `;
 
     if (this.priceOption === 'customPrice') {
@@ -171,11 +180,11 @@ class ModalResult extends HtmlNode {
         this.node.querySelector<HTMLDivElement>(`#${CUSTOM_PRICE_INPUT_NODE}`),
         {
           id: CUSTOM_PRICE_INPUT,
-          title: 'Ditt elpris',
+          title: i18next.t('yourElectricPrice') || '',
           name: 'custom-price',
           value: this.costPerKwh?.toString() || '',
-          unit: 'öre/kWh',
-          information: 'Ange ditt totala pris per kWh så som det står på din faktura.',
+          unit: i18next.t('costPerKwh') || undefined,
+          information: i18next.t('stateYourTotalKwh') || undefined,
           pattern: '[0-9]*',
           inputmode: 'numeric',
           onChange: (e) => this.onChange(e),
@@ -184,10 +193,10 @@ class ModalResult extends HtmlNode {
     }
 
     this.contexts.priceOption = new InputRadioGroup(this.node.querySelector(`#${PRICE_NODE}`), {
-      title: 'Vilket elpris vill du räkna på?',
+      title: i18next.t('selectPriceToCalculate') || undefined,
       checked: this.priceOption,
       name: 'price',
-      options: RadioElements,
+      options: RadioElements(),
       onClick: (e) => this.onChangeRadio(e),
     });
 
@@ -197,7 +206,8 @@ class ModalResult extends HtmlNode {
         this.priceOption === 'standardPrice'
           ? this.charginCostPerKilometer
           : this.costPerKilometerCustom,
-      mileage: this.mileage || 0,
+      distance: this.distance || 0,
+      marketCode: this.marketCode,
     });
 
     this.contexts.errorAlert = new ErrorAlert(

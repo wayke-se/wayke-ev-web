@@ -1,40 +1,50 @@
+import i18next from 'i18next';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
+import { MarketCode } from '../../@types/MarketCode';
 
-const calculateCostPerMonth = (costPerKilometer: number | undefined, distance?: number) => {
+const calculateCostPerMonth = (
+  costPerKilometer: number | undefined,
+  distance?: number,
+  marketCode?: MarketCode
+) => {
   if (!costPerKilometer || !distance) return undefined;
-  return (costPerKilometer * distance * 10) / 12;
+  return (costPerKilometer * distance * (marketCode === 'SE' ? 10 : 1)) / 12;
 };
 
 interface ResultProps {
   charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  mileage: number;
+  distance: number;
+  marketCode: MarketCode;
 }
 
 class Result extends HtmlNode {
   private readonly props: ResultProps;
   private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  private mileage?: number;
+  private distance?: number;
+  private marketCode: MarketCode;
 
   constructor(element: HTMLElement | null, props: ResultProps) {
     super(element);
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
-    this.mileage = props.mileage;
+    this.distance = props.distance;
+    this.marketCode = props.marketCode;
     this.render();
   }
 
-  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, mileage?: number) {
+  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, distance?: number) {
     this.charginCostPerKilometer = charginCostPerKilometer;
-    this.mileage = mileage;
+    this.distance = distance;
     this.render();
   }
 
   render() {
     const costPerMonth = calculateCostPerMonth(
       this.charginCostPerKilometer?.description.costPerKilometer.value,
-      this.mileage
+      this.distance,
+      this.marketCode
     );
 
     const costPerKwh = this.charginCostPerKilometer?.description.costPerKwh;
@@ -45,16 +55,19 @@ class Result extends HtmlNode {
           <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
             costPerMonth,
             {
-              postfix: 'kr/mån*',
+              postfix: `${i18next.t('costPerMonth')}*`,
               decimals: 0,
             }
           )}</div>
         </div>
         <div class="waykeev-stack waykeev-stack--1">
-          <div class="waykeev-disclaimer">*Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt en schablonkostnad på ${prettyNumber(
-            (costPerKwh?.value || 0) * 100,
-            { postfix: 'öre/kWh' }
-          )}.</div>
+          <div class="waykeev-disclaimer">
+            * ${i18next.t('costPerMonthDisclaimer.templated', {
+              costPerKwh: prettyNumber((costPerKwh?.value || 0) * 100, {
+                postfix: i18next.t('costPerKwh') || undefined,
+              }),
+            })}
+          </div>
         </div>
       </div>
     `;

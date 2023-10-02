@@ -1,72 +1,42 @@
 @use '../../../helpers' as *;
 
-@mixin alert-tone($root, $bg, $text, $iconBg, $iconText) {
-  background-color: $bg;
-  color: $text;
-
-  #{$root}__icon-badge {
-    background-color: $iconBg;
-    color: $iconText;
-  }
-}
-
 .#{$namespace}alert {
-  $root: &;
-
-  --#{$namespace}icon-size: #{size(3)};
-  --#{$namespace}content-size: #{scss-var(font, size, xsmall)};
-  --#{$namespace}content-line-height: #{scss-var(font, line-height, main)};
-
-  @include alert-tone(
-    $root,
-    color(bg, alt),
-    color(text, main),
-    darken(color(bg, alt), 5%),
-    color(text, main)
-  );
+  --bg: var(--c-semantic-neutral-100);
+  --fg: var(--c-text);
+  --icon-bg: var(--c-semantic-neutral-300);
+  --icon-fg: var(--c-semantic-neutral-700);
+  --icon-size: #{size(3)};
+  --content-size: #{scss-var(font, size, xsmall)};
+  --content-line-height: #{scss-var(font, line-height, main)};
 
   display: flex;
   padding: size(1.5);
   border-radius: scss-var(border, radius, main);
+  background-color: var(--bg);
+  color: var(--fg);
 
   &--success {
-    @include alert-tone(
-      $root,
-      color(semantic, success, alt),
-      color(text, main),
-      color(semantic, success, main),
-      color(semantic, success, text)
-    );
+    --bg: var(--c-semantic-success-100);
+    --icon-bg: var(--c-semantic-success-300);
+    --icon-fg: var(--c-semantic-success-700);
   }
 
   &--warning {
-    @include alert-tone(
-      $root,
-      color(semantic, warning, alt),
-      color(text, main),
-      color(semantic, warning, main),
-      color(semantic, warning, text)
-    );
+    --bg: var(--c-semantic-warning-100);
+    --icon-bg: var(--c-semantic-warning-300);
+    --icon-fg: var(--c-semantic-warning-700);
   }
 
   &--error {
-    @include alert-tone(
-      $root,
-      color(semantic, error, alt),
-      color(text, main),
-      color(semantic, error, main),
-      color(semantic, error, text)
-    );
+    --bg: var(--c-semantic-error-100);
+    --icon-bg: var(--c-semantic-error-300);
+    --icon-fg: var(--c-semantic-error-700);
   }
 
   &--info {
-    @include alert-tone(
-      $root,
-      color(semantic, info, alt),
-      color(text, main),
-      color(semantic, info, main),
-      color(semantic, info, text)
-    );
+    --bg: var(--c-semantic-info-100);
+    --icon-bg: var(--c-semantic-info-300);
+    --icon-fg: var(--c-semantic-info-700);
   }
 
   &__icon {
@@ -78,17 +48,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--#{$namespace}icon-size);
-    height: var(--#{$namespace}icon-size);
-    margin-top: calc((var(--#{$namespace}icon-size) - var(--#{$namespace}content-size) * var(--#{$namespace}content-line-height)) / -2);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    margin-top: calc((var(--icon-size) - var(--content-size) * var(--content-line-height)) / -2);
     border-radius: 50%;
+    background-color: var(--icon-bg);
+    color: var(--icon-fg);
     font-size: scss-var(font, size, small);
   }
 
   &__content {
     flex: 1 1 auto;
     min-width: 0;
-    font-size: var(--#{$namespace}content-size);
-    line-height: var(--#{$namespace}content-line-height);
+    font-size: var(--content-size);
+    line-height: var(--content-line-height);
   }
 }

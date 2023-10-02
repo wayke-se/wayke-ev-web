@@ -1,49 +1,19 @@
 /// This file contains font settings and mixins to use these fonts
 
-@use 'sass:map';
-
-// Define fonts in this map
-$fonts: (
-  light: (
-    name: 'Wayke EV Styrene A Light',
-    file: 'StyreneA-Light-Web',
-    weight: 300,
-  ),
-  regular: (
-    name: 'Wayke EV Styrene A Regular',
-    file: 'StyreneA-Regular-Web',
-    weight: 400,
-  ),
-  medium: (
-    name: 'Wayke EV Styrene A Medium',
-    file: 'StyreneA-Medium-Web',
-    weight: 500,
-  ),
-  bold: (
-    name: 'Wayke EV Styrene A Bold',
-    file: 'StyreneA-Bold-Web',
-    weight: 700,
-  ),
-);
-
-// Mixins used in the project for each font
+@use "../variable" as *;
 
 @mixin font-light {
-  font-family: map.get($fonts, light, name), sans-serif;
-  font-weight: map.get($fonts, light, weight);
+  font-weight: var(--#{$namespace}font-weight-light, 300);
 }
 
 @mixin font-regular {
-  font-family: map.get($fonts, regular, name), sans-serif;
-  font-weight: map.get($fonts, regular, weight);
+  font-weight: var(--#{$namespace}font-weight-regular, 400);
 }
 
 @mixin font-medium {
-  font-family: map.get($fonts, medium, name), sans-serif;
-  font-weight: map.get($fonts, medium, weight);
+  font-weight: var(--#{$namespace}font-weight-medium, 500);
 }
 
 @mixin font-bold {
-  font-family: map.get($fonts, bold, name), sans-serif;
-  font-weight: map.get($fonts, bold, weight);
+  font-weight: var(--#{$namespace}font-weight-bold, 700);
 }

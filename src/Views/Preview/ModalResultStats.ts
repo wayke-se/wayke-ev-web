@@ -1,36 +1,45 @@
+import i18next from 'i18next';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
+import { MarketCode } from '../../@types/MarketCode';
 
 type PriceOptionTypes = 'standardPrice' | 'customPrice';
 
-const calculateCostPerMonth = (costPerKilometer: number | undefined, distance?: number) => {
+const calculateCostPerMonth = (
+  costPerKilometer: number | undefined,
+  distance: number | undefined,
+  marketCode: MarketCode
+) => {
   if (!costPerKilometer || !distance) return undefined;
-  return (costPerKilometer * distance * 10) / 12;
+  return (costPerKilometer * distance * (marketCode === 'SE' ? 10 : 1)) / 12;
 };
 
 interface ModalResultStatsProps {
   priceOption: PriceOptionTypes;
   charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  mileage: number;
+  distance: number;
+  marketCode: MarketCode;
 }
 
 class ModalResultStats extends HtmlNode {
   private readonly props: ModalResultStatsProps;
   private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  private mileage: number;
+  private distance: number;
+  private marketCode: MarketCode;
 
   constructor(element: HTMLElement | null, props: ModalResultStatsProps) {
     super(element);
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
-    this.mileage = props.mileage;
+    this.distance = props.distance;
+    this.marketCode = props.marketCode;
     this.render();
   }
 
-  update(charginCostPerKilometer: EvCalculationChargingPerKilometer | undefined, mileage: number) {
+  update(charginCostPerKilometer: EvCalculationChargingPerKilometer | undefined, distance: number) {
     this.charginCostPerKilometer = charginCostPerKilometer;
-    this.mileage = mileage;
+    this.distance = distance;
     this.render();
   }
 
@@ -41,7 +50,8 @@ class ModalResultStats extends HtmlNode {
   render() {
     const costPerMonth = calculateCostPerMonth(
       this.charginCostPerKilometer?.description.costPerKilometer.value,
-      this.mileage
+      this.distance,
+      this.marketCode
     );
 
     const costPerKwh = this.charginCostPerKilometer?.description.costPerKwh;
@@ -56,33 +66,36 @@ class ModalResultStats extends HtmlNode {
             <div class="waykeev-heading waykeev-heading--3 waykeev-no-margin">${prettyNumber(
               costPerMonth,
               {
-                postfix: 'kr/mån*',
+                postfix: `${i18next.t('costPerMonth')}*`,
                 decimals: 0,
               }
             )}</div>
           </div>
           <div class="waykeev-stack waykeev-stack--1">
             <div class="waykeev-disclaimer">
-            *Beräknat på fordonets batterikapacitet, räckvidd, den angivna årliga körsträckan samt ${
+            * ${i18next.t(
               this.props.priceOption === 'standardPrice'
-                ? `en schablonkostnad på ${prettyNumber((costPerKwh?.value || 0) * 100, {
-                    postfix: 'öre/kWh',
-                  })}.`
-                : `det egna angivna elpriset.`
-            }
+                ? 'costPerMonthDisclaimer.templated'
+                : 'costPerMonthDisclaimer.statedPrice',
+              {
+                costPerKwh: prettyNumber((costPerKwh?.value || 0) * 100, {
+                  postfix: i18next.t('costPerKwh') || undefined,
+                }),
+              }
+            )}
             </div>
           </div>
         </div>
         <div class="waykeev-stack waykeev-stack--3">
           <ul class="waykeev-key-value-list">
             <li class="waykeev-key-value-list__item">
-              <div class="waykeev-key-value-list__key">Fordonets batterikapacitet</div>
+              <div class="waykeev-key-value-list__key">${i18next.t('vehicleBatteryCapacity')}</div>
               <div class="waykeev-key-value-list__value">${prettyNumber(batteryCapacity?.value, {
                 postfix: batteryCapacity?.unit,
               })}</div>
             </li>
             <li class="waykeev-key-value-list__item">
-              <div class="waykeev-key-value-list__key">Fordonets räckvidd</div>
+              <div class="waykeev-key-value-list__key">${i18next.t('vehicleRange')}</div>
               <div class="waykeev-key-value-list__value">${prettyNumber(
                 electricalRangeWLTP?.value,
                 {
@@ -91,23 +104,31 @@ class ModalResultStats extends HtmlNode {
               )}</div>
               </li>
             <li class="waykeev-key-value-list__item">
-              <div class="waykeev-key-value-list__key"> Angiven årlig körsträcka</div>
-              <div class="waykeev-key-value-list__value">${prettyNumber(this.mileage, {
-                postfix: 'mil',
+              <div class="waykeev-key-value-list__key">${i18next.t('statedAnnualDistance')}</div>
+              <div class="waykeev-key-value-list__value">${prettyNumber(this.distance, {
+                postfix: i18next.t('distanceUnit', { count: this.distance }) || undefined,
               })}</div>
             </li>
             ${
               this.props.priceOption === 'standardPrice'
                 ? `
                   <li class="waykeev-key-value-list__item">
-                    <div class="waykeev-key-value-list__key">Elpris schablon, inkl. energiskatt och moms</div>
+                    <div class="waykeev-key-value-list__key">${i18next.t(
+                      'electricityPriceTemplateIncVat'
+                    )}</div>
                     <div class="waykeev-key-value-list__value">
-                      ${prettyNumber((costPerKwh?.value || 0) * 100, { postfix: 'öre/kWh' })}
+                      ${prettyNumber((costPerKwh?.value || 0) * 100, {
+                        postfix: i18next.t('costPerKwh') || undefined,
+                      })}
                     </div>
                   </li>
                   <li class="waykeev-key-value-list__item">
-                    <div class="waykeev-key-value-list__key">Elnätsavgift</div>
-                    <div class="waykeev-key-value-list__value">Inte inkluderad i beräkningen</div>
+                    <div class="waykeev-key-value-list__key">${i18next.t(
+                      'electricGridFee.key'
+                    )}</div>
+                    <div class="waykeev-key-value-list__value">${i18next.t(
+                      'electricGridFee.value'
+                    )}</div>
                   </li>
                 `
                 : ''

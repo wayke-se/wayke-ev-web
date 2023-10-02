@@ -7,6 +7,9 @@
   --#{$namespace}icon-margin: #{size(1)};
   --#{$namespace}label-size: #{scss-var(font, size, small)};
   --#{$namespace}label-line-height: #{scss-var(font, line-height, main)};
+  --unchecked-bg: var(--c-bg-alt);
+  --checked-bg: var(--theme-primary-bg, var(--c-input-accent));
+  --checked-fg: var(--theme-primary-fg, var(--c-bg));
 
   $margin-top-calc: calc((var(--#{$namespace}icon-size) - var(--#{$namespace}label-size) * var(--#{$namespace}label-line-height)) / -2);
 
@@ -37,8 +40,8 @@
         ~ #{$root}__header {
           #{$root}__label {
             &::before {
-              background-color: var(--#{$namespace}primary-color-foreground, color(bg, main)); // --#{$namespace}primary-color-foreground set in custom theme style
-              box-shadow: inset 0 0 0 size(0.625) var(--#{$namespace}primary-color, color(action, main)); // --#{$namespace}primary-color set in custom theme style
+              background-color: var(--checked-fg);
+              box-shadow: inset 0 0 0 size(0.625) var(--checked-bg);
             }
           }
         }
@@ -65,7 +68,7 @@
               @include mask-image(url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M0 0v16h16V0H0zm12.8 5.7L7 11.5c-.3.3-.8.3-1.2 0L3.2 9c-.3-.3-.3-.8 0-1.2.3-.3.8-.3 1.2 0l1.9 1.9 5.2-5.2c.3-.3.8-.3 1.2 0s.4.8.1 1.2z"/></svg>'));
               @include mask-size(100%);
 
-              background-color: var(--#{$namespace}primary-color, color(action, main)); // --#{$namespace}primary-color set in custom theme style
+              background-color: var(--checked-bg);
             }
 
             // Add backdrop to set color of check mark
@@ -76,7 +79,7 @@
               height: var(--#{$namespace}icon-size);
               top: $margin-top-calc;
               left: 0;
-              background-color: var(--#{$namespace}primary-color-foreground, color(bg, main)); // --#{$namespace}primary-color-foreground set in custom theme style
+              background-color: var(--checked-fg);
               border-radius: 50%; // Avoid pixel bugs on checkbox outer
               z-index: 1;
             }
@@ -123,7 +126,7 @@
       height: var(--#{$namespace}icon-size);
       margin-right: var(--#{$namespace}icon-margin);
       margin-top: $margin-top-calc;
-      background-color: color(bg, alt);
+      background-color: var(--unchecked-bg);
       cursor: pointer;
     }
   }

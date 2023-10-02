@@ -49,5 +49,11 @@
     &--no-shrink {
       flex-shrink: 0;
     }
+
+    &--hide-empty {
+      &:empty {
+        display: none;
+      }
+    }
   }
 }

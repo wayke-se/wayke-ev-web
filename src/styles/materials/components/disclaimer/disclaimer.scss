@@ -2,5 +2,5 @@
 
 .#{$namespace}disclaimer {
   font-size: scss-var(font, size, xsmall);
-  color: color(text, alt);
+  color: var(--c-text-muted);
 }

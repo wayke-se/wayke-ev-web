@@ -39,6 +39,10 @@
   $track-height: size(0.5);
   $thumb-size: size(4);
 
+  --track-color: var(--c-bg-alt);
+  --thumb-color: var(--c-input-bg);
+  --progress-color: var(--theme-primary-bg, var(--c-input-accent));
+
   padding: (math.div($thumb-size, 2) - math.div($track-height, 2)) 0;
 
   &__input {
@@ -53,24 +57,25 @@
       width: $thumb-size;
       height: $thumb-size;
       margin-top: math.div($track-height, 2) - math.div($thumb-size, 2);
-      background-color: var(--#{$namespace}primary-color-foreground, color(bg, main));
-      border: scss-var(border, width, main) solid var(--#{$namespace}primary-color, color(primary, main));
+      background-color: var(--thumb-color);
+      border: scss-var(border, width, main) solid var(--progress-color);
       border-radius: 50%;
       box-shadow: scss-var(box-shadow, main);
       transform-origin: 50% 50%;
       transition: transform 200ms ease;
+      cursor: move;
+      cursor: grab;
     }
     @include input-range-track-progress {
-      background-color: var(--#{$namespace}primary-color, color(primary, main));
+      background-color: var(--progress-color);
     }
 
     display: block;
     width: 100%;
     height: $track-height;
     margin: 0;
-    background-color: color(bg, alt);
-    background-image: linear-gradient(to right, var(--#{$namespace}primary-color, color(primary, main)) 0%, color(bg, alt) 0%);
-    cursor: pointer;
+    background-color: var(--track-color);
+    background-image: linear-gradient(to right, var(--progress-color) var(--percentage, 0%), var(--track-color) var(--percentage, 0%));
 
     &:active {
       @include input-range-thumb {

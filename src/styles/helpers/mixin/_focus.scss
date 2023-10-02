@@ -1,7 +1,5 @@
 /// Mixins used to add focus to elements
 
-@use '../color' as *;
-
 @mixin focus {
   @supports selector(:focus-visible) {
     &:focus-visible {
@@ -18,6 +16,6 @@
 }
 
 @mixin focus-style {
-  outline: 2px solid color(focus, main);
+  outline: 2px solid var(--c-focus);
   outline-offset: 2px;
 }

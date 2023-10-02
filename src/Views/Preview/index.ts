@@ -1,5 +1,7 @@
+import i18next from 'i18next';
 import { AppProps } from '../../@types/AppProps';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
+import { MarketCode } from '../../@types/MarketCode';
 import LinkButton from '../../Components/LinkButton/LinkButton';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import InputRangeSlider from '../../Components/Input/InputRangeSlider';
@@ -12,21 +14,25 @@ import PoweredByWayke from '../../Templates/PoweredByWayke';
 
 const MODAL_BUTTON = 'wayke-ev-modal-button';
 const MODAL_BUTTON_NODE = `${MODAL_BUTTON}-node`;
-const MILEAGE_SELECT = 'wayke-ev-mileage-select';
-const MILEAGE_SELECT_NODE = `${MILEAGE_SELECT}-node`;
-const MILEAGE_RANGE = 'wayke-ev-mileage-range';
-const MILEAGE_RANGE_NODE = `${MILEAGE_RANGE}-node`;
+const DISTANCE_SELECT = 'wayke-ev-distance-select';
+const DISTANCE_SELECT_NODE = `${DISTANCE_SELECT}-node`;
+const DISTANCE_RANGE = 'wayke-ev-distance-range';
+const DISTANCE_RANGE_NODE = `${DISTANCE_RANGE}-node`;
 const RESULT_NODE = 'wayke-ev-result-node';
 const MODAL_NODE = 'wayke-ev-web-modal-node';
 
-const DistanceOptions = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
-const DistanceOptionsMapped = DistanceOptions.map((d) => ({
-  value: d,
-  title: prettyNumber(d, { postfix: 'mil' }),
-}));
+const DistanceOptionsKm = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000];
+const DistanceOptionsInScandinavianMiles = DistanceOptionsKm.map((x) => x / 10);
+
+const DistanceOptionsMapped = (marketCode: MarketCode) =>
+  (marketCode === 'SE' ? DistanceOptionsInScandinavianMiles : DistanceOptionsKm).map((d) => ({
+    value: d,
+    title: prettyNumber(d, { postfix: i18next.t('distanceUnit') || undefined }),
+  }));
 
 interface PreviewProps {
   settings: AppProps;
+  marketCode?: MarketCode;
   charginCostPerKilometer?: EvCalculationChargingPerKilometer;
 }
 
@@ -41,13 +47,21 @@ interface PreviewContext {
 class Preview extends HtmlNode {
   private readonly props: PreviewProps;
   private contexts: PreviewContext = {};
-  private mileage = DistanceOptionsMapped[2].value;
+  private distance: number;
+  private distanceOptions: number[];
+  private distanceStep: number;
   private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
+  private marketCode: MarketCode;
 
   constructor(element: HTMLElement | null, props: PreviewProps) {
     super(element);
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
+    this.marketCode = this.props.marketCode || 'SE';
+    this.distance = DistanceOptionsMapped(this.marketCode)[2].value;
+    this.distanceOptions =
+      this.marketCode === 'SE' ? DistanceOptionsInScandinavianMiles : DistanceOptionsKm;
+    this.distanceStep = this.marketCode === 'SE' ? 500 : 5000;
     this.render();
 
     if (this.props.settings.hash) {
@@ -72,17 +86,17 @@ class Preview extends HtmlNode {
     pushEvent(
       EvView.MAIN,
       (e.currentTarget as HTMLInputElement | HTMLSelectElement).nodeName === 'SELECT'
-        ? EvEvent.MILEAGE_SELECT
-        : EvEvent.MILEAGE_SLIDER,
+        ? EvEvent.DISTANCE_SELECT
+        : EvEvent.DISTANCE_SLIDER,
       { id: this.props.settings.id }
     );
     if (this.charginCostPerKilometer !== undefined) {
       const currentTarget = e.currentTarget as HTMLSelectElement;
-      this.mileage = parseInt(currentTarget.value, 10);
-      this.contexts.select?.update(this.mileage.toString());
-      this.contexts.range?.update(this.mileage);
-      this.contexts.result?.update(this.charginCostPerKilometer, this.mileage);
-      this.contexts.modal?.update(this.charginCostPerKilometer, this.mileage);
+      this.distance = parseInt(currentTarget.value, 10);
+      this.contexts.select?.update(this.distance.toString());
+      this.contexts.range?.update(this.distance);
+      this.contexts.result?.update(this.charginCostPerKilometer, this.distance);
+      this.contexts.modal?.update(this.charginCostPerKilometer, this.distance);
     }
   }
 
@@ -91,14 +105,16 @@ class Preview extends HtmlNode {
 
     this.node.innerHTML = `
       <div class="waykeev-stack waykeev-stack--3">
-        <h2 class="waykeev-heading waykeev-heading--2">Beräkna laddkostnad</h2>
+        <h2 class="waykeev-heading waykeev-heading--2">${i18next.t('evTitle')}</h2>
         <div class="waykeev-content">
-          <p class="waykeev-content__p">Se vad det kostar att ladda denna elbil per månad. Du behöver bara ange din årliga körsträcka för att se fordonets uppskattade laddningskostnad.</p>
+          <p class="waykeev-content__p">
+            ${i18next.t('evDescription')}
+          </p>
         </div>
       </div>
       <div class="waykeev-stack waykeev-stack--3">
-        <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_SELECT_NODE}"></div>
-        <div class="waykeev-stack waykeev-stack--2" id="${MILEAGE_RANGE_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${DISTANCE_SELECT_NODE}"></div>
+        <div class="waykeev-stack waykeev-stack--2" id="${DISTANCE_RANGE_NODE}"></div>
       </div>
       <div class="waykeev-stack waykeev-stack--3" id="${RESULT_NODE}"></div>
       <div class="waykeev-stack waykeev-stack--3">
@@ -111,41 +127,43 @@ class Preview extends HtmlNode {
             </div>
           </div>
           <div class="waykeev-hstack__item waykeev-hstack__item--grow">
-            <span class="waykeev-text waykeev-text--font-medium waykeev-text--bump-right">Vill du anpassa kostnaden efter ditt elpris?</span>
+            <span class="waykeev-text waykeev-text--font-medium waykeev-text--bump-right">${i18next.t(
+              'adjustCostToYourElectricityPrice'
+            )}</span>
             <span id="${MODAL_BUTTON_NODE}"></span>
           </div>
         </div>
       </div>
       <div class="waykeev-stack waykeev-stack--3">
         <div class="waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center waykeev-hstack--justify-center">
-          ${PoweredByWayke()}
+          ${PoweredByWayke(this.marketCode)}
         </div>
       </div>
       <div id="${MODAL_NODE}"></div>
     `;
 
     this.contexts.select = new InputSelect(
-      this.node.querySelector<HTMLDivElement>(`#${MILEAGE_SELECT_NODE}`),
+      this.node.querySelector<HTMLDivElement>(`#${DISTANCE_SELECT_NODE}`),
       {
-        id: MILEAGE_SELECT,
-        title: 'Din årliga körsträcka',
-        name: 'mileage',
-        value: this.mileage.toString(),
-        options: DistanceOptionsMapped,
+        id: DISTANCE_SELECT,
+        title: i18next.t('yourYearlyDistance'),
+        name: 'distance',
+        value: this.distance.toString(),
+        options: DistanceOptionsMapped(this.marketCode),
         onChange: (e) => this.onChangeRange(e),
       }
     );
 
     this.contexts.range = new InputRangeSlider(
-      this.node.querySelector<HTMLDivElement>(`#${MILEAGE_RANGE_NODE}`),
+      this.node.querySelector<HTMLDivElement>(`#${DISTANCE_RANGE_NODE}`),
       {
-        id: MILEAGE_RANGE,
-        name: 'mileage',
-        value: this.mileage,
-        step: 500,
-        min: DistanceOptions[0],
-        max: DistanceOptions[DistanceOptions.length - 1],
-        label: 'Din årliga körsträcka',
+        id: DISTANCE_RANGE,
+        name: 'distance',
+        value: this.distance,
+        step: this.distanceStep,
+        min: this.distanceOptions[0],
+        max: this.distanceOptions[this.distanceOptions.length - 1],
+        label: i18next.t('yourYearlyDistance') || undefined,
         onChange: (e) => this.onChangeRange(e),
       }
     );
@@ -154,7 +172,7 @@ class Preview extends HtmlNode {
       this.node.querySelector<HTMLDivElement>(`#${MODAL_BUTTON_NODE}`),
       {
         id: MODAL_BUTTON,
-        title: 'Öppna uträknaren',
+        title: i18next.t('openCalculator'),
         onClick: () => {
           pushEvent(EvView.MAIN, EvEvent.MODAL_OPENED, { id: this.props.settings.id });
           this.contexts.modal?.open();
@@ -167,15 +185,18 @@ class Preview extends HtmlNode {
 
     this.contexts.result = new Result(this.node.querySelector<HTMLDivElement>(`#${RESULT_NODE}`), {
       charginCostPerKilometer: this.charginCostPerKilometer,
-      mileage: this.mileage,
+      distance: this.distance,
+      marketCode: this.marketCode,
     });
 
     this.contexts.modal = new Modal(this.node.querySelector<HTMLDivElement>(`#${MODAL_NODE}`), {
       settings: this.props.settings,
       charginCostPerKilometer: this.charginCostPerKilometer,
-      mileage: this.mileage,
-      distanceOptions: DistanceOptions,
-      distanceOptionsMapped: DistanceOptionsMapped,
+      distance: this.distance,
+      distanceOptions: this.distanceOptions,
+      distanceOptionsMapped: DistanceOptionsMapped(this.marketCode),
+      distanceStep: this.distanceStep,
+      marketCode: this.marketCode,
       onChangeRange: (e) => this.onChangeRange(e),
     });
   }

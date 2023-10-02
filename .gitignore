@@ -10,3 +10,5 @@ dist
 dist-cdn
 /deploy.py
 /deploy-prod.py
+.dccache
+clip-ui/static
