@@ -10,6 +10,7 @@ import { RequestError } from '../../Http/http';
 import { EvEvent, EvView, pushEvent } from '../../Utils/events';
 import { onlyFloat } from '../../Utils/format';
 import ModalResultStats from './ModalResultStats';
+import { MarketCode } from '../../@types/MarketCode';
 
 const PRICE_OPTION = 'wayke-ev-extended-price-option';
 const PRICE_NODE = `${PRICE_OPTION}-node`;
@@ -41,7 +42,8 @@ const RadioElements = () => [
 interface ModalResultProps {
   settings: AppProps;
   charginCostPerKilometer: EvCalculationChargingPerKilometer;
-  mileage: number;
+  distance: number;
+  marketCode: MarketCode;
 }
 
 interface ModalResultContext {
@@ -59,8 +61,9 @@ class ModalResult extends HtmlNode {
   private priceOption: PriceOptionTypes = STANDARD_PRICE;
   private costPerKwh?: number;
   private charginCostPerKilometer: EvCalculationChargingPerKilometer;
-  private mileage: number;
+  private distance: number;
   private costPerKilometerCustom?: EvCalculationChargingPerKilometer;
+  private marketCode: MarketCode;
 
   constructor(element: HTMLElement | null, props: ModalResultProps) {
     super(element);
@@ -68,8 +71,9 @@ class ModalResult extends HtmlNode {
     this.charginCostPerKilometer = props.charginCostPerKilometer;
     this.costPerKwh =
       storedCostPerKwh || (props.charginCostPerKilometer?.description.costPerKwh.value || 0) * 100;
-    this.mileage = props.mileage;
+    this.distance = props.distance;
     this.costPerKilometerCustom = props.charginCostPerKilometer;
+    this.marketCode = props.marketCode;
 
     this.render();
   }
@@ -89,7 +93,7 @@ class ModalResult extends HtmlNode {
         id: this.props.settings.id,
       });
       this.costPerKilometerCustom = response;
-      this.contexts.stats?.update(this.costPerKilometerCustom, this.mileage);
+      this.contexts.stats?.update(this.costPerKilometerCustom, this.distance);
     } catch (e) {
       const statusCode = (e as RequestError)?.status;
       pushEvent(EvView.MODAL, EvEvent.REQUEST_CUSTOM_PRICE_FAILED, {
@@ -124,23 +128,23 @@ class ModalResult extends HtmlNode {
       this.costPerKwh !== this.props.charginCostPerKilometer?.description.costPerKwh.value
     ) {
       this.fetchData();
-    } else if (this.costPerKilometerCustom && this.mileage) {
+    } else if (this.costPerKilometerCustom && this.distance) {
       this.contexts.stats?.update(
         this.priceOption === 'customPrice'
           ? this.costPerKilometerCustom
           : this.props.charginCostPerKilometer,
-        this.mileage
+        this.distance
       );
     }
   }
 
-  update(mileage: number) {
-    this.mileage = mileage;
+  update(distance: number) {
+    this.distance = distance;
     this.contexts.stats?.update(
       this.priceOption === 'customPrice'
         ? this.costPerKilometerCustom
         : this.props.charginCostPerKilometer,
-      this.mileage
+      this.distance
     );
   }
 
@@ -202,7 +206,8 @@ class ModalResult extends HtmlNode {
         this.priceOption === 'standardPrice'
           ? this.charginCostPerKilometer
           : this.costPerKilometerCustom,
-      mileage: this.mileage || 0,
+      distance: this.distance || 0,
+      marketCode: this.marketCode,
     });
 
     this.contexts.errorAlert = new ErrorAlert(

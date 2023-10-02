@@ -43,7 +43,7 @@ class InputSelect extends HtmlNode {
     const { id, options, name, title, placeholder, onChange } = this.props;
     this.node.innerHTML = `
       <div class="waykeev-input-label">
-        <label for="wayke-ev-mileage-select" class="waykeev-input-label__label">${title}</label>
+        <label for="wayke-ev-distance-select" class="waykeev-input-label__label">${title}</label>
       </div>
       <select
         class="waykeev-select"

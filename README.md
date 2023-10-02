@@ -85,8 +85,8 @@ new WaykeEvWeb({
 | MAIN  | INITIAL_REQUEST_PENDING        | `{ "id": string }`                                                  |
 | MAIN  | INITIAL_REQUEST_SUCCEEDED      | `{ "id": string }`                                                  |
 | MAIN  | INITIAL_REQUEST_FAILED         | `{ "id": string, "statusCode": number \| undefined }`               |
-| MAIN  | MILEAGE_SLIDER                 | `{ "id": string }`                                                  |
-| MAIN  | MILEAGE_SELECT                 | `{ "id": string }`                                                  |
+| MAIN  | DISTANCE_SLIDER                | `{ "id": string }`                                                  |
+| MAIN  | DISTANCE_SELECT                | `{ "id": string }`                                                  |
 | MAIN  | MODAL_OPENED                   | `{ "id": string }`                                                  |
 | MODAL | MODAL_CLOSED                   | `{ "id": string }`                                                  |
 | MODAL | REQUEST_CUSTOM_PRICE_PENDING   | `{ "id": string }`                                                  |

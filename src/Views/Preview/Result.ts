@@ -2,40 +2,49 @@ import i18next from 'i18next';
 import { EvCalculationChargingPerKilometer } from '../../@types/EvCalculation';
 import HtmlNode from '../../Components/Extension/HtmlNode';
 import { prettyNumber } from '../../Utils/format';
+import { MarketCode } from '../../@types/MarketCode';
 
-const calculateCostPerMonth = (costPerKilometer: number | undefined, distance?: number) => {
+const calculateCostPerMonth = (
+  costPerKilometer: number | undefined,
+  distance?: number,
+  marketCode?: MarketCode
+) => {
   if (!costPerKilometer || !distance) return undefined;
-  return (costPerKilometer * distance * 10) / 12;
+  return (costPerKilometer * distance * (marketCode === 'SE' ? 10 : 1)) / 12;
 };
 
 interface ResultProps {
   charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  mileage: number;
+  distance: number;
+  marketCode: MarketCode;
 }
 
 class Result extends HtmlNode {
   private readonly props: ResultProps;
   private charginCostPerKilometer?: EvCalculationChargingPerKilometer;
-  private mileage?: number;
+  private distance?: number;
+  private marketCode: MarketCode;
 
   constructor(element: HTMLElement | null, props: ResultProps) {
     super(element);
     this.props = props;
     this.charginCostPerKilometer = props.charginCostPerKilometer;
-    this.mileage = props.mileage;
+    this.distance = props.distance;
+    this.marketCode = props.marketCode;
     this.render();
   }
 
-  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, mileage?: number) {
+  update(charginCostPerKilometer?: EvCalculationChargingPerKilometer, distance?: number) {
     this.charginCostPerKilometer = charginCostPerKilometer;
-    this.mileage = mileage;
+    this.distance = distance;
     this.render();
   }
 
   render() {
     const costPerMonth = calculateCostPerMonth(
       this.charginCostPerKilometer?.description.costPerKilometer.value,
-      this.mileage
+      this.distance,
+      this.marketCode
     );
 
     const costPerKwh = this.charginCostPerKilometer?.description.costPerKwh;

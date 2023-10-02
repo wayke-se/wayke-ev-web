@@ -77,7 +77,7 @@ class App {
     const node = this.root.querySelector<HTMLElement>(`#${VIEW_NODE}`);
     this.contexts.preview = new Preview(node, {
       settings: this.props,
-      market: this.props.marketCode,
+      marketCode: this.props.marketCode,
     });
   }
 }
