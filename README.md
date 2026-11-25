@@ -79,6 +79,7 @@ Either `id` or `data` is required. Everything else is optional.
 | `language` | `sv` in Sweden, `nb` in Norway | `'sv'`, `'nb'` or `'en'`. |
 | `theme` | | Your colors, see [Colors and fonts](#colors-and-fonts). |
 | `hash` | `false` | Adds `#wayke-ev` to the url while the calculator dialog is open, so the browser's back button closes it. Useful on mobile, where the dialog covers the screen. |
+| `poweredBy` | `true` | `false` hides the "Powered by Wayke" line. |
 | `onEvent` | | See [Events](#events). |
 
 `mount` returns `{ unmount }`. It throws if no element matches the target, or if neither `id` nor `data` is given. It never throws for a vehicle or a network problem: nothing is shown, and [`onEvent`](#events) tells you why.

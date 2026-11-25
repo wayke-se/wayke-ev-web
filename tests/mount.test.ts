@@ -187,6 +187,20 @@ describe('mount', () => {
     second.unmount();
   });
 
+  it('shows the brand line unless it is turned off', async () => {
+    const shown = await setup();
+    expect(shown.root.querySelectorAll('.waykeev-powered-by-wayke')).toHaveLength(2);
+    expect(shown.dialog.querySelector('footer')).not.toBeNull();
+    shown.instance.unmount();
+
+    const hidden = await setup(DATA, { poweredBy: false });
+    expect(hidden.root.querySelectorAll('.waykeev-powered-by-wayke')).toHaveLength(0);
+    expect(hidden.root.querySelector('a')).toBeNull();
+    expect(hidden.dialog.querySelector('footer')).toBeNull();
+    // The calculator itself is unaffected.
+    expect(text(hidden.root.querySelector('.waykeev-balloon'))).toContain('309 kr/mån*');
+  });
+
   it('removes everything on unmount, and stops reporting', async () => {
     const { instance, events, root } = await setup();
     const select = root.querySelector('select') as HTMLSelectElement;

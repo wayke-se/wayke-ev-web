@@ -35,6 +35,7 @@ mount('#ev-no', {
 mount('#ev-data', {
   data: { energyPer100Km: 15.5, costPerKm: 0.188, pricePerKwh: 1.21, marketCode: 'SE' },
   language: 'en',
+  poweredBy: false,
   onEvent: log('data'),
 });
 
