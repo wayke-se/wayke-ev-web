@@ -67,6 +67,7 @@
     "*.scss": "stylelint --fix"
   },
   "allowScripts": {
+    "@parcel/watcher": false,
     "esbuild": true,
     "fsevents": false
   }
