@@ -22,6 +22,8 @@ export interface WidgetProps {
   marketCode: MarketCode;
   t: Translator;
   hash: boolean;
+  /** Whether the "Powered by Wayke" line is shown. */
+  poweredBy: boolean;
   emit: (event: EvEvent) => void;
   /** Aborted on unmount: every listener the widget adds is tied to it. */
   signal: AbortSignal;
@@ -413,15 +415,18 @@ export const renderWidget = (root: HTMLElement, props: WidgetProps) => {
                 )
               )
             ),
-            h(
-              'footer',
-              { class: 'waykeev-modal__footer' },
+            props.poweredBy &&
               h(
-                'div',
-                { class: 'waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center' },
-                ...poweredBy()
+                'footer',
+                { class: 'waykeev-modal__footer' },
+                h(
+                  'div',
+                  {
+                    class: 'waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center',
+                  },
+                  ...poweredBy()
+                )
               )
-            )
           )
         )
       )
@@ -534,18 +539,22 @@ export const renderWidget = (root: HTMLElement, props: WidgetProps) => {
         )
       )
     ),
-    h(
-      'div',
-      { class: 'waykeev-stack waykeev-stack--3' },
-      h(
-        'div',
-        {
-          class:
-            'waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center waykeev-hstack--justify-center',
-        },
-        ...poweredBy()
-      )
-    ),
+    ...(props.poweredBy
+      ? [
+          h(
+            'div',
+            { class: 'waykeev-stack waykeev-stack--3' },
+            h(
+              'div',
+              {
+                class:
+                  'waykeev-hstack waykeev-hstack--spacing-1 waykeev-hstack--align-center waykeev-hstack--justify-center',
+              },
+              ...poweredBy()
+            )
+          ),
+        ]
+      : []),
     dialog
   );
 

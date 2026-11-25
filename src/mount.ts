@@ -61,6 +61,7 @@ export const mount = (target: string | Element, options: MountOptions): EvInstan
       marketCode,
       t: createTranslator(options.language ?? defaultLanguage(marketCode)),
       hash: options.hash === true,
+      poweredBy: options.poweredBy !== false,
       emit,
       signal: controller.signal,
     });

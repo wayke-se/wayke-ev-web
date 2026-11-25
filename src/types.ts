@@ -86,6 +86,8 @@ export interface MountOptions {
    * button closes it. Useful on mobile, where it covers the screen.
    */
   hash?: boolean;
+  /** `false` hides the "Powered by Wayke" line (Drive in Norway). Default `true`. */
+  poweredBy?: boolean;
   onEvent?: (event: EvEvent) => void;
 }
 
