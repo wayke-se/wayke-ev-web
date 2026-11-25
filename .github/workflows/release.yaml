@@ -1,0 +1,111 @@
+on:
+  push:
+    branches:
+      - main
+      - test
+
+name: Release
+
+# A push to main or test publishes the version in package.json to cdn.wayke.se and npm.
+# A pre-release version (1.0.0-beta.1) and everything pushed to test get the npm tag
+# "next"; only a plain version on main becomes "latest".
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'production' || 'test' }}
+    permissions:
+      # npm trusted publishing: the job proves to npm which repository and workflow it
+      # is, so no npm token is stored anywhere. Set up once per package on npmjs.com
+      # (package settings, Trusted Publisher: wayke-se / wayke-ev-web / release.yaml).
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Use Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Read version and npm tag
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG=latest
+          case "$VERSION" in *-*) TAG=next ;; esac
+          if [ "${{ github.ref_name }}" != "main" ]; then
+            TAG=next
+            case "$VERSION" in
+              *-*) ;;
+              *)
+                echo "::error::Only a pre-release version (such as 1.1.0-beta.1) can be released from ${{ github.ref_name }}; $VERSION would take the version number of the real release."
+                exit 1
+                ;;
+            esac
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Releasing $VERSION with npm tag $TAG"
+
+      - name: Check that the version is unpublished
+        # The CDN folder is named after the version and must never be overwritten once released.
+        run: |
+          if npm view "@wayke-se/ev-web@${{ steps.version.outputs.version }}" version > /dev/null 2>&1; then
+            echo "::error::Version ${{ steps.version.outputs.version }} is already published, bump the version in package.json"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Use Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install Python packages
+        run: pip install azure-storage-blob
+
+      - name: Upload CDN build
+        # Before npm publish, so a failed upload can be retried by re-running the job.
+        run: python3 deploy/deploy.py
+        env:
+          BLOB_STORAGE_CONNECTION_STRING: ${{ secrets.BLOB_STORAGE_CONNECTION_STRING }}
+          UPLOAD_MAP_FILES: ${{ steps.version.outputs.tag == 'latest' && 'false' || 'true' }}
+
+      - name: Verify CDN build is served
+        # Proves the connection string points at the storage behind cdn.wayke.se, before npm publish.
+        # The test environment has had its own storage, served on test-cdn.wayketech.se,
+        # so a release from test passes when either host serves the files.
+        run: |
+          FOLDER="public-assets/wayke-ev-web/${{ steps.version.outputs.version }}"
+          HOSTS="https://cdn.wayke.se"
+          if [ "${{ github.ref_name }}" != "main" ]; then
+            HOSTS="https://cdn.wayke.se https://test-cdn.wayketech.se"
+          fi
+          for ATTEMPT in 1 2 3 4 5 6; do
+            for HOST in $HOSTS; do
+              JS=$(curl -s -o /dev/null -w '%{http_code}' "$HOST/$FOLDER/index.js")
+              CSS=$(curl -s -o /dev/null -w '%{http_code}' "$HOST/$FOLDER/index.css")
+              echo "$HOST/$FOLDER -> index.js $JS, index.css $CSS"
+              if [ "$JS" = "200" ] && [ "$CSS" = "200" ]; then
+                echo "Served from $HOST/$FOLDER/index.js"
+                exit 0
+              fi
+            done
+            sleep 10
+          done
+          echo "::error::$FOLDER is not served by $HOSTS. Check BLOB_STORAGE_CONNECTION_STRING for this environment."
+          exit 1
+
+      - name: Publish package to npm
+        # npm only generates provenance for a public repository, so the flag is left out for a private one.
+        run: npm publish --access public --tag ${{ steps.version.outputs.tag }} ${{ !github.event.repository.private && '--provenance' || '' }}

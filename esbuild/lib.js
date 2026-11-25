@@ -1,57 +1,27 @@
-/* eslint-disable no-console */
+import { execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import * as esbuild from 'esbuild';
-import { sassPlugin } from 'esbuild-sass-plugin';
-import npmDts from 'npm-dts';
-import packageJson from '../package.json' assert { type: 'json' };
+import Common from './common.js';
 
-const Shared = {
-  entryPoints: ['src/index.ts'],
-  bundle: true,
+// The npm package: dist/index.js (ESM) and dist/style.css, which the site imports itself.
+await esbuild.build({
+  ...Common,
+  entryPoints: { index: 'src/index.ts', style: 'src/styles/index.scss' },
+  outdir: 'dist',
   minify: true,
   sourcemap: true,
-  logLevel: 'info',
-  external: Object.keys(packageJson.dependencies || {}).concat(
-    Object.keys(packageJson.peerDependencies || {})
-  ),
-  loader: {
-    '.js': 'jsx',
-    '.woff': 'file',
-    '.woff2': 'file',
-    '.gif': 'file',
-    '.svg': 'dataurl',
-    '.png': 'dataurl',
-  },
-  plugins: [sassPlugin()],
-};
-
-const ctx = esbuild.build({
-  ...Shared,
-  outfile: 'dist/index.js',
 });
 
-await ctx;
-
-const ctxEsm = esbuild.build({
-  ...Shared,
-  outfile: 'dist/index.mjs',
-  format: 'esm',
-});
-
-await ctxEsm;
-
-const timetaken = '⚡ Generating types done in';
-console.time(timetaken);
-const generator = new npmDts.Generator({
-  entry: 'src/index.ts',
-  output: 'dist/index.d.ts',
-  help: true,
-  logLevel: 'debug',
-});
-
+// One .d.ts per source file, with dist/index.d.ts as the entry point.
+// Fail the build rather than publish a package without types.
 try {
-  await generator.generate();
-} catch (e) {
-  console.log('Error occured while generating types');
-} finally {
-  console.timeEnd(timetaken);
+  execSync('npx tsc --project tsconfig.build.json', { stdio: 'inherit' });
+} catch {
+  console.error('Type generation failed, aborting build');
+  process.exit(1);
+}
+
+if (!existsSync('dist/index.d.ts')) {
+  console.error('Type generation produced no dist/index.d.ts, aborting build');
+  process.exit(1);
 }

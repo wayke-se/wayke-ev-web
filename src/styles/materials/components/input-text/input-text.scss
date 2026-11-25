@@ -31,6 +31,7 @@
 
   &__input {
     flex: 1 1 auto;
+
     @include appearance(none);
     @include font-light;
 
@@ -41,7 +42,7 @@
     background-color: transparent;
     border: none;
     border-radius: 0;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-tap-highlight-color: rgb(255, 255, 255, 0);
     touch-action: manipulation;
 
     &[disabled] {

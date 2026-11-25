@@ -1,17 +1,12 @@
 import { sassPlugin } from 'esbuild-sass-plugin';
 
+// Shared by the library, CDN and dev builds. The widget has no runtime dependencies,
+// so every build is self-contained.
 const Common = {
-  entryPoints: ['src/index.ts'],
   bundle: true,
-  outdir: 'build',
-  loader: {
-    '.js': 'jsx',
-    '.woff': 'file',
-    '.woff2': 'file',
-    '.gif': 'file',
-    '.svg': 'dataurl',
-    '.png': 'dataurl',
-  },
+  format: 'esm',
+  target: 'es2022',
+  logLevel: 'info',
   plugins: [sassPlugin()],
 };
 
