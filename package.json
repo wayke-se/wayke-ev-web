@@ -1,6 +1,6 @@
 {
   "name": "@wayke-se/ev-web",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Embeddable widget that shows what it costs to charge an electric car from Wayke",
   "type": "module",
   "main": "./dist/index.js",
