@@ -1,21 +1,47 @@
-<!DOCTYPE html>
-<html lang="se">
+<!doctype html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Wayke EV Web</title>
-
-    <meta charset="UTF-8">
-    <meta name="description" content="Wayke Ev Web">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#fff">
-
-    <link rel="stylesheet" href="build/index-dev.css">
+    <link rel="stylesheet" href="build/dev.css" />
+    <style>
+      body {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 24px 16px 96px;
+        font-family: system-ui, sans-serif;
+      }
+      section {
+        margin-top: 48px;
+      }
+      .note {
+        color: #666;
+        font-size: 14px;
+      }
+    </style>
   </head>
   <body>
     <h1>Wayke EV Web</h1>
+    <p class="note">Development page. Events are logged to the console.</p>
 
-    <div id="custom-id"></div>
-    <script src="build/index-dev.js"></script>
+    <section>
+      <p class="note">Sweden, by id</p>
+      <div id="ev-se"></div>
+    </section>
+    <section>
+      <p class="note">Norway, by id, with a theme</p>
+      <div id="ev-no"></div>
+    </section>
+    <section>
+      <p class="note">Figures passed in, in English</p>
+      <div id="ev-data"></div>
+    </section>
+    <section>
+      <p class="note">Unknown vehicle: nothing is shown below</p>
+      <div id="ev-none"></div>
+    </section>
+
+    <script type="module" src="build/dev.js"></script>
   </body>
 </html>

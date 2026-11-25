@@ -1,0 +1,32 @@
+@use '../../../helpers' as *;
+
+// The native <dialog> gives the focus trap, Escape and the top layer. It is only a
+// frame here: .#{$namespace}modal inside it draws the overlay and the panel.
+.#{$namespace}dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
+
+  &::backdrop {
+    background: transparent;
+  }
+
+  &:not([open]) {
+    display: none;
+  }
+}
+
+// Layout classes set display, which would otherwise win over the hidden attribute.
+#{$root-element}[hidden],
+:where(#{$root-element}) [hidden] {
+  display: none !important;
+}

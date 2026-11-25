@@ -1,53 +1,73 @@
 {
   "name": "@wayke-se/ev-web",
-  "version": "0.1.1",
-  "description": "Wayke Electric Vehicle Web",
-  "module": "dist/index.mjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "1.0.0",
+  "description": "Embeddable widget that shows what it costs to charge an electric car from Wayke",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "node ./esbuild/start.js",
     "build": "npm run clean && node ./esbuild/lib.js && node ./esbuild/cdn.js",
-    "clean": "rimraf build && rimraf dist && rimraf dist-cdn",
-    "test": "npm run lint && npm run typecheck",
-    "typecheck": "tsc -noEmit",
-    "typecheck:watch": "tsc -noEmit -watch",
-    "lint": "eslint --ext .ts,.js src/",
-    "lint:fix": "eslint --ext .ts,.js 'src' --fix",
-    "stylelint": "stylelint '**/*.scss'",
-    "prepare": "husky install",
-    "clip": "node ./esbuild/clip-ui.js && node ./clip-ui/start.js"
+    "clean": "rimraf build dist dist-cdn www/build",
+    "test": "npm run lint && npm run typecheck && npm run stylelint && npm run test:unit",
+    "test:unit": "vitest run",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "stylelint": "stylelint \"src/**/*.scss\"",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wayke-se/wayke-ev-web.git"
   },
   "author": "Wayke",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wayke-se/ev-web/issues"
+    "url": "https://github.com/wayke-se/wayke-ev-web/issues"
   },
-  "homepage": "https://github.com/wayke-se/ev-web#readme",
-  "devDependencies": {
-    "@ourstudio/clip-ui": "^0.0.11",
-    "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
-    "@typescript-eslint/parser": "^6.7.3",
-    "esbuild": "^0.19.4",
-    "esbuild-sass-plugin": "^2.15.0",
-    "eslint": "^8.9.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "husky": "^8.0.1",
-    "npm-dts": "^1.3.11",
-    "prettier": "^3.0.3",
-    "rimraf": "^5.0.5",
-    "stylelint": "^15.3.0",
-    "stylelint-config-prettier-scss": "^1.0.0",
-    "stylelint-config-standard-scss": "^11.0.0",
-    "typescript": "^5.0.2"
-  },
-  "files": [
-    "dist"
+  "homepage": "https://github.com/wayke-se/wayke-ev-web#readme",
+  "keywords": [
+    "wayke",
+    "electric vehicle",
+    "charging cost",
+    "widget"
   ],
-  "dependencies": {
-    "i18next": "^23.5.1"
+  "devDependencies": {
+    "@biomejs/biome": "2.6.3",
+    "@types/node": "^24.19.2",
+    "esbuild": "^0.28.2",
+    "esbuild-sass-plugin": "^3.7.0",
+    "happy-dom": "^21.0.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "rimraf": "^6.1.3",
+    "stylelint": "^18.1.0",
+    "stylelint-config-standard-scss": "^18.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.2"
+  },
+  "lint-staged": {
+    "*.{ts,js,json}": "biome check --write --no-errors-on-unmatched",
+    "*.scss": "stylelint --fix"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "fsevents": false
   }
 }

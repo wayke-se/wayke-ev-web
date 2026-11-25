@@ -10,10 +10,7 @@
   $modal-close-btn-size: size(2);
 
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
   width: 100%;
   min-height: 100%;
   text-align: left;
@@ -25,10 +22,7 @@
   &::before {
     content: '';
     position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     background-color: var(--c-overlay);
     opacity: 0.4;
     z-index: -1;
@@ -110,10 +104,7 @@
     &::after {
       content: '';
       position: absolute;
-      top: size(-2);
-      bottom: size(-2);
-      left: size(-2);
-      right: size(-2);
+      inset: size(-2);
       border-radius: 50%;
     }
 
