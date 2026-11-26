@@ -17,9 +17,10 @@ Add this where the calculator should be shown, and replace `<vehicle id>` with t
 </script>
 ```
 
-Two things to know:
+Three things to know:
 
 * **Your domain has to be registered with Wayke.** Until it is, nothing is shown. Ask your contact at Wayke to register it.
+* **The charging cost calculator has to be enabled for your site at Wayke.** It is a feature of its own, next to the registration of the domain.
 * **Only battery-electric cars have a charging cost.** For any other vehicle nothing is shown, so the snippet can be on every vehicle page.
 
 That is all most sites need. The rest of this page covers npm, the options and the details.
@@ -122,6 +123,7 @@ The calculator takes no space until it has figures to show, so your page keeps i
 | `unavailable` | `no-charging-data` | The vehicle is not battery-electric, or Wayke lacks the data to estimate its cost. |
 | `unavailable` | `not-found` | No published vehicle has this id in this environment. |
 | `error` | `unauthorized` | The domain of the page, or `apiKey`, is not registered with Wayke in this environment. |
+| `error` | `not-enabled` | The site is registered, but does not have the charging cost calculator at Wayke. Ask your contact at Wayke to enable it. |
 | `error` | `rate-limited`, `network`, `server` | The request did not succeed. |
 
 To show a heading of your own only when there is a calculator, wait for `ready`:

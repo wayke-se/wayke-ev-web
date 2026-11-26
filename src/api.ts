@@ -20,6 +20,9 @@ const API_URLS: Record<Environment, string> = {
 /** Shows up in Wayke's traces, so it is visible which sites run which version. */
 const CLIENT_VERSION = `ev-web@${version}`;
 
+/** The GraphQL error code of a refused charging cost attribute. */
+const NOT_ENABLED_CODE = 'CHARGING_COST_NOT_ENABLED';
+
 const ATTRIBUTES = `
   chargingEnergyConsumption { floatValue }
   chargingCostPerKilometer { floatValue unit }
@@ -140,8 +143,17 @@ export const fetchChargingData = async ({
   if (response.status === 401 || response.status === 403) throw new ApiError('unauthorized');
   if (response.status === 429) throw new ApiError('rate-limited');
 
-  const body = (await response.json().catch(() => null)) as { data?: QueryResult } | null;
+  const body = (await response.json().catch(() => null)) as {
+    data?: QueryResult;
+    errors?: { extensions?: { code?: string } }[];
+  } | null;
   if (!response.ok || !body) throw new ApiError('server');
+
+  // The API refuses the charging cost attributes to a site whose branch does not
+  // have the charging cost calculator. The fields come back null with this code.
+  if (body.errors?.some((error) => error.extensions?.code === NOT_ENABLED_CODE)) {
+    throw new ApiError('not-enabled');
+  }
 
   // An id that is not a GUID comes back as a GraphQL error next to null data;
   // to the site that is the same as an id no vehicle has.

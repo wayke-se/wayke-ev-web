@@ -44,7 +44,12 @@ export type UnavailableReason =
 
 export type ErrorReason =
   /** The site's domain (or `apiKey`) is not registered with Wayke in this environment. */
-  'unauthorized' | 'rate-limited' | 'network' | 'server';
+  | 'unauthorized'
+  /** The site is registered, but its branch does not have the charging cost calculator at Wayke. */
+  | 'not-enabled'
+  | 'rate-limited'
+  | 'network'
+  | 'server';
 
 export type EvEvent =
   /** The calculator is on the page. */

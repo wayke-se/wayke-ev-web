@@ -129,6 +129,36 @@ describe('fetchChargingData', () => {
     expect(await request()).toEqual({ status: 'unavailable', reason: 'not-found' });
   });
 
+  it('reports a site without the calculator as not enabled, not as a car without data', async () => {
+    // The API nulls the three attributes and says why, as it did in test on 2026-11-26.
+    respond(200, {
+      data: {
+        ads: {
+          byAdId: ad({
+            chargingEnergyConsumption: null,
+            chargingCostPerKilometer: null,
+            chargingPricePerKwh: null,
+          }),
+          byIterationId: null,
+        },
+      },
+      errors: [
+        {
+          message: 'the charging cost calculator is not enabled for this api key',
+          extensions: { code: 'CHARGING_COST_NOT_ENABLED', permission: 'EvCalculatorEnabled' },
+        },
+      ],
+    });
+    await expect(request()).rejects.toMatchObject({ reason: 'not-enabled' });
+
+    // Any other error next to the data changes nothing.
+    respond(200, {
+      data: { ads: { byAdId: ad() } },
+      errors: [{ message: 'something else', extensions: { code: 'DOWNSTREAM_SERVICE_ERROR' } }],
+    });
+    expect((await request()).status).toBe('ok');
+  });
+
   it('tells an unregistered site, a rate limit, a server fault and no network apart', async () => {
     respond(401, { message: 'Unauthorized' });
     await expect(request()).rejects.toMatchObject({ reason: 'unauthorized' });
