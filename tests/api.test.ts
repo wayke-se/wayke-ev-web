@@ -130,7 +130,7 @@ describe('fetchChargingData', () => {
   });
 
   it('reports a site without the calculator as not enabled, not as a car without data', async () => {
-    // The API nulls the three attributes and says why, as it did in test on 2026-11-26.
+    // The API nulls the three attributes and says why with an error code.
     respond(200, {
       data: {
         ads: {
